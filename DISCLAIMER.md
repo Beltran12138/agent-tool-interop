@@ -4,7 +4,9 @@
 
 This project is an **interoperability research and protocol-analysis initiative**. It studies how different AI coding-agent CLIs expose their tool-use interfaces to inference backends, and documents the resulting compatibility landscape.
 
-It is **not** a tool for circumventing vendor authentication, billing, rate limits, or Terms of Service. It contains **no runnable patches, binaries, or bypass code**.
+It is **not** a tool for circumventing vendor authentication, billing, rate limits, or Terms of Service, and contains **no vendor-specific bypass patches or binaries**.
+
+It does include one **vendor-neutral reference implementation** (`reference/path-rewrite-proxy/`) that demonstrates the specification's contract: a generic transport/protocol adapter (OpenAI path-prefix rewrite + Anthropic↔OpenAI Chat translation) configured entirely by placeholders and targeting no specific vendor. It ships no real endpoint, key, or internal address.
 
 ## Scope of artifacts
 
@@ -12,6 +14,7 @@ It is **not** a tool for circumventing vendor authentication, billing, rate limi
 - An open, vendor-neutral interface specification
 - A compatibility matrix
 - A community registry structure for interoperability reports
+- A vendor-neutral reference implementation demonstrating the spec's contract (`reference/path-rewrite-proxy/`)
 
 Vendors are referred to by **codenames** (Vendor A, Vendor B, …) rather than trademarks in the core documents.
 

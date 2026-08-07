@@ -1,0 +1,17 @@
+{
+  "name": "chat-path-rewrite-proxy",
+  "version": "0.1.0",
+  "description": "Thin zero-dependency reverse proxy: rewrites the OpenAI Chat path prefix + injects a Bearer key for non-standard-path gateways, and translates Anthropic Messages <-> OpenAI Chat (tools, tool_use/tool_result, streaming SSE).",
+  "license": "MIT",
+  "main": "proxy.js",
+  "scripts": {
+    "start": "node proxy.js",
+    "test": "node test-anthropic-mock.js"
+  },
+  "keywords": ["openai", "anthropic", "proxy", "reverse-proxy", "chat-completions", "gateway", "path-rewrite", "tool-use", "sse", "agent-interop"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Beltran12138/agent-tool-interop.git",
+    "directory": "reference/path-rewrite-proxy"
+  }
+}
