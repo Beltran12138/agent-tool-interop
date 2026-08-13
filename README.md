@@ -11,6 +11,7 @@ This project studies how different AI coding-agent CLIs expose their tool-use in
 - A **compatibility matrix** documenting observed (agent, backend) behavior.
 - A **reference implementation** ([`reference/path-rewrite-proxy/`](reference/path-rewrite-proxy/)) — a vendor-neutral proxy showing that a Family A client attaches to an arbitrary OpenAI-compatible gateway through pure transport/protocol adaptation.
 - A **registry** structure for community interoperability reports.
+- A **positioning note** ([`RELATED-WORK.md`](RELATED-WORK.md)) placing the taxonomy against MCP / A2A and Natural-Language Agent Harnesses (NLAH) — where tool-exposure drivability sits as a precondition the surrounding literature standardizes away or assumes given.
 
 ## What this is *not*
 
@@ -43,6 +44,7 @@ agent-tool-interop/
 ├── README.md
 ├── LICENSE                 # MIT
 ├── DISCLAIMER.md
+├── RELATED-WORK.md         # positioning vs MCP / A2A / NLAH
 ├── SPEC.md                 # v0 interface contract
 ├── matrix/
 │   └── compatibility.md    # observed (agent, backend) data — 5 points
