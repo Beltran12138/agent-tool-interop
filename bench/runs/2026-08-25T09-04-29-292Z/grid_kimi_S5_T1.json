@@ -1,0 +1,56 @@
+{
+  "cellId": "grid_kimi_S5_T1",
+  "backend": "kimi",
+  "model": "moonshotai/Kimi-K2.6",
+  "form": "S5",
+  "task": "T1",
+  "toolCount": 15,
+  "outcome": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": false,
+    "reasoningStripped": false,
+    "truncatedReasoning": false,
+    "variantDialect": false,
+    "coercions": [],
+    "calledDistractor": false
+  },
+  "turns": 2,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 288,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\" {\\\"tool\\\": \\\"write_file\\\", \\\"args\\\": {\\\"path\\\": \\\"report.txt\\\", \\\"content\\\": \\\"OK-7391\\\"}}\",\"function_call\":null,\"reasoning\":\" The user wants me to create a file named `report.txt` with the exact content `OK-7391`. I should use the `write_file` tool for this. \",\"refusal\":null,\"role\":\"assistant\",\"tool_calls\":[]},\"stop_reason\":163586}],\"created\":1787647544,\"id\":\"devshard-61851-432\",\"kv_transfer_params\":null,\"model\":\"moonshotai/Kimi-K2.6\",\"object\":\"chat.completion\",\"service_tier\":null,\"system_fingerprint\":null,\"usage\":{\"completion_tokens\":63,\"prompt_tokens\":833,\"prompt_tokens_details\":null,\"total_tokens\":896}}",
+      "parsed": {
+        "kind": "call",
+        "name": "write_file",
+        "dialect": "specified",
+        "args": {
+          "path": "report.txt",
+          "content": "OK-7391"
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 193,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\" {\\\"done\\\": true}\",\"function_call\":null,\"reasoning\":\" The user asked me to create a file named report.txt with content exactly \\\"OK-7391\\\". The tool call succeeded, so the task is complete. I should respond with {\\\"done\\\": true}.\",\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":163586}],\"created\":1787648499,\"id\":\"devshard-61941-7\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"moonshotai/Kimi-K2.6\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp4-ep-d5e6d2fd\",\"usage\":{\"completion_tokens\":47,\"prompt_tokens\":888,\"prompt_tokens_details\":null,\"total_tokens\":935}}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

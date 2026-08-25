@@ -1,0 +1,89 @@
+{
+  "cellId": "ctl_minimax_S5_C-dense",
+  "backend": "minimax",
+  "model": "MiniMaxAI/MiniMax-M2.7",
+  "form": "S5",
+  "task": "T1",
+  "toolCount": 15,
+  "outcome": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": true,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": false,
+    "reasoningStripped": true,
+    "truncatedReasoning": false,
+    "variantDialect": false,
+    "coercions": [],
+    "calledDistractor": false
+  },
+  "turns": 5,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 184,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003eThe user wants me to create a file named \\\"report.txt\\\" with the exact content \\\"OK-7391\\\". I'll use the write_file function to create this file.\\n\\u003c/think\\u003e\\n\\n\\n{\\\"tool\\\": \\\"write_file\\\", \\\"args\\\": {\\\"path\\\": \\\"report.txt\\\", \\\"content\\\": \\\"OK-7391\\\"}}\\n\\n{\\\"done\\\": true}\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787647271,\"id\":\"devshard-61867-106\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp4-92649d58\",\"usage\":{\"completion_tokens\":69,\"prompt_tokens\":838,\"prompt_tokens_details\":null,\"total_tokens\":907}}",
+      "parsed": {
+        "kind": "malformed",
+        "detail": "not valid JSON: Unexpected non-whitespace character after JSON at position 78 (line 3 column 1)"
+      }
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 192,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003eI need to create a file named report.txt with the exact content \\\"OK-7391\\\". Let me try again with the proper JSON format.\\n\\u003c/think\\u003e\\n\\n{\\\"tool\\\": \\\"write_file\\\", \\\"args\\\": {\\\"path\\\": \\\"report.txt\\\", \\\"content\\\": \\\"OK-7391\\\"}}\\n\\n{\\\"done\\\": true}\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787647273,\"id\":\"devshard-61867-108\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp2-0cb5bbe5\",\"usage\":{\"completion_tokens\":64,\"prompt_tokens\":920,\"prompt_tokens_details\":null,\"total_tokens\":984}}",
+      "parsed": {
+        "kind": "malformed",
+        "detail": "not valid JSON: Unexpected non-whitespace character after JSON at position 78 (line 3 column 1)"
+      }
+    },
+    {
+      "turn": 2,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 192,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003eI need to emit a valid JSON object for the write_file tool call. Let me format it correctly.\\n\\u003c/think\\u003e\\n\\n{\\\"tool\\\": \\\"write_file\\\", \\\"args\\\": {\\\"path\\\": \\\"report.txt\\\", \\\"content\\\": \\\"OK-7391\\\"}}\\n\\n{\\\"done\\\": true}\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787647275,\"id\":\"devshard-61867-111\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp2-0cb5bbe5\",\"usage\":{\"completion_tokens\":56,\"prompt_tokens\":1002,\"prompt_tokens_details\":null,\"total_tokens\":1058}}",
+      "parsed": {
+        "kind": "malformed",
+        "detail": "not valid JSON: Unexpected non-whitespace character after JSON at position 78 (line 3 column 1)"
+      }
+    },
+    {
+      "turn": 3,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 188,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003eI need to emit a valid JSON object for the tool call. Let me format it properly without any extra text.\\n\\u003c/think\\u003e\\n\\n{\\\"tool\\\": \\\"write_file\\\", \\\"args\\\": {\\\"path\\\": \\\"report.txt\\\", \\\"content\\\": \\\"OK-7391\\\"}}\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787647277,\"id\":\"devshard-61867-117\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp2-0cb5bbe5\",\"usage\":{\"completion_tokens\":52,\"prompt_tokens\":1084,\"prompt_tokens_details\":null,\"total_tokens\":1136}}",
+      "parsed": {
+        "kind": "call",
+        "name": "write_file",
+        "dialect": "specified",
+        "args": {
+          "path": "report.txt",
+          "content": "OK-7391"
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 4,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 183,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003eThe file was successfully written. The task is complete.\\n\\u003c/think\\u003e\\n\\n{\\\"done\\\": true}\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787647279,\"id\":\"devshard-61867-118\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp2-0cb5bbe5\",\"usage\":{\"completion_tokens\":19,\"prompt_tokens\":1139,\"prompt_tokens_details\":null,\"total_tokens\":1158}}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

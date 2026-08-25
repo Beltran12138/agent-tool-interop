@@ -123,6 +123,37 @@ eq(S5.parse('{"done": true}').kind, 'none', 'S5: done sentinel still none after 
   eq(S4.parse(r.text).kind, 'none', 'strip+parse: a call mentioned only inside reasoning is not a call');
 }
 
+/* -- parallel tool calls (native form only) -------------------------------- */
+// Regression for a harness bug that produced HTTP 400 on the chain-depth task:
+// the API requires a tool message per tool_call_id, so every call in the
+// message must be surfaced, not just the first.
+{
+  const r = S1.parse('', { tool_calls: [
+    { id: 'a', function: { name: 'read_file', arguments: '{"path":"a.txt"}' } },
+    { id: 'b', function: { name: 'read_file', arguments: '{"path":"b.txt"}' } },
+  ] });
+  eq([r.kind, r.calls.length, r.calls[0].id, r.calls[1].id, r.calls[1].args.path],
+     ['call', 2, 'a', 'b', 'b.txt'], 'S1: both parallel calls surfaced with their ids');
+}
+{
+  const r = S1.parse('', { tool_calls: [{ id: 'a', function: { name: 'x', arguments: '{}' } }] });
+  eq(r.calls.length, 1, 'S1: single call still yields a one-element calls array');
+}
+{
+  // A malformed member must fail the whole message, not be silently skipped:
+  // skipping it would leave its tool_call_id unanswered and 400 the next turn.
+  const r = S1.parse('', { tool_calls: [
+    { id: 'a', function: { name: 'read_file', arguments: '{"path":"a"}' } },
+    { id: 'b', function: { name: 'read_file', arguments: '{bad' } },
+  ] });
+  eq([r.kind, /\[1\]/.test(r.detail)], ['malformed', true], 'S1: malformed second call fails the message and names its index');
+}
+{
+  const r = S4.parse('<tool_call><function=read_file><parameter=path>a</parameter></function></tool_call>');
+  eq(r.calls, undefined, 'S4: prompt-embedded form exposes no parallel calls array');
+}
+
+
 /* ------------------------------------------------------------------------- */
 console.log(`\nparser assertions: ${pass} passed, ${failures.length} failed`);
 if (failures.length) {

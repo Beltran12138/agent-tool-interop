@@ -30,8 +30,9 @@ See [`DISCLAIMER.md`](DISCLAIMER.md).
 | Protocol analysis | #1: function tools vs RPC-wrapping | [`analysis/01-function-vs-rpc-wrapping.md`](analysis/01-function-vs-rpc-wrapping.md) |
 | Reference implementation | path-rewrite proxy — 28/28 tests | [`reference/path-rewrite-proxy/`](reference/path-rewrite-proxy/) |
 | Conformance bench — design | measurement design, written before the code | [`docs/BENCH-DESIGN.md`](docs/BENCH-DESIGN.md) |
-| Conformance bench — harness | 4 backends × 3 exposure forms, 31 offline parser assertions | [`bench/`](bench/) |
-| Conformance bench — Slice 0 | **ran; saturated at ceiling — no discriminative power** | [`bench/FINDINGS-SLICE0.md`](bench/FINDINGS-SLICE0.md) |
+| Conformance bench — harness | 4 backends × 3 exposure forms, 72 offline assertions | [`bench/`](bench/) |
+| Conformance bench — Slice 0 | saturated at ceiling; three false-result mechanisms closed | [`bench/FINDINGS-SLICE0.md`](bench/FINDINGS-SLICE0.md) |
+| Conformance bench — Slice 0.1 | **116 cells, 0 ERROR — envelopes equally drivable, unequally demanding** | [`bench/FINDINGS-SLICE0.1.md`](bench/FINDINGS-SLICE0.1.md) |
 | Community registry | placeholder | [`registry/`](registry/) |
 
 ## Key finding
@@ -68,7 +69,8 @@ agent-tool-interop/
 - The matrix has five data points (a mix of directly observed and architecture-documented); broader coverage depends on community reports.
 - The reference implementation demonstrates the **Family A → gateway** path (transport adaptation). A full backend-relay reference for the Family B bridging path (track `β`) remains future work, gated on v0 traction.
 - The conformance bench measures a deliberately different half of the problem from Analysis 01 — the backend's ability to emit against a given exposure form, rather than a shipped CLI's exposure form itself. That scope shift is stated in [`docs/BENCH-DESIGN.md`](docs/BENCH-DESIGN.md) §1.1 rather than elided.
-- **Slice 0 produced no usable rates.** All four backends drove all three exposure forms on all three tasks, so the grid saturated and no difference of any size could have appeared. The forms are *not* thereby shown to be equivalent; the task set is shown to lack discriminative power. See [`bench/FINDINGS-SLICE0.md`](bench/FINDINGS-SLICE0.md), which also records that the harness first printed the wrong verdict and what guard was added.
+- **Binary drivability has saturated twice** (Slice 0, then Slice 0.1 at higher difficulty: 0.98 with a passing task-competence control). For any task these models can do at all, all three exposure forms get them there — so `OK` is the wrong dependent variable, not the tasks. What still varies is what each envelope *demands*: parallelism only in the native form, string-encoding of structured arguments only in the XML form, dialect drift only in the XML form, and **a fifth of the XML form's successes existing only because the parser was lenient**. See [`bench/FINDINGS-SLICE0.1.md`](bench/FINDINGS-SLICE0.1.md).
+- Both findings files record the harness defects found while running — a parallel-call bug that would have deleted the native form's chain cells, a classifier that inverted the very `F0`/`F2` distinction it enforces, and assertions that could not fail. They are listed because each would otherwise have produced a confident wrong number.
 
 ## License
 

@@ -1,0 +1,11 @@
+{
+  "cellId": "base_ds-direct_T1",
+  "backend": "ds-direct",
+  "model": "deepseek-v4-flash",
+  "form": "S0",
+  "task": "T1",
+  "outcome": "OK",
+  "errorDetail": null,
+  "answer": "OK-7391",
+  "raw": "{\"id\":\"0a014204-ba4d-49cb-9044-5978c9ba912e\",\"object\":\"chat.completion\",\"created\":1787648687,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"OK-7391\",\"reasoning_content\":\"We need answer exact content file should have: token OK-7391. User asks reply with exact content that file should have. So just output OK-7391. No extra.\"},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":129,\"completion_tokens\":42,\"total_tokens\":171,\"prompt_tokens_details\":{\"cached_tokens\":128},\"completion_tokens_details\":{\"reasoning_tokens\":37},\"prompt_cache_hit_tokens\":128,\"prompt_cache_miss_tokens\":1},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}"
+}

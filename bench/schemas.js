@@ -40,15 +40,38 @@ function stripReasoning(text) {
   return { text: out.trim(), stripped, unclosed };
 }
 
+function typeWord(spec) {
+  if (spec.type === 'enum') return `string, one of: ${spec.enum.join(' | ')}`;
+  if (spec.type === 'array') return `array of ${spec.items || 'values'}`;
+  if (spec.type === 'object') return `object with keys: ${Object.keys(spec.schema || {}).join(', ')}`;
+  return spec.type;
+}
+
 function describeToolsHuman(tools) {
   return tools
     .map((t) => {
       const params = Object.entries(t.parameters)
-        .map(([k, v]) => `    - ${k} (${v.type})${v.required ? ' [required]' : ''}: ${v.description}`)
+        .map(([k, v]) => `    - ${k} (${typeWord(v)})${v.required ? ' [required]' : ''}: ${v.description}`)
         .join('\n');
       return `  ${t.name}: ${t.description}\n${params}`;
     })
     .join('\n');
+}
+
+/** JSON Schema for a parameter — only the native form can carry this. */
+function jsonSchemaFor(spec) {
+  switch (spec.type) {
+    case 'enum': return { type: 'string', enum: spec.enum, description: spec.description };
+    case 'integer': return { type: 'integer', description: spec.description };
+    case 'array': return { type: 'array', items: { type: spec.items || 'string' }, description: spec.description };
+    case 'object': return {
+      type: 'object',
+      properties: Object.fromEntries(Object.entries(spec.schema || {}).map(([k, t]) => [k, { type: t }])),
+      required: Object.keys(spec.schema || {}),
+      description: spec.description,
+    };
+    default: return { type: 'string', description: spec.description };
+  }
 }
 
 // --- S0: no tool protocol at all (construct check) --------------------------
@@ -79,9 +102,7 @@ const S1 = {
           description: t.description,
           parameters: {
             type: 'object',
-            properties: Object.fromEntries(
-              Object.entries(t.parameters).map(([k, v]) => [k, { type: v.type, description: v.description }])
-            ),
+            properties: Object.fromEntries(Object.entries(t.parameters).map(([k, v]) => [k, jsonSchemaFor(v)])),
             required: Object.entries(t.parameters).filter(([, v]) => v.required).map(([k]) => k),
           },
         },
@@ -107,8 +128,25 @@ const S1 = {
     if (args === null || typeof args !== 'object' || Array.isArray(args)) {
       return { kind: 'malformed', detail: 'arguments not a JSON object' };
     }
+    // Every call in the message, not just the first: the API contract requires
+    // a tool result for each tool_call_id, and dropping the rest turns the
+    // native form's parallelism into a transport error.
+    const all = [];
+    for (let i = 0; i < calls.length; i++) {
+      const ci = calls[i];
+      const nm = ci && ci.function && ci.function.name;
+      if (!nm) return { kind: 'malformed', detail: `tool_call[${i}] without function.name` };
+      let a;
+      try { a = JSON.parse(ci.function.arguments || '{}'); } catch (e) {
+        return { kind: 'malformed', detail: `tool_call[${i}] arguments not JSON: ${String(e.message).slice(0, 100)}` };
+      }
+      if (a === null || typeof a !== 'object' || Array.isArray(a)) {
+        return { kind: 'malformed', detail: `tool_call[${i}] arguments not a JSON object` };
+      }
+      all.push({ name: nm, args: a, id: ci.id || `call_${i}`, dialect: 'specified' });
+    }
     // Native tools have no dialect variance: the field is structured by the API.
-    return { kind: 'call', name, args, id: c.id || 'call_0', dialect: 'specified' };
+    return { kind: 'call', name, args, id: c.id || 'call_0', dialect: 'specified', calls: all };
   },
   renderResult(call, result) {
     return { role: 'tool', tool_call_id: call.id, content: JSON.stringify(result) };
@@ -136,6 +174,10 @@ To call a tool, emit EXACTLY this structure and nothing else after it:
 <parameter=PARAM_NAME>value</parameter>
 </function>
 </tool_call>
+
+Every parameter value is text. A parameter that is not a plain string — an array,
+an object, or a number — must be written as its JSON encoding, for example
+<parameter=tags>["a","b"]</parameter> or <parameter=retries>4</parameter>.
 
 Emit one tool call at a time and then stop. The result will be given to you in a
 <tool_result> block. When the task is complete, reply with DONE and no tool call.`,

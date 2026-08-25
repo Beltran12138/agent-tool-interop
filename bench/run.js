@@ -7,6 +7,7 @@ const path = require('path');
 const { resolve, chat } = require('./backends');
 const { S0, FORMS, stripReasoning } = require('./schemas');
 const { TOOLS, TASKS, CONTROLS, execute, validateArgs } = require('./tasks');
+const { classify } = require('./classify');
 
 /**
  * Zero-dependency .env loader.
@@ -79,13 +80,15 @@ async function runCell({ backend, form, task, toolNames, runDir, cellId }) {
     reasoningStripped: false,
     truncatedReasoning: false,
     variantDialect: false, // a strict scaffold would have rejected at least one call
+    coercions: [],         // non-string args that arrived JSON-encoded as text
+    calledDistractor: false,
   };
   let outcome = null;
   let errorDetail = null;
 
   for (let turn = 0; turn < MAX_TURNS; turn++) {
     const res = await chat(backend, { messages, tools: toolsField || undefined, timeoutMs: REQ_TIMEOUT_MS });
-    trace.push({ turn, transport: res.transport, ms: res.ms, status: res.status, raw: res.raw ? res.raw.slice(0, 20000) : undefined, error: res.error });
+    trace.push({ turn, transport: res.transport, attempts: res.attempts, ms: res.ms, status: res.status, raw: res.raw ? res.raw.slice(0, 20000) : undefined, error: res.error });
 
     if (res.transport !== 'ok') {
       outcome = 'ERROR';
@@ -133,48 +136,66 @@ async function runCell({ backend, form, task, toolNames, runDir, cellId }) {
     }
 
     // parsed.kind === 'call'
+    //
+    // PARALLEL CALLS. The native form lets a model emit several tool calls in
+    // one message, and the API requires a tool message answering EVERY
+    // tool_call_id. An earlier version executed only the first and echoed the
+    // whole array, which the provider rejected with a 400 — on exactly the
+    // chain-depth task where the native form's parallelism shows up. That would
+    // have deleted S1's chain cells as ERROR and produced an availability skew
+    // correlated with the independent variable: the same failure family this
+    // bench is built to detect, inside the bench.
+    //
+    // Prompt-embedded forms specify one call at a time and cannot express
+    // parallelism, so `calls` is length 1 for them. That asymmetry is a real
+    // property of the envelopes, and it is recorded rather than equalised away.
+    const calls = parsed.calls && parsed.calls.length ? parsed.calls : [parsed];
+    if (calls.length > 1) flags.parallelCalls = Math.max(flags.parallelCalls || 0, calls.length);
     flags.anyCall = true;
-    const v = validateArgs(parsed.name, parsed.args);
-    trace[trace.length - 1].validation = v.ok ? 'ok' : v.detail;
-    if (v.unknownTool) {
-      flags.anyUnknownTool = true;
-      messages.push({ role: 'assistant', content: rawText, tool_calls: message.tool_calls });
-      messages.push(form.renderResult(parsed, { error: v.detail }));
-      continue;
-    }
-    if (!v.ok) {
-      flags.anyArgViolation = true;
-      messages.push({ role: 'assistant', content: rawText, tool_calls: message.tool_calls });
-      messages.push(form.renderResult(parsed, { error: v.detail }));
-      continue;
-    }
 
-    if (parsed.name === task.expectedTool) flags.calledExpected = true;
-    else flags.calledOtherKnown = true;
+    if (form.id === 'S1') messages.push({ role: 'assistant', content: rawText || null, tool_calls: message.tool_calls });
+    else messages.push({ role: 'assistant', content: rawText });
 
-    const exec = execute(dir, parsed.name, parsed.args);
-    if (form.id === 'S1') {
-      messages.push({ role: 'assistant', content: rawText || null, tool_calls: message.tool_calls });
-    } else {
-      messages.push({ role: 'assistant', content: rawText });
+    const validations = [];
+    for (const call of calls) {
+      const v = validateArgs(call.name, call.args);
+      validations.push(v.ok ? 'ok' : v.detail);
+
+      if (v.unknownTool) {
+        flags.anyUnknownTool = true;
+        messages.push(form.renderResult(call, { error: v.detail }));
+        continue;
+      }
+      if (!v.ok) {
+        flags.anyArgViolation = true;
+        messages.push(form.renderResult(call, { error: v.detail }));
+        continue;
+      }
+
+      if (call.name === task.expectedTool) flags.calledExpected = true;
+      else flags.calledOtherKnown = true;
+      if (v.coercions && v.coercions.length) flags.coercions.push(...v.coercions);
+      if (v.isDistractor) flags.calledDistractor = true;
+
+      messages.push(form.renderResult(call, execute(dir, call.name, v.coerced)));
     }
-    messages.push(form.renderResult(parsed, exec));
+    trace[trace.length - 1].validation = validations.length === 1 ? validations[0] : validations;
   }
 
   // ---- verdict ------------------------------------------------------------
   let verify = null;
+  let recovered;
   if (outcome === null || outcome === 'F0') {
     verify = task.verify(dir);
     if (outcome === null) {
-      if (verify.ok) outcome = 'OK';
-      else if (flags.anyArgViolation || flags.anyMalformed) outcome = 'F2';
-      else if (!flags.anyCall) { outcome = 'F0'; errorDetail = 'loop ended with no tool call'; }
-      else if (flags.anyUnknownTool || (flags.calledOtherKnown && !flags.calledExpected)) outcome = 'F1';
-      else outcome = /does not exist/.test(verify.detail || '') ? 'F4' : 'F3';
+      const c = classify({ flags, verify, transportOutcome: null });
+      outcome = c.outcome;
+      recovered = c.recovered;
+      if (outcome === 'F0') errorDetail = 'loop ended with no tool call';
     }
   }
 
-  const record = { cellId, backend: backend.id, model: backend.model, form: form.id, task: task.id, toolCount: toolNames.length, outcome, errorDetail, verify, flags, turns: trace.length, trace };
+  const record = { cellId, backend: backend.id, model: backend.model, form: form.id, task: task.id, toolCount: toolNames.length, outcome, recovered, errorDetail, verify, flags, turns: trace.length, trace };
   fs.writeFileSync(path.join(runDir, `${cellId}.json`), JSON.stringify(record, null, 2));
   fs.rmSync(dir, { recursive: true, force: true });
   return record;
@@ -306,6 +327,43 @@ function report(records, live, runDir, formDefs) {
     );
   }
 
+  // THE DIAGNOSTIC TABLE. The backend x form view answers "does the envelope
+  // matter on average"; this one answers "where". The axes were chosen because
+  // they are governed by the envelope, so a difference concentrated in
+  // argument-structure or escaping means something a difference smeared across
+  // all axes would not.
+  console.log('\n--- OK rate by form x task axis (the diagnostic view) ---');
+  const axes = [...new Set(TASKS.map((t) => t.axis))].filter((a) => grid.some((r) => TASKS.find((t) => t.id === r.task).axis === a));
+  console.log('form'.padEnd(8) + axes.map((a) => a.padEnd(20)).join(''));
+  for (const f of forms) {
+    const row = axes.map((a) => {
+      const cells = grid.filter((r) => r.form === f && TASKS.find((t) => t.id === r.task).axis === a && r.outcome !== 'ERROR');
+      if (!cells.length) return 'n/a'.padEnd(20);
+      const ok = cells.filter((r) => r.outcome === 'OK').length;
+      return `${ok}/${cells.length}`.padEnd(20);
+    });
+    console.log(f.padEnd(8) + row.join(''));
+  }
+  console.log('  (cell = OK / scored, pooled across backends; ERROR excluded)');
+
+  // Prompt-embedded XML carries text only, so structured values must arrive
+  // JSON-encoded. Whether models do that, and whether it then works, is the
+  // mechanism-level prediction this slice was built to test.
+  console.log('\n--- structured-argument coercion (text-only envelopes must encode) ---');
+  console.log('form'.padEnd(8) + 'cells needing coercion'.padEnd(26) + 'of which OK');
+  for (const f of forms) {
+    const cells = grid.filter((r) => r.form === f && r.flags && r.flags.coercions && r.flags.coercions.length);
+    const ok = cells.filter((r) => r.outcome === 'OK').length;
+    console.log(f.padEnd(8) + String(cells.length).padEnd(26) + (cells.length ? `${ok}/${cells.length}` : '-'));
+  }
+  const coercedKinds = {};
+  for (const r of grid) for (const c of (r.flags && r.flags.coercions) || []) coercedKinds[c] = (coercedKinds[c] || 0) + 1;
+  if (Object.keys(coercedKinds).length) console.log(`  coercions seen: ${JSON.stringify(coercedKinds)}`);
+
+  const distractorCells = grid.filter((r) => r.flags && r.flags.calledDistractor);
+  console.log(`\n--- near-synonym distractor selected in ${distractorCells.length}/${grid.length} cells ---`);
+  if (distractorCells.length) console.log('  ' + distractorCells.map((r) => `${r.backend}/${r.form}/${r.task}`).join(', '));
+
   console.log('\n--- outcome distribution (grid) ---');
   const codes = ['OK', 'F0', 'F1', 'F2', 'F3', 'F4', 'ERROR'];
   console.log('form'.padEnd(8) + codes.map((c) => c.padEnd(7)).join(''));
@@ -357,6 +415,13 @@ function report(records, live, runDir, formDefs) {
   }
 
   // Rule 4: drops are a stratum until shown otherwise.
+  const retried = records.filter((r) => (r.trace || []).some((t) => t.attempts > 1));
+  if (retried.length) {
+    const total = records.reduce((n, r) => n + ((r.trace || []).reduce((m, t) => m + ((t.attempts || 1) - 1), 0)), 0);
+    console.log(`
+--- transport retries: ${total} across ${retried.length} cells (5xx / network only; never retried a real reply) ---`);
+  }
+
   const errors = records.filter((r) => r.outcome === 'ERROR');
   console.log(`\n--- ERROR cells: ${errors.length} ---`);
   if (errors.length) {

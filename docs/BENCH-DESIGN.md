@@ -153,3 +153,33 @@ Full grid follows only if Slice 0 clears.
   negatives dominating. **This bench's own scoring is a deterministic side-effect check
   precisely to stay out of that failure mode**, and that choice should be stated as the
   reason, not discovered later as a defence.
+
+---
+
+## Amendment, 2026-08-25 — after Slice 0 and Slice 0.1
+
+The sections above are left as written, before any cell had run. Two runs have now happened
+and one of the design's own choices did not survive them. Recording that here rather than
+editing §4 in place: a design document that quietly matches its results is no longer evidence
+that the design preceded them.
+
+**§4's falsification conditions are stated on the binary OK rate, and the binary OK rate has
+now saturated twice** — at 0.98 with tasks that the `S0` construct check confirms are within
+every backend's competence. A dependent variable that sits at the rail cannot fire a
+falsification condition in either direction. The conditions are not wrong; they are not
+evaluable on that measure.
+
+What replaces it is not "harder tasks" — Slice 0.1 already tried that. It is a change of
+measure:
+
+- score under **strict** parsing by default, with tolerant reported alongside, so that
+  conformance to the specified syntax is part of the outcome rather than a footnote
+- keep the **graded and mechanism measures** — turns to completion, coercions required,
+  parallelism available, dialect drift, malformed-and-recovered — as first-class results.
+  These kept varying after `OK` stopped. See `../bench/FINDINGS-SLICE0.1.md`.
+
+**Rule 1 also needs strengthening.** It warns that an easy positive control certifies a
+sensitivity that does not exist. In Slice 0 that happened at the level of the *entire grid*,
+and both controls passed while the grid measured nothing. A third control at grid difficulty
+was added for Slice 0.1. The general form of the rule is: **a control can only speak to the
+range it spans, and a grid needs a control at its own hardest point, not below it.**

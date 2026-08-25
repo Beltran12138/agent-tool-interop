@@ -1,0 +1,56 @@
+{
+  "cellId": "grid_ds-gateway_S1_T6",
+  "backend": "ds-gateway",
+  "model": "deepseek-ai/DeepSeek-V4-Flash-0731",
+  "form": "S1",
+  "task": "T6",
+  "toolCount": 15,
+  "outcome": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": false,
+    "reasoningStripped": false,
+    "truncatedReasoning": false,
+    "variantDialect": false,
+    "coercions": [],
+    "calledDistractor": false
+  },
+  "turns": 2,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 171,
+      "raw": "{\"choices\":[{\"finish_reason\":\"tool_calls\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":null,\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\",\"tool_calls\":[{\"function\":{\"arguments\":\"{\\\"path\\\": \\\"payload.txt\\\", \\\"content\\\": \\\"{\\\\\\\"key\\\\\\\": \\\\\\\"value\\\\\\\", \\\\\\\"n\\\\\\\": 3}\\\\n\\u003ctag attr=\\\\\\\"x\\\\\\\"\\u003ebody\\u003c/tag\\u003e\\\\nquote: \\\\\\\" backslash: \\\\\\\\ brace: }\\\\n\\\"}\",\"name\":\"write_file\"},\"id\":\"chatcmpl-tool-a71e951ff3edc2bc\",\"type\":\"function\"}]},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787648203,\"id\":\"devshard-61921-419\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"deepseek-ai/DeepSeek-V4-Flash-0731\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp2-8aac2e07\",\"usage\":{\"completion_tokens\":92,\"prompt_tokens\":1636,\"prompt_tokens_details\":null,\"total_tokens\":1728}}",
+      "parsed": {
+        "kind": "call",
+        "name": "write_file",
+        "dialect": "specified",
+        "args": {
+          "path": "payload.txt",
+          "content": "{\"key\": \"value\", \"n\": 3}\n<tag attr=\"x\">body</tag>\nquote: \" backslash: \\ brace: }\n"
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 168,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"I've created the file `payload.txt` with the exact three lines as specified:\\n\\n1. `{\\\"key\\\": \\\"value\\\", \\\"n\\\": 3}`\\n2. `\\u003ctag attr=\\\"x\\\"\\u003ebody\\u003c/tag\\u003e`\\n3. `quote: \\\" backslash: \\\\ brace: }`\\n\\nAll characters including quotes, braces, backslash, and angle brackets have been reproduced exactly.\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787648210,\"id\":\"devshard-61921-420\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"deepseek-ai/DeepSeek-V4-Flash-0731\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-16d5fe49\",\"usage\":{\"completion_tokens\":79,\"prompt_tokens\":1755,\"prompt_tokens_details\":null,\"total_tokens\":1834}}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

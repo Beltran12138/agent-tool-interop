@@ -1,0 +1,56 @@
+{
+  "cellId": "grid_ds-gateway_S4_T3",
+  "backend": "ds-gateway",
+  "model": "deepseek-ai/DeepSeek-V4-Flash-0731",
+  "form": "S4",
+  "task": "T3",
+  "toolCount": 15,
+  "outcome": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": false,
+    "reasoningStripped": false,
+    "truncatedReasoning": false,
+    "variantDialect": false,
+    "coercions": [],
+    "calledDistractor": false
+  },
+  "turns": 2,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 188,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003ctool_call\\u003e\\n\\u003cfunction=append_file\\u003e\\n\\u003cparameter=path\\u003elog.txt\\u003c/parameter\\u003e\\n\\u003cparameter=content\\u003eDONE\\u003c/parameter\\u003e\\n\\u003c/function\\u003e\\n\\u003c/tool_call\\u003e\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787647254,\"id\":\"devshard-61888-543\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"deepseek-ai/DeepSeek-V4-Flash-0731\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp2-8aac2e07\",\"usage\":{\"completion_tokens\":38,\"prompt_tokens\":923,\"prompt_tokens_details\":null,\"total_tokens\":961}}",
+      "parsed": {
+        "kind": "call",
+        "name": "append_file",
+        "dialect": "specified",
+        "args": {
+          "path": "log.txt",
+          "content": "DONE"
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 204,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"DONE\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787647256,\"id\":\"devshard-61888-547\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"deepseek-ai/DeepSeek-V4-Flash-0731\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp4-f0993dd5\",\"usage\":{\"completion_tokens\":3,\"prompt_tokens\":988,\"prompt_tokens_details\":null,\"total_tokens\":991}}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

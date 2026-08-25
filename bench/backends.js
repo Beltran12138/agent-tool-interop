@@ -97,7 +97,32 @@ function resolve() {
 // field, and reasoning models spend more still, so 1024 truncated replies and
 // produced ERROR cells that clustered by form. A ceiling that interacts with
 // the independent variable is a confound, not a finding.
-async function chat(backend, { messages, tools, maxTokens = 4096, timeoutMs = 120000 }) {
+async function chat(backend, opts) {
+  // Bounded retry for TRANSPORT faults only.
+  //
+  // A 502 from a gateway is not evidence about the model, so letting it become
+  // an ERROR cell throws away a measurement for a reason unrelated to what is
+  // being measured. But retrying must never touch outcomes that ARE about the
+  // model: a `finish_reason=length` reply is a real reply and is not retried
+  // here, and neither is a well-formed response we simply did not like.
+  //
+  // Attempts are counted and returned. A retry that is not reported is hidden
+  // state, and hidden state in a harness eventually becomes a wrong number.
+  const MAX_ATTEMPTS = 3;
+  let last = null;
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    last = await chatOnce(backend, opts);
+    last.attempts = attempt;
+    const retriable =
+      last.transport === 'network_error' ||
+      (last.transport === 'http_error' && typeof last.status === 'number' && last.status >= 500);
+    if (!retriable || attempt === MAX_ATTEMPTS) return last;
+    await new Promise((r) => setTimeout(r, 2000 * Math.pow(3, attempt - 1)));
+  }
+  return last;
+}
+
+async function chatOnce(backend, { messages, tools, maxTokens = 4096, timeoutMs = 120000 }) {
   const body = {
     model: backend.model,
     messages,

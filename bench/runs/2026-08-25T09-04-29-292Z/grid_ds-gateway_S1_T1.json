@@ -1,0 +1,56 @@
+{
+  "cellId": "grid_ds-gateway_S1_T1",
+  "backend": "ds-gateway",
+  "model": "deepseek-ai/DeepSeek-V4-Flash-0731",
+  "form": "S1",
+  "task": "T1",
+  "toolCount": 15,
+  "outcome": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": false,
+    "reasoningStripped": false,
+    "truncatedReasoning": false,
+    "variantDialect": false,
+    "coercions": [],
+    "calledDistractor": false
+  },
+  "turns": 2,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 177,
+      "raw": "{\"choices\":[{\"finish_reason\":\"tool_calls\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":null,\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\",\"tool_calls\":[{\"function\":{\"arguments\":\"{\\\"path\\\": \\\"report.txt\\\", \\\"content\\\": \\\"OK-7391\\\"}\",\"name\":\"write_file\"},\"id\":\"chatcmpl-tool-8657ebeba61348bb\",\"type\":\"function\"}]},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787646120,\"id\":\"devshard-61847-105\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"deepseek-ai/DeepSeek-V4-Flash-0731\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp2-8aac2e07\",\"usage\":{\"completion_tokens\":64,\"prompt_tokens\":1588,\"prompt_tokens_details\":null,\"total_tokens\":1652}}",
+      "parsed": {
+        "kind": "call",
+        "name": "write_file",
+        "dialect": "specified",
+        "args": {
+          "path": "report.txt",
+          "content": "OK-7391"
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 168,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"The file `report.txt` has been created with the exact content `OK-7391`.\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787646127,\"id\":\"devshard-61847-108\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"deepseek-ai/DeepSeek-V4-Flash-0731\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-7a1a2cb0\",\"usage\":{\"completion_tokens\":20,\"prompt_tokens\":1679,\"prompt_tokens_details\":null,\"total_tokens\":1699}}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "cellId": "grid_kimi_S4_T4",
+  "backend": "kimi",
+  "model": "moonshotai/Kimi-K2.6",
+  "form": "S4",
+  "task": "T4",
+  "toolCount": 15,
+  "outcome": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": false,
+    "reasoningStripped": false,
+    "truncatedReasoning": false,
+    "variantDialect": false,
+    "coercions": [
+      "tags:string->array",
+      "retries:string->integer",
+      "owner:string->object"
+    ],
+    "calledDistractor": false
+  },
+  "turns": 2,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 213,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\" \\u003ctool_call\\u003e\\n\\u003cfunction=create_record\\u003e\\n\\u003cparameter=path\\u003erecord.json\\u003c/parameter\\u003e\\n\\u003cparameter=title\\u003eQuarterly Review\\u003c/parameter\\u003e\\n\\u003cparameter=tags\\u003e[\\\"finance\\\",\\\"q3\\\",\\\"urgent\\\"]\\u003c/parameter\\u003e\\n\\u003cparameter=priority\\u003ehigh\\u003c/parameter\\u003e\\n\\u003cparameter=retries\\u003e4\\u003c/parameter\\u003e\\n\\u003cparameter=owner\\u003e{\\\"name\\\":\\\"Dana Wu\\\",\\\"email\\\":\\\"dana@example.com\\\"}\\u003c/parameter\\u003e\\n\\u003c/function\\u003e\\n\\u003c/tool_call\\u003e\",\"function_call\":null,\"reasoning\":\" The user wants me to create a JSON record at `record.json` with specific values:\\n- title: \\\"Quarterly Review\\\"\\n- tags: [\\\"finance\\\", \\\"q3\\\", \\\"urgent\\\"]\\n- priority: \\\"high\\\"\\n- retries: 4\\n- owner: {name: \\\"Dana Wu\\\", email: \\\"dana@example.com\\\"}\\n\\nThe tool to use is `create_record`. Let me check the parameters:\\n- path: \\\"record.json\\\"\\n- title: \\\"Quarterly Review\\\"\\n- tags: [\\\"finance\\\", \\\"q3\\\", \\\"urgent\\\"]\\n- priority: \\\"high\\\"\\n- retries: 4\\n- owner: {\\\"name\\\": \\\"Dana Wu\\\", \\\"email\\\": \\\"dana@example.com\\\"}\\n\\nI need to emit exactly one tool call in the specified format.\",\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":163586}],\"created\":1787647262,\"id\":\"devshard-61851-226\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"moonshotai/Kimi-K2.6\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp4-ep-d5e6d2fd\",\"usage\":{\"completion_tokens\":258,\"prompt_tokens\":963,\"prompt_tokens_details\":null,\"total_tokens\":1221}}",
+      "parsed": {
+        "kind": "call",
+        "name": "create_record",
+        "dialect": "specified",
+        "args": {
+          "path": "record.json",
+          "title": "Quarterly Review",
+          "tags": "[\"finance\",\"q3\",\"urgent\"]",
+          "priority": "high",
+          "retries": "4",
+          "owner": "{\"name\":\"Dana Wu\",\"email\":\"dana@example.com\"}"
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 206,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\" DONE\",\"function_call\":null,\"reasoning\":\" The user asked me to create a JSON record at record.json with specific values. I used the create_record tool with the exact values provided:\\n- title: Quarterly Review\\n- tags: [\\\"finance\\\", \\\"q3\\\", \\\"urgent\\\"] (in that order)\\n- priority: high\\n- retries: 4\\n- owner: {\\\"name\\\": \\\"Dana Wu\\\", \\\"email\\\": \\\"dana@example.com\\\"}\\n\\nThe tool returned success: {\\\"ok\\\":true,\\\"result\\\":\\\"record written to record.json\\\"}\\n\\nThe task is complete. I should reply with DONE and no tool call. \",\"refusal\":null,\"role\":\"assistant\",\"tool_calls\":[]},\"stop_reason\":163586}],\"created\":1787647305,\"id\":\"devshard-61851-255\",\"kv_transfer_params\":null,\"model\":\"moonshotai/Kimi-K2.6\",\"object\":\"chat.completion\",\"service_tier\":null,\"system_fingerprint\":null,\"usage\":{\"completion_tokens\":120,\"prompt_tokens\":1090,\"prompt_tokens_details\":null,\"total_tokens\":1210}}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

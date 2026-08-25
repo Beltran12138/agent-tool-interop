@@ -1,0 +1,56 @@
+{
+  "cellId": "ctl_ds-direct_S5_C-dense",
+  "backend": "ds-direct",
+  "model": "deepseek-v4-flash",
+  "form": "S5",
+  "task": "T1",
+  "toolCount": 15,
+  "outcome": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": false,
+    "reasoningStripped": false,
+    "truncatedReasoning": false,
+    "variantDialect": false,
+    "coercions": [],
+    "calledDistractor": false
+  },
+  "turns": 2,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 918,
+      "raw": "{\"id\":\"25d5ca56-1d10-42e5-b5c4-46b0d64d7b57\",\"object\":\"chat.completion\",\"created\":1787648684,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\\"tool\\\": \\\"write_file\\\", \\\"args\\\": {\\\"path\\\": \\\"report.txt\\\", \\\"content\\\": \\\"OK-7391\\\"}}\",\"reasoning_content\":\"We need to create report.txt with exact content \\\"OK-7391\\\". Use write_file.\"},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":913,\"completion_tokens\":47,\"total_tokens\":960,\"prompt_tokens_details\":{\"cached_tokens\":896},\"completion_tokens_details\":{\"reasoning_tokens\":19},\"prompt_cache_hit_tokens\":896,\"prompt_cache_miss_tokens\":17},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}",
+      "parsed": {
+        "kind": "call",
+        "name": "write_file",
+        "dialect": "specified",
+        "args": {
+          "path": "report.txt",
+          "content": "OK-7391"
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 455,
+      "raw": "{\"id\":\"76d1af55-9672-44eb-ae61-23f8b42ebc2d\",\"object\":\"chat.completion\",\"created\":1787648685,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\\"done\\\": true}\",\"reasoning_content\":\"Now I'll respond with done.\"},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":964,\"completion_tokens\":13,\"total_tokens\":977,\"prompt_tokens_details\":{\"cached_tokens\":896},\"completion_tokens_details\":{\"reasoning_tokens\":7},\"prompt_cache_hit_tokens\":896,\"prompt_cache_miss_tokens\":68},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

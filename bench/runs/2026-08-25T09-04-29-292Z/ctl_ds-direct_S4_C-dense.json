@@ -1,0 +1,56 @@
+{
+  "cellId": "ctl_ds-direct_S4_C-dense",
+  "backend": "ds-direct",
+  "model": "deepseek-v4-flash",
+  "form": "S4",
+  "task": "T1",
+  "toolCount": 15,
+  "outcome": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": false,
+    "reasoningStripped": false,
+    "truncatedReasoning": false,
+    "variantDialect": false,
+    "coercions": [],
+    "calledDistractor": false
+  },
+  "turns": 2,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 1070,
+      "raw": "{\"id\":\"62be4ad4-f4a7-420c-aa42-fca71a695bbf\",\"object\":\"chat.completion\",\"created\":1787648678,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"<tool_call>\\n<function=write_file>\\n<parameter=path>report.txt</parameter>\\n<parameter=content>OK-7391</parameter>\\n</function>\\n</tool_call>\",\"reasoning_content\":\"We need to create a file named report.txt with content exactly \\\"OK-7391\\\". Use write_file.\"},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":990,\"completion_tokens\":63,\"total_tokens\":1053,\"prompt_tokens_details\":{\"cached_tokens\":896},\"completion_tokens_details\":{\"reasoning_tokens\":22},\"prompt_cache_hit_tokens\":896,\"prompt_cache_miss_tokens\":94},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}",
+      "parsed": {
+        "kind": "call",
+        "name": "write_file",
+        "dialect": "specified",
+        "args": {
+          "path": "report.txt",
+          "content": "OK-7391"
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 778,
+      "raw": "{\"id\":\"c334345f-0369-4398-818b-13b098810c0e\",\"object\":\"chat.completion\",\"created\":1787648679,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"DONE\",\"reasoning_content\":\"The file has been created with the exact content \\\"OK-7391\\\". The task is complete.\"},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":1057,\"completion_tokens\":23,\"total_tokens\":1080,\"prompt_tokens_details\":{\"cached_tokens\":1024},\"completion_tokens_details\":{\"reasoning_tokens\":20},\"prompt_cache_hit_tokens\":1024,\"prompt_cache_miss_tokens\":33},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

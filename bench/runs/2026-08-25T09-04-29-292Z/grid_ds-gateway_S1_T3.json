@@ -1,0 +1,56 @@
+{
+  "cellId": "grid_ds-gateway_S1_T3",
+  "backend": "ds-gateway",
+  "model": "deepseek-ai/DeepSeek-V4-Flash-0731",
+  "form": "S1",
+  "task": "T3",
+  "toolCount": 15,
+  "outcome": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": false,
+    "reasoningStripped": false,
+    "truncatedReasoning": false,
+    "variantDialect": false,
+    "coercions": [],
+    "calledDistractor": false
+  },
+  "turns": 2,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 180,
+      "raw": "{\"choices\":[{\"finish_reason\":\"tool_calls\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":null,\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\",\"tool_calls\":[{\"function\":{\"arguments\":\"{\\\"path\\\": \\\"log.txt\\\", \\\"content\\\": \\\"DONE\\\"}\",\"name\":\"append_file\"},\"id\":\"chatcmpl-tool-861434cd85932c85\",\"type\":\"function\"}]},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787648223,\"id\":\"devshard-61921-435\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"deepseek-ai/DeepSeek-V4-Flash-0731\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp2-8aac2e07\",\"usage\":{\"completion_tokens\":62,\"prompt_tokens\":1600,\"prompt_tokens_details\":null,\"total_tokens\":1662}}",
+      "parsed": {
+        "kind": "call",
+        "name": "append_file",
+        "dialect": "specified",
+        "args": {
+          "path": "log.txt",
+          "content": "DONE"
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 181,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"I've appended the line \\\"DONE\\\" to the end of log.txt, preserving the existing content.\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787648231,\"id\":\"devshard-61921-443\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"deepseek-ai/DeepSeek-V4-Flash-0731\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-16d5fe49\",\"usage\":{\"completion_tokens\":22,\"prompt_tokens\":1689,\"prompt_tokens_details\":null,\"total_tokens\":1711}}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

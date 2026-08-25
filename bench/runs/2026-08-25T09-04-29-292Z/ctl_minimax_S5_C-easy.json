@@ -1,0 +1,78 @@
+{
+  "cellId": "ctl_minimax_S5_C-easy",
+  "backend": "minimax",
+  "model": "MiniMaxAI/MiniMax-M2.7",
+  "form": "S5",
+  "task": "T1",
+  "toolCount": 1,
+  "outcome": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": true,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": false,
+    "reasoningStripped": true,
+    "truncatedReasoning": false,
+    "variantDialect": false,
+    "coercions": [],
+    "calledDistractor": false
+  },
+  "turns": 4,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 184,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003eThe user wants me to create a file named \\\"report.txt\\\" with the exact content \\\"OK-7391\\\". I'll use the write_file function to do this.\\n\\u003c/think\\u003e\\n\\n\\n{\\\"tool\\\": \\\"write_file\\\", \\\"args\\\": {\\\"path\\\": \\\"report.txt\\\", \\\"content\\\": \\\"OK-7391\\\"}}\\n\\n{\\\"done\\\": true}\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787648344,\"id\":\"devshard-61867-534\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp2-0cb5bbe5\",\"usage\":{\"completion_tokens\":68,\"prompt_tokens\":191,\"prompt_tokens_details\":null,\"total_tokens\":259}}",
+      "parsed": {
+        "kind": "malformed",
+        "detail": "not valid JSON: Unexpected non-whitespace character after JSON at position 78 (line 3 column 1)"
+      }
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 191,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003eI need to create a file named report.txt with the exact content \\\"OK-7391\\\". Let me emit the tool call again in the correct format.\\n\\u003c/think\\u003e\\n\\n{\\\"tool\\\": \\\"write_file\\\", \\\"args\\\": {\\\"path\\\": \\\"report.txt\\\", \\\"content\\\": \\\"OK-7391\\\"}}\\n\\n{\\\"done\\\": true}\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787648345,\"id\":\"devshard-61867-535\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp2-pp2-ce6fe5b6\",\"usage\":{\"completion_tokens\":66,\"prompt_tokens\":273,\"prompt_tokens_details\":null,\"total_tokens\":339}}",
+      "parsed": {
+        "kind": "malformed",
+        "detail": "not valid JSON: Unexpected non-whitespace character after JSON at position 78 (line 3 column 1)"
+      }
+    },
+    {
+      "turn": 2,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 184,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003eI need to emit the tool call in the exact required format. Let me try again with just the JSON object.\\n\\u003c/think\\u003e\\n\\n{\\\"tool\\\": \\\"write_file\\\", \\\"args\\\": {\\\"path\\\": \\\"report.txt\\\", \\\"content\\\": \\\"OK-7391\\\"}}\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787648347,\"id\":\"devshard-61867-538\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp4-92649d58\",\"usage\":{\"completion_tokens\":52,\"prompt_tokens\":355,\"prompt_tokens_details\":null,\"total_tokens\":407}}",
+      "parsed": {
+        "kind": "call",
+        "name": "write_file",
+        "dialect": "specified",
+        "args": {
+          "path": "report.txt",
+          "content": "OK-7391"
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 3,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 178,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003eThe file was successfully written. The task is complete.\\n\\u003c/think\\u003e\\n\\n{\\\"done\\\": true}\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787648349,\"id\":\"devshard-61867-540\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp2-0cb5bbe5\",\"usage\":{\"completion_tokens\":19,\"prompt_tokens\":410,\"prompt_tokens_details\":null,\"total_tokens\":429}}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

@@ -13,7 +13,7 @@ any code here existed.
 |---|---|
 | `S0` | no tool protocol at all — direct answer. **Construct check, not a schema.** |
 | `S1` | native OpenAI-style function tools (`tools` field, `tool_calls` response) |
-| `S4` | prompt-embedded XML (`<tool_call><function=…><parameter=…>`) |
+| `S4` | prompt-embedded XML (`<tool_call><function=…><parameter=…>`) — carries strings only, so structured arguments must be JSON-encoded |
 | `S5` | prompt-embedded JSON, no native `tools` field at all |
 
 `S0` exists to separate *"cannot use this envelope"* from *"cannot do the task."* A model
@@ -52,9 +52,12 @@ problem, and this bench has no budget to audit its own judge on top of auditing 
 ## Running
 
 ```bash
-cp .env.example .env     # then fill in credentials
-node test-parsers.js     # offline, deterministic, no network — run this first
+cp .env.example .env      # then fill in credentials
+node test-parsers.js      # offline, deterministic, no network — run these first
+node test-validation.js
+node test-classify.js
 node run.js
+node analyze.js           # graded measures, re-scored from disk; never re-runs a cell
 ```
 
 Filters, for iterating without paying for the whole grid:

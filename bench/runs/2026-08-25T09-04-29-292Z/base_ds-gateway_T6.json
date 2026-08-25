@@ -1,0 +1,11 @@
+{
+  "cellId": "base_ds-gateway_T6",
+  "backend": "ds-gateway",
+  "model": "deepseek-ai/DeepSeek-V4-Flash-0731",
+  "form": "S0",
+  "task": "T6",
+  "outcome": "OK",
+  "errorDetail": null,
+  "answer": "{\"key\": \"value\", \"n\": 3}\n<tag attr=\"x\">body</tag>\nquote: \" backslash: \\ brace: }",
+  "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"{\\\"key\\\": \\\"value\\\", \\\"n\\\": 3}\\n\\u003ctag attr=\\\"x\\\"\\u003ebody\\u003c/tag\\u003e\\nquote: \\\" backslash: \\\\ brace: }\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787648198,\"id\":\"devshard-61921-408\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"deepseek-ai/DeepSeek-V4-Flash-0731\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-16d5fe49\",\"usage\":{\"completion_tokens\":33,\"prompt_tokens\":59,\"prompt_tokens_details\":null,\"total_tokens\":92}}"
+}

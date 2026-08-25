@@ -1,0 +1,56 @@
+{
+  "cellId": "grid_ds-gateway_S4_T6",
+  "backend": "ds-gateway",
+  "model": "deepseek-ai/DeepSeek-V4-Flash-0731",
+  "form": "S4",
+  "task": "T6",
+  "toolCount": 15,
+  "outcome": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": false,
+    "reasoningStripped": false,
+    "truncatedReasoning": false,
+    "variantDialect": false,
+    "coercions": [],
+    "calledDistractor": false
+  },
+  "turns": 2,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 204,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003ctool_call\\u003e\\n\\u003cfunction=write_file\\u003e\\n\\u003cparameter=path\\u003epayload.txt\\u003c/parameter\\u003e\\n\\u003cparameter=content\\u003e{\\\"key\\\": \\\"value\\\", \\\"n\\\": 3}\\n\\u003ctag attr=\\\"x\\\"\\u003ebody\\u003c/tag\\u003e\\nquote: \\\" backslash: \\\\ brace: }\\u003c/parameter\\u003e\\n\\u003c/function\\u003e\\n\\u003c/tool_call\\u003e\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787648234,\"id\":\"devshard-61921-445\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"deepseek-ai/DeepSeek-V4-Flash-0731\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-7a1a2cb0\",\"usage\":{\"completion_tokens\":68,\"prompt_tokens\":959,\"prompt_tokens_details\":null,\"total_tokens\":1027}}",
+      "parsed": {
+        "kind": "call",
+        "name": "write_file",
+        "dialect": "specified",
+        "args": {
+          "path": "payload.txt",
+          "content": "{\"key\": \"value\", \"n\": 3}\n<tag attr=\"x\">body</tag>\nquote: \" backslash: \\ brace: }"
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 174,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"DONE\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787648236,\"id\":\"devshard-61921-446\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"deepseek-ai/DeepSeek-V4-Flash-0731\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-16d5fe49\",\"usage\":{\"completion_tokens\":3,\"prompt_tokens\":1054,\"prompt_tokens_details\":null,\"total_tokens\":1057}}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

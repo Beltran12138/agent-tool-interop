@@ -1,0 +1,11 @@
+{
+  "cellId": "base_ds-direct_T7",
+  "backend": "ds-direct",
+  "model": "deepseek-v4-flash",
+  "form": "S0",
+  "task": "T7",
+  "outcome": "OK",
+  "errorDetail": null,
+  "answer": "42",
+  "raw": "{\"id\":\"1092e16c-2efa-4893-8308-b2822ffdab6f\",\"object\":\"chat.completion\",\"created\":1787648693,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"42\",\"reasoning_content\":\"We need answer exact content of total.txt: sum 17+25=42 digits only. Need just \\\"42\\\".\"},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":133,\"completion_tokens\":26,\"total_tokens\":159,\"prompt_tokens_details\":{\"cached_tokens\":128},\"completion_tokens_details\":{\"reasoning_tokens\":24},\"prompt_cache_hit_tokens\":128,\"prompt_cache_miss_tokens\":5},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}"
+}
