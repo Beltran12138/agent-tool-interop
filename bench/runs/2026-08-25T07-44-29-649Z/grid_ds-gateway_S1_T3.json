@@ -1,0 +1,52 @@
+{
+  "cellId": "grid_ds-gateway_S1_T3",
+  "backend": "ds-gateway",
+  "model": "deepseek-ai/DeepSeek-V4-Flash-0731",
+  "form": "S1",
+  "task": "T3",
+  "toolCount": 5,
+  "outcome": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": false,
+    "reasoningStripped": false,
+    "truncatedReasoning": false,
+    "variantDialect": false
+  },
+  "turns": 2,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "ms": 2216,
+      "raw": "{\"choices\":[{\"finish_reason\":\"tool_calls\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":null,\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\",\"tool_calls\":[{\"function\":{\"arguments\":\"{\\\"path\\\": \\\"log.txt\\\", \\\"content\\\": \\\"DONE\\\\n\\\"}\",\"name\":\"append_file\"},\"id\":\"chatcmpl-tool-94a0bed2badc6172\",\"type\":\"function\"}]},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787643902,\"id\":\"devshard-61836-294\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"deepseek-ai/DeepSeek-V4-Flash-0731\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp2-8aac2e07\",\"usage\":{\"completion_tokens\":63,\"prompt_tokens\":640,\"prompt_tokens_details\":null,\"total_tokens\":703}}",
+      "parsed": {
+        "kind": "call",
+        "name": "append_file",
+        "dialect": "specified",
+        "args": {
+          "path": "log.txt",
+          "content": "DONE\n"
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "ms": 1057,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"I've appended the line \\\"DONE\\\" to the end of `log.txt`, preserving all existing content.\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787643904,\"id\":\"devshard-61836-298\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"deepseek-ai/DeepSeek-V4-Flash-0731\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-16d5fe49\",\"usage\":{\"completion_tokens\":23,\"prompt_tokens\":730,\"prompt_tokens_details\":null,\"total_tokens\":753}}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

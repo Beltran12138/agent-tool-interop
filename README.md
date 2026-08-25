@@ -29,7 +29,9 @@ See [`DISCLAIMER.md`](DISCLAIMER.md).
 | Compatibility matrix | v0 (5 data points) | [`matrix/compatibility.md`](matrix/compatibility.md) |
 | Protocol analysis | #1: function tools vs RPC-wrapping | [`analysis/01-function-vs-rpc-wrapping.md`](analysis/01-function-vs-rpc-wrapping.md) |
 | Reference implementation | path-rewrite proxy — 28/28 tests | [`reference/path-rewrite-proxy/`](reference/path-rewrite-proxy/) |
-| Conformance bench | **design only — no code yet** | [`docs/BENCH-DESIGN.md`](docs/BENCH-DESIGN.md) |
+| Conformance bench — design | measurement design, written before the code | [`docs/BENCH-DESIGN.md`](docs/BENCH-DESIGN.md) |
+| Conformance bench — harness | 4 backends × 3 exposure forms, 31 offline parser assertions | [`bench/`](bench/) |
+| Conformance bench — Slice 0 | **ran; saturated at ceiling — no discriminative power** | [`bench/FINDINGS-SLICE0.md`](bench/FINDINGS-SLICE0.md) |
 | Community registry | placeholder | [`registry/`](registry/) |
 
 ## Key finding
@@ -53,6 +55,7 @@ agent-tool-interop/
 │   └── 01-function-vs-rpc-wrapping.md
 ├── docs/
 │   └── BENCH-DESIGN.md     # conformance bench: measurement design, pre-implementation
+├── bench/                  # the harness + Slice 0 results + every raw trace
 ├── reference/
 │   └── path-rewrite-proxy/ # vendor-neutral proxy (Family A → OpenAI-compatible gateway)
 └── registry/
@@ -64,7 +67,8 @@ agent-tool-interop/
 - v0 is a **category definition and criterion**, not a complete wire protocol or conformance test suite.
 - The matrix has five data points (a mix of directly observed and architecture-documented); broader coverage depends on community reports.
 - The reference implementation demonstrates the **Family A → gateway** path (transport adaptation). A full backend-relay reference for the Family B bridging path (track `β`) remains future work, gated on v0 traction.
-- The conformance bench is **a design document, not a result**. No cell has been run. It also measures a deliberately different half of the problem from Analysis 01 — the backend's ability to emit against a given exposure form, rather than a shipped CLI's exposure form itself — and that scope shift is stated in its §1.1 rather than elided.
+- The conformance bench measures a deliberately different half of the problem from Analysis 01 — the backend's ability to emit against a given exposure form, rather than a shipped CLI's exposure form itself. That scope shift is stated in [`docs/BENCH-DESIGN.md`](docs/BENCH-DESIGN.md) §1.1 rather than elided.
+- **Slice 0 produced no usable rates.** All four backends drove all three exposure forms on all three tasks, so the grid saturated and no difference of any size could have appeared. The forms are *not* thereby shown to be equivalent; the task set is shown to lack discriminative power. See [`bench/FINDINGS-SLICE0.md`](bench/FINDINGS-SLICE0.md), which also records that the harness first printed the wrong verdict and what guard was added.
 
 ## License
 

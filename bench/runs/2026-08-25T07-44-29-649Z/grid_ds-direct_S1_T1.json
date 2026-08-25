@@ -1,0 +1,52 @@
+{
+  "cellId": "grid_ds-direct_S1_T1",
+  "backend": "ds-direct",
+  "model": "deepseek-v4-flash",
+  "form": "S1",
+  "task": "T1",
+  "toolCount": 5,
+  "outcome": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": false,
+    "reasoningStripped": false,
+    "truncatedReasoning": false,
+    "variantDialect": false
+  },
+  "turns": 2,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "ms": 787,
+      "raw": "{\"id\":\"1a58e836-5275-4468-8d51-9203e207f828\",\"object\":\"chat.completion\",\"created\":1787643907,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"\",\"reasoning_content\":\"The user wants me to create a file named report.txt with content exactly \\\"OK-7391\\\".\",\"tool_calls\":[{\"index\":0,\"id\":\"call_00_g0Fzrue1rA8Iet1BzvnL5705\",\"type\":\"function\",\"function\":{\"name\":\"write_file\",\"arguments\":\"{\\\"path\\\": \\\"report.txt\\\", \\\"content\\\": \\\"OK-7391\\\"}\"}}]},\"logprobs\":null,\"finish_reason\":\"tool_calls\"}],\"usage\":{\"prompt_tokens\":708,\"completion_tokens\":84,\"total_tokens\":792,\"prompt_tokens_details\":{\"cached_tokens\":640},\"completion_tokens_details\":{\"reasoning_tokens\":20},\"prompt_cache_hit_tokens\":640,\"prompt_cache_miss_tokens\":68},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}",
+      "parsed": {
+        "kind": "call",
+        "name": "write_file",
+        "dialect": "specified",
+        "args": {
+          "path": "report.txt",
+          "content": "OK-7391"
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "ms": 818,
+      "raw": "{\"id\":\"92d9d5a6-e155-440f-b9b1-6e0bf615afca\",\"object\":\"chat.completion\",\"created\":1787643907,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"Created `report.txt` with the exact content `OK-7391`.\",\"reasoning_content\":\"\"},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":820,\"completion_tokens\":16,\"total_tokens\":836,\"prompt_tokens_details\":{\"cached_tokens\":768},\"completion_tokens_details\":{\"reasoning_tokens\":0},\"prompt_cache_hit_tokens\":768,\"prompt_cache_miss_tokens\":52},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

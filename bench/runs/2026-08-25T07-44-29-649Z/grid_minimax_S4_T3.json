@@ -1,0 +1,52 @@
+{
+  "cellId": "grid_minimax_S4_T3",
+  "backend": "minimax",
+  "model": "MiniMaxAI/MiniMax-M2.7",
+  "form": "S4",
+  "task": "T3",
+  "toolCount": 5,
+  "outcome": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": false,
+    "reasoningStripped": true,
+    "truncatedReasoning": false,
+    "variantDialect": true
+  },
+  "turns": 2,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "ms": 748,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003eThe user wants me to add a new line containing exactly \\\"DONE\\\" to the end of log.txt. I should use the append_file function to do this, which will preserve the existing content and add the new line at the end.\\n\\u003c/think\\u003e\\n\\n\\u003ctool_call\\u003e\\n\\u003cfunction=append_file\\u003e\\n\\u003cparameter name=\\\"path\\\"\\u003elog.txt\\u003c/parameter\\u003e\\n\\u003cparameter name=\\\"content\\\"\\u003e\\nDONE\\u003c/parameter\\u003e\\n\\u003c/function\\u003e\\n\\u003c/tool_call\\u003e\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787643470,\"id\":\"devshard-61238-1056\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp2-0cb5bbe5\",\"usage\":{\"completion_tokens\":90,\"prompt_tokens\":355,\"prompt_tokens_details\":null,\"total_tokens\":445}}",
+      "parsed": {
+        "kind": "call",
+        "name": "append_file",
+        "dialect": "variant",
+        "args": {
+          "path": "log.txt",
+          "content": "\nDONE"
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "ms": 7184,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003eThe user asked me to add a new line containing exactly \\\"DONE\\\" to the end of log.txt. I used the append_file function to do this. The result shows that 5 bytes were appended successfully, which corresponds to \\\"DONE\\\" (4 bytes) plus a newline character.\\n\\nThe task is complete.\\n\\u003c/think\\u003e\\n\\nDONE\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787643975,\"id\":\"devshard-61228-1031\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.0-tp4-cafe59fe\",\"usage\":{\"completion_tokens\":69,\"prompt_tokens\":428,\"prompt_tokens_details\":null,\"total_tokens\":497}}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

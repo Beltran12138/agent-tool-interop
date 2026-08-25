@@ -1,0 +1,67 @@
+{
+  "cellId": "ctl_minimax_S4_C-easy",
+  "backend": "minimax",
+  "model": "MiniMaxAI/MiniMax-M2.7",
+  "form": "S4",
+  "task": "T1",
+  "toolCount": 1,
+  "outcome": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": true,
+    "calledExpected": true,
+    "calledOtherKnown": false,
+    "reasoningStripped": true,
+    "truncatedReasoning": false,
+    "variantDialect": true
+  },
+  "turns": 3,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "ms": 1830,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003eThe user wants me to create a file named \\\"report.txt\\\" with the exact content \\\"OK-7391\\\". I'll use the write_file function to do this.\\n\\u003c/think\\u003e\\n\\n\\u003ctool_call\\u003e\\n\\u003cfunction=write_file\\u003e\\n\\u003cparameter name=path\\\"\\u003ereport.txt\\u003c/parameter\\u003e\\n\\u003cparameter name=\\\"content\\\"\\u003eOK-7391\\u003c/parameter\\u003e\\n\\u003c/function\\u003e\\n\\u003c/tool_call\\u003e\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787643877,\"id\":\"devshard-61266-990\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp2-0cb5bbe5\",\"usage\":{\"completion_tokens\":77,\"prompt_tokens\":207,\"prompt_tokens_details\":null,\"total_tokens\":284}}",
+      "parsed": {
+        "kind": "call",
+        "name": "write_file",
+        "dialect": "variant",
+        "args": {
+          "content": "OK-7391"
+        }
+      },
+      "validation": "missing required parameter: path"
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "ms": 1975,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003eI need to provide the path parameter. Let me try again.\\n\\u003c/think\\u003e\\n\\n\\u003ctool_call\\u003e\\n\\u003cfunction=write_file\\u003e\\n\\u003cparameter name=\\\"path\\\"\\u003ereport.txt\\u003c/parameter\\u003e\\n\\u003cparameter name=\\\"content\\\"\\u003eOK-7391\\u003c/parameter\\u003e\\n\\u003c/function\\u003e\\n\\u003c/tool_call\\u003e\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787643879,\"id\":\"devshard-61211-1042\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp2-0cb5bbe5\",\"usage\":{\"completion_tokens\":57,\"prompt_tokens\":275,\"prompt_tokens_details\":null,\"total_tokens\":332}}",
+      "parsed": {
+        "kind": "call",
+        "name": "write_file",
+        "dialect": "variant",
+        "args": {
+          "path": "report.txt",
+          "content": "OK-7391"
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 2,
+      "transport": "ok",
+      "ms": 1532,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003eThe file has been created successfully. The content \\\"OK-7391\\\" has been written to report.txt.\\n\\u003c/think\\u003e\\n\\nDONE\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787643881,\"id\":\"devshard-61228-1023\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp2-0cb5bbe5\",\"usage\":{\"completion_tokens\":27,\"prompt_tokens\":350,\"prompt_tokens_details\":null,\"total_tokens\":377}}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

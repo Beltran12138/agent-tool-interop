@@ -1,0 +1,272 @@
+{
+  "runId": "2026-08-25T07-37-48-079Z",
+  "argv": [
+    "--backends=kimi,minimax",
+    "--forms=S4,S5",
+    "--tasks=T3",
+    "--no-baseline",
+    "--no-controls"
+  ],
+  "backends": [
+    {
+      "id": "ds-direct",
+      "label": "DeepSeek V4 Flash (direct)",
+      "model": "deepseek-v4-flash",
+      "baseEnv": null,
+      "baseUrl": "https://api.deepseek.com",
+      "keyEnv": "DEEPSEEK_API_KEY",
+      "family": "deepseek",
+      "note": "transport control A — same model family as ds-gateway, different transport",
+      "available": true,
+      "unavailableReason": null
+    },
+    {
+      "id": "ds-gateway",
+      "label": "DeepSeek V4 Flash (via gateway)",
+      "model": "deepseek-ai/DeepSeek-V4-Flash-0731",
+      "baseEnv": "BENCH_GATEWAY_BASE_URL",
+      "keyEnv": "BENCH_GATEWAY_API_KEY",
+      "family": "deepseek",
+      "note": "transport control B — isolates gateway middleware from schema effects",
+      "baseUrl": "https://api.gonkarouter.io/v1",
+      "available": true,
+      "unavailableReason": null
+    },
+    {
+      "id": "kimi",
+      "label": "Kimi K2.6 (via gateway)",
+      "model": "moonshotai/Kimi-K2.6",
+      "baseEnv": "BENCH_GATEWAY_BASE_URL",
+      "keyEnv": "BENCH_GATEWAY_API_KEY",
+      "family": "moonshot",
+      "note": "reasoning-style model",
+      "baseUrl": "https://api.gonkarouter.io/v1",
+      "available": true,
+      "unavailableReason": null
+    },
+    {
+      "id": "minimax",
+      "label": "MiniMax M2.7 (via gateway)",
+      "model": "MiniMaxAI/MiniMax-M2.7",
+      "baseEnv": "BENCH_GATEWAY_BASE_URL",
+      "keyEnv": "BENCH_GATEWAY_API_KEY",
+      "family": "minimax",
+      "note": "reasoning-style model",
+      "baseUrl": "https://api.gonkarouter.io/v1",
+      "available": true,
+      "unavailableReason": null
+    }
+  ],
+  "records": [
+    {
+      "cellId": "grid_kimi_S4_T3",
+      "backend": "kimi",
+      "model": "moonshotai/Kimi-K2.6",
+      "form": "S4",
+      "task": "T3",
+      "toolCount": 5,
+      "outcome": "ERROR",
+      "errorDetail": "timeout This operation was aborted",
+      "verify": null,
+      "flags": {
+        "anyCall": false,
+        "anyMalformed": false,
+        "anyUnknownTool": false,
+        "anyArgViolation": false,
+        "calledExpected": false,
+        "calledOtherKnown": false,
+        "reasoningStripped": false,
+        "truncatedReasoning": false
+      },
+      "turns": 1,
+      "trace": [
+        {
+          "turn": 0,
+          "transport": "timeout",
+          "ms": 120016,
+          "error": "This operation was aborted"
+        }
+      ]
+    },
+    {
+      "cellId": "grid_kimi_S5_T3",
+      "backend": "kimi",
+      "model": "moonshotai/Kimi-K2.6",
+      "form": "S5",
+      "task": "T3",
+      "toolCount": 5,
+      "outcome": "OK",
+      "errorDetail": null,
+      "verify": {
+        "ok": true
+      },
+      "flags": {
+        "anyCall": true,
+        "anyMalformed": false,
+        "anyUnknownTool": false,
+        "anyArgViolation": false,
+        "calledExpected": true,
+        "calledOtherKnown": false,
+        "reasoningStripped": false,
+        "truncatedReasoning": false
+      },
+      "turns": 2,
+      "trace": [
+        {
+          "turn": 0,
+          "transport": "ok",
+          "ms": 63317,
+          "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\" {\\\"tool\\\": \\\"append_file\\\", \\\"args\\\": {\\\"path\\\": \\\"log.txt\\\", \\\"content\\\": \\\"\\\\nDONE\\\"}}\",\"function_call\":null,\"reasoning\":\" The user wants me to append a new line containing exactly \\\"DONE\\\" to the end of log.txt, without losing existing content. I should use the append_file tool. \",\"refusal\":null,\"role\":\"assistant\",\"tool_calls\":[]},\"stop_reason\":163586}],\"created\":1787643591,\"id\":\"devshard-61703-1228\",\"kv_transfer_params\":null,\"model\":\"moonshotai/Kimi-K2.6\",\"object\":\"chat.completion\",\"service_tier\":null,\"system_fingerprint\":null,\"usage\":{\"completion_tokens\":60,\"prompt_tokens\":334,\"prompt_tokens_details\":null,\"total_tokens\":394}}",
+          "parsed": {
+            "kind": "call",
+            "name": "append_file"
+          }
+        },
+        {
+          "turn": 1,
+          "transport": "ok",
+          "ms": 6743,
+          "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\" {\\\"done\\\": true}\",\"function_call\":null,\"reasoning\":\" The user asked me to add a new line containing exactly DONE to the end of log.txt without losing existing content. I used append_file with \\\"\\\\nDONE\\\" which adds a newline followed by DONE. This should have completed the task. The tool returned success. I should now indicate completion. \",\"refusal\":null,\"role\":\"assistant\",\"tool_calls\":[]},\"stop_reason\":163586}],\"created\":1787643653,\"id\":\"devshard-61766-558\",\"kv_transfer_params\":null,\"model\":\"moonshotai/Kimi-K2.6\",\"object\":\"chat.completion\",\"service_tier\":null,\"system_fingerprint\":null,\"usage\":{\"completion_tokens\":65,\"prompt_tokens\":387,\"prompt_tokens_details\":null,\"total_tokens\":452}}",
+          "parsed": {
+            "kind": "none"
+          }
+        }
+      ]
+    },
+    {
+      "cellId": "grid_minimax_S4_T3",
+      "backend": "minimax",
+      "model": "MiniMaxAI/MiniMax-M2.7",
+      "form": "S4",
+      "task": "T3",
+      "toolCount": 5,
+      "outcome": "ERROR",
+      "errorDetail": "timeout This operation was aborted",
+      "verify": null,
+      "flags": {
+        "anyCall": true,
+        "anyMalformed": false,
+        "anyUnknownTool": false,
+        "anyArgViolation": true,
+        "calledExpected": false,
+        "calledOtherKnown": false,
+        "reasoningStripped": true,
+        "truncatedReasoning": false
+      },
+      "turns": 5,
+      "trace": [
+        {
+          "turn": 0,
+          "transport": "ok",
+          "ms": 3517,
+          "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003eThe user wants me to add a new line containing exactly \\\"DONE\\\" to the end of log.txt. I should use the append_file function to do this, which will preserve the existing content and add the new line at the end.\\n\\u003c/think\\u003e\\n\\n\\u003ctool_call\\u003e\\n\\u003cfunction=append_file\\u003e\\n\\u003cparameter name=\\\"path\\\"\\u003elog.txt\\u003c/parameter\\u003e\\n\\u003cparameter name=\\\"content\\\"\\u003e\\nDONE\\u003c/parameter\\u003e\\n\\u003c/function\\u003e\\n\\u003c/tool_call\\u003e\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787643470,\"id\":\"devshard-61238-1056\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp2-0cb5bbe5\",\"usage\":{\"completion_tokens\":90,\"prompt_tokens\":355,\"prompt_tokens_details\":null,\"total_tokens\":445}}",
+          "parsed": {
+            "kind": "call",
+            "name": "append_file"
+          }
+        },
+        {
+          "turn": 1,
+          "transport": "ok",
+          "ms": 2308,
+          "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003eI need to use the append_file function with both required parameters: path and content.\\n\\u003c/think\\u003e\\n\\n\\u003ctool_call\\u003e\\n\\u003cfunction=append_file\\u003e\\n\\u003cparameter name=\\\"path\\\"\\u003elog.txt\\u003c/parameter\\u003e\\n\\u003cparameter name=\\\"content\\\"\\u003eDONE\\u003c/parameter\\u003e\\n\\u003c/function\\u003e\\n\\u003c/tool_call\\u003e\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787643472,\"id\":\"devshard-61252-903\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp2-0cb5bbe5\",\"usage\":{\"completion_tokens\":59,\"prompt_tokens\":421,\"prompt_tokens_details\":null,\"total_tokens\":480}}",
+          "parsed": {
+            "kind": "call",
+            "name": "append_file"
+          }
+        },
+        {
+          "turn": 2,
+          "transport": "ok",
+          "ms": 1868,
+          "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003eThe error says \\\"missing required parameter: path\\\" but I am providing the path parameter. Let me try reading the file first to see its current content, and then try a different approach.\\n\\u003c/think\\u003e\\n\\n\\u003ctool_call\\u003e\\n\\u003cfunction=read_file\\u003e\\n\\u003cparameter name=\\\"path\\\"\\u003elog.txt\\u003c/parameter\\u003e\\n\\u003c/function\\u003e\\n\\u003c/tool_call\\u003e\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787643475,\"id\":\"devshard-61266-974\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp2-0cb5bbe5\",\"usage\":{\"completion_tokens\":69,\"prompt_tokens\":487,\"prompt_tokens_details\":null,\"total_tokens\":556}}",
+          "parsed": {
+            "kind": "call",
+            "name": "read_file"
+          }
+        },
+        {
+          "turn": 3,
+          "transport": "ok",
+          "ms": 4895,
+          "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003eIt seems like there's an issue with the tool calls. Let me try again with the correct format.\\n\\u003c/think\\u003e\\n\\n\\u003ctool_call\\u003e\\n\\u003cfunction=append_file\\u003e\\n\\u003cparameter name=\\\"path\\\"\\u003elog.txt\\u003c/parameter\\u003e\\n\\u003cparameter name=\\\"content\\\"\\u003eDONE\\u003c/parameter\\u003e\\n\\u003c/function\\u003e\\n\\u003c/tool_call\\u003e\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787643476,\"id\":\"devshard-61194-1007\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-84ef373a\",\"usage\":{\"completion_tokens\":62,\"prompt_tokens\":542,\"prompt_tokens_details\":null,\"total_tokens\":604}}",
+          "parsed": {
+            "kind": "call",
+            "name": "append_file"
+          }
+        },
+        {
+          "turn": 4,
+          "transport": "timeout",
+          "ms": 120017,
+          "error": "This operation was aborted"
+        }
+      ]
+    },
+    {
+      "cellId": "grid_minimax_S5_T3",
+      "backend": "minimax",
+      "model": "MiniMaxAI/MiniMax-M2.7",
+      "form": "S5",
+      "task": "T3",
+      "toolCount": 5,
+      "outcome": "OK",
+      "errorDetail": null,
+      "verify": {
+        "ok": true
+      },
+      "flags": {
+        "anyCall": true,
+        "anyMalformed": true,
+        "anyUnknownTool": false,
+        "anyArgViolation": false,
+        "calledExpected": true,
+        "calledOtherKnown": false,
+        "reasoningStripped": true,
+        "truncatedReasoning": false
+      },
+      "turns": 4,
+      "trace": [
+        {
+          "turn": 0,
+          "transport": "ok",
+          "ms": 7317,
+          "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003eThe user wants me to add a new line containing exactly \\\"DONE\\\" to the end of log.txt. I should use the append_file function to do this, which will preserve the existing content and add the new line at the end.\\n\\u003c/think\\u003e\\n\\n\\n{\\\"tool\\\": \\\"append_file\\\", \\\"args\\\": {\\\"path\\\": \\\"log.txt\\\", \\\"content\\\": \\\"DONE\\\\n\\\"}}\\n\\n{\\\"done\\\": true}\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787643602,\"id\":\"devshard-61238-1063\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp4-b76143f9\",\"usage\":{\"completion_tokens\":82,\"prompt_tokens\":339,\"prompt_tokens_details\":null,\"total_tokens\":421}}",
+          "parsed": {
+            "kind": "malformed",
+            "detail": "not valid JSON: Unexpected non-whitespace character after JSON at position 75 (line 3 column 1)"
+          }
+        },
+        {
+          "turn": 1,
+          "transport": "ok",
+          "ms": 4579,
+          "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003eI need to append \\\"DONE\\\" to the end of log.txt. Let me try again with the append_file tool.\\n\\u003c/think\\u003e\\n\\n{\\\"tool\\\": \\\"append_file\\\", \\\"args\\\": {\\\"path\\\": \\\"log.txt\\\", \\\"content\\\": \\\"DONE\\\\n\\\"}}\\n\\n{\\\"done\\\": true}\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787643609,\"id\":\"devshard-61252-910\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp4-b76143f9\",\"usage\":{\"completion_tokens\":59,\"prompt_tokens\":420,\"prompt_tokens_details\":null,\"total_tokens\":479}}",
+          "parsed": {
+            "kind": "malformed",
+            "detail": "not valid JSON: Unexpected non-whitespace character after JSON at position 75 (line 3 column 1)"
+          }
+        },
+        {
+          "turn": 2,
+          "transport": "ok",
+          "ms": 1816,
+          "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003eI need to emit just the JSON object and nothing else. Let me try again.\\n\\u003c/think\\u003e\\n\\n{\\\"tool\\\": \\\"append_file\\\", \\\"args\\\": {\\\"path\\\": \\\"log.txt\\\", \\\"content\\\": \\\"DONE\\\\n\\\"}}\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787643613,\"id\":\"devshard-61266-983\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp2-0cb5bbe5\",\"usage\":{\"completion_tokens\":45,\"prompt_tokens\":501,\"prompt_tokens_details\":null,\"total_tokens\":546}}",
+          "parsed": {
+            "kind": "call",
+            "name": "append_file"
+          }
+        },
+        {
+          "turn": 3,
+          "transport": "ok",
+          "ms": 1764,
+          "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003eThe tool call was successful. The file log.txt now has \\\"DONE\\\" added to it. The task is complete.\\n\\u003c/think\\u003e\\n\\n{\\\"done\\\": true}\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787643615,\"id\":\"devshard-61194-1015\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp2-0cb5bbe5\",\"usage\":{\"completion_tokens\":33,\"prompt_tokens\":555,\"prompt_tokens_details\":null,\"total_tokens\":588}}",
+          "parsed": {
+            "kind": "none"
+          }
+        }
+      ]
+    }
+  ]
+}

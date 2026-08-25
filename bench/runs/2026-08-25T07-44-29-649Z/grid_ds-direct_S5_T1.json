@@ -1,0 +1,52 @@
+{
+  "cellId": "grid_ds-direct_S5_T1",
+  "backend": "ds-direct",
+  "model": "deepseek-v4-flash",
+  "form": "S5",
+  "task": "T1",
+  "toolCount": 5,
+  "outcome": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": false,
+    "reasoningStripped": false,
+    "truncatedReasoning": false,
+    "variantDialect": false
+  },
+  "turns": 2,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "ms": 1038,
+      "raw": "{\"id\":\"41e06774-7444-41b2-beb9-afc9d4081d20\",\"object\":\"chat.completion\",\"created\":1787643926,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\\"tool\\\": \\\"write_file\\\", \\\"args\\\": {\\\"path\\\": \\\"report.txt\\\", \\\"content\\\": \\\"OK-7391\\\"}}\",\"reasoning_content\":\"We need to create file report.txt with content exactly OK-7391. Need write_file.\"},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":397,\"completion_tokens\":47,\"total_tokens\":444,\"prompt_tokens_details\":{\"cached_tokens\":384},\"completion_tokens_details\":{\"reasoning_tokens\":19},\"prompt_cache_hit_tokens\":384,\"prompt_cache_miss_tokens\":13},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}",
+      "parsed": {
+        "kind": "call",
+        "name": "write_file",
+        "dialect": "specified",
+        "args": {
+          "path": "report.txt",
+          "content": "OK-7391"
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "ms": 602,
+      "raw": "{\"id\":\"c92600f2-5c98-4eb9-8beb-3a6abeba872e\",\"object\":\"chat.completion\",\"created\":1787643927,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\\"done\\\": true}\",\"reasoning_content\":\"The file has been created as requested. The task is complete.\"},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":448,\"completion_tokens\":19,\"total_tokens\":467,\"prompt_tokens_details\":{\"cached_tokens\":384},\"completion_tokens_details\":{\"reasoning_tokens\":13},\"prompt_cache_hit_tokens\":384,\"prompt_cache_miss_tokens\":64},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

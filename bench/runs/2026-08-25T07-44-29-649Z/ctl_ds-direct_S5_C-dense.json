@@ -1,0 +1,52 @@
+{
+  "cellId": "ctl_ds-direct_S5_C-dense",
+  "backend": "ds-direct",
+  "model": "deepseek-v4-flash",
+  "form": "S5",
+  "task": "T1",
+  "toolCount": 5,
+  "outcome": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": false,
+    "reasoningStripped": false,
+    "truncatedReasoning": false,
+    "variantDialect": false
+  },
+  "turns": 2,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "ms": 1189,
+      "raw": "{\"id\":\"8efa5078-794d-4cae-bbe2-bfdd041465a0\",\"object\":\"chat.completion\",\"created\":1787643884,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\\"tool\\\": \\\"write_file\\\", \\\"args\\\": {\\\"path\\\": \\\"report.txt\\\", \\\"content\\\": \\\"OK-7391\\\"}}\",\"reasoning_content\":\"We need to create report.txt with exact content OK-7391. Use write_file.\"},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":397,\"completion_tokens\":46,\"total_tokens\":443,\"prompt_tokens_details\":{\"cached_tokens\":0},\"completion_tokens_details\":{\"reasoning_tokens\":18},\"prompt_cache_hit_tokens\":0,\"prompt_cache_miss_tokens\":397},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}",
+      "parsed": {
+        "kind": "call",
+        "name": "write_file",
+        "dialect": "specified",
+        "args": {
+          "path": "report.txt",
+          "content": "OK-7391"
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "ms": 1279,
+      "raw": "{\"id\":\"c1011298-ff77-445c-a577-ca11559eeaa1\",\"object\":\"chat.completion\",\"created\":1787643885,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\\"done\\\": true}\",\"reasoning_content\":\"The file was written successfully. The task is complete.\"},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":448,\"completion_tokens\":17,\"total_tokens\":465,\"prompt_tokens_details\":{\"cached_tokens\":384},\"completion_tokens_details\":{\"reasoning_tokens\":11},\"prompt_cache_hit_tokens\":384,\"prompt_cache_miss_tokens\":64},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

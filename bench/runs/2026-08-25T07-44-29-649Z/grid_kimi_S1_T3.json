@@ -1,0 +1,52 @@
+{
+  "cellId": "grid_kimi_S1_T3",
+  "backend": "kimi",
+  "model": "moonshotai/Kimi-K2.6",
+  "form": "S1",
+  "task": "T3",
+  "toolCount": 5,
+  "outcome": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": false,
+    "reasoningStripped": false,
+    "truncatedReasoning": false,
+    "variantDialect": false
+  },
+  "turns": 2,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "ms": 4035,
+      "raw": "{\"choices\":[{\"finish_reason\":\"tool_calls\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":null,\"function_call\":null,\"reasoning\":\" The user wants me to append a new line containing exactly \\\"DONE\\\" to the end of log.txt, without losing existing content. I should use the append_file function to add this content. \",\"refusal\":null,\"role\":\"assistant\",\"tool_calls\":[{\"function\":{\"arguments\":\"{\\\"path\\\": \\\"log.txt\\\", \\\"content\\\": \\\"\\\\nDONE\\\"}\",\"name\":\"append_file\"},\"id\":\"functions.append_file:0\",\"type\":\"function\"}]},\"stop_reason\":163586}],\"created\":1787644215,\"id\":\"devshard-61655-1380\",\"kv_transfer_params\":null,\"model\":\"moonshotai/Kimi-K2.6\",\"object\":\"chat.completion\",\"service_tier\":null,\"system_fingerprint\":null,\"usage\":{\"completion_tokens\":64,\"prompt_tokens\":297,\"prompt_tokens_details\":null,\"total_tokens\":361}}",
+      "parsed": {
+        "kind": "call",
+        "name": "append_file",
+        "dialect": "specified",
+        "args": {
+          "path": "log.txt",
+          "content": "\nDONE"
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "ms": 22121,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\" Done. I appended a new line containing exactly `DONE` to the end of `log.txt` without modifying the existing content.\",\"function_call\":null,\"reasoning\":\" The user asked me to add a new line containing exactly DONE to the end of log.txt without losing existing content. I used append_file to add \\\"\\\\nDONE\\\" which will add a newline followed by DONE. This preserves existing content and adds the new line. The operation was successful. \",\"refusal\":null,\"role\":\"assistant\",\"tool_calls\":[]},\"stop_reason\":163586}],\"created\":1787644219,\"id\":\"devshard-61703-1261\",\"kv_transfer_params\":null,\"model\":\"moonshotai/Kimi-K2.6\",\"object\":\"chat.completion\",\"service_tier\":null,\"system_fingerprint\":null,\"usage\":{\"completion_tokens\":85,\"prompt_tokens\":356,\"prompt_tokens_details\":null,\"total_tokens\":441}}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

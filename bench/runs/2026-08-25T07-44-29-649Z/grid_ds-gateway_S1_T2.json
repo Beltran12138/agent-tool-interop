@@ -1,0 +1,67 @@
+{
+  "cellId": "grid_ds-gateway_S1_T2",
+  "backend": "ds-gateway",
+  "model": "deepseek-ai/DeepSeek-V4-Flash-0731",
+  "form": "S1",
+  "task": "T2",
+  "toolCount": 5,
+  "outcome": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": true,
+    "reasoningStripped": false,
+    "truncatedReasoning": false,
+    "variantDialect": false
+  },
+  "turns": 3,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "ms": 2821,
+      "raw": "{\"choices\":[{\"finish_reason\":\"tool_calls\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":null,\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\",\"tool_calls\":[{\"function\":{\"arguments\":\"{\\\"path\\\": \\\"input.txt\\\"}\",\"name\":\"read_file\"},\"id\":\"chatcmpl-tool-a2eee666c5d3b6e4\",\"type\":\"function\"}]},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787643896,\"id\":\"devshard-61836-288\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"deepseek-ai/DeepSeek-V4-Flash-0731\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-7a1a2cb0\",\"usage\":{\"completion_tokens\":45,\"prompt_tokens\":664,\"prompt_tokens_details\":null,\"total_tokens\":709}}",
+      "parsed": {
+        "kind": "call",
+        "name": "read_file",
+        "dialect": "specified",
+        "args": {
+          "path": "input.txt"
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "ms": 2163,
+      "raw": "{\"choices\":[{\"finish_reason\":\"tool_calls\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":null,\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\",\"tool_calls\":[{\"function\":{\"arguments\":\"{\\\"path\\\": \\\"output.txt\\\", \\\"content\\\": \\\"gamma,beta,alpha\\\"}\",\"name\":\"write_file\"},\"id\":\"chatcmpl-tool-83e2fc3a81fbe403\",\"type\":\"function\"}]},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787643898,\"id\":\"devshard-61836-289\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"deepseek-ai/DeepSeek-V4-Flash-0731\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp4-f0993dd5\",\"usage\":{\"completion_tokens\":65,\"prompt_tokens\":733,\"prompt_tokens_details\":null,\"total_tokens\":798}}",
+      "parsed": {
+        "kind": "call",
+        "name": "write_file",
+        "dialect": "specified",
+        "args": {
+          "path": "output.txt",
+          "content": "gamma,beta,alpha"
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 2,
+      "transport": "ok",
+      "ms": 1401,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"I've read `input.txt`, which contains `alpha,beta,gamma`. I reversed the order of the items and wrote the result `gamma,beta,alpha` to `output.txt` with no spaces.\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787643900,\"id\":\"devshard-61836-293\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"deepseek-ai/DeepSeek-V4-Flash-0731\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-16d5fe49\",\"usage\":{\"completion_tokens\":44,\"prompt_tokens\":825,\"prompt_tokens_details\":null,\"total_tokens\":869}}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

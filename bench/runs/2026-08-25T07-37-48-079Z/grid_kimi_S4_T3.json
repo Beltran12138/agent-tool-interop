@@ -1,0 +1,30 @@
+{
+  "cellId": "grid_kimi_S4_T3",
+  "backend": "kimi",
+  "model": "moonshotai/Kimi-K2.6",
+  "form": "S4",
+  "task": "T3",
+  "toolCount": 5,
+  "outcome": "ERROR",
+  "errorDetail": "timeout This operation was aborted",
+  "verify": null,
+  "flags": {
+    "anyCall": false,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": false,
+    "calledOtherKnown": false,
+    "reasoningStripped": false,
+    "truncatedReasoning": false
+  },
+  "turns": 1,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "timeout",
+      "ms": 120016,
+      "error": "This operation was aborted"
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "cellId": "ctl_minimax_S1_C-easy",
+  "backend": "minimax",
+  "model": "MiniMaxAI/MiniMax-M2.7",
+  "form": "S1",
+  "task": "T1",
+  "toolCount": 1,
+  "outcome": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": false,
+    "reasoningStripped": true,
+    "truncatedReasoning": true,
+    "variantDialect": false
+  },
+  "turns": 2,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "ms": 1064,
+      "raw": "{\"choices\":[{\"finish_reason\":\"tool_calls\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003eThe user wants me to create a file named \\\"report.txt\\\" with the exact content \\\"OK-7391\\\". This is straightforward - I'll use the write_file function to create this file.\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\",\"tool_calls\":[{\"function\":{\"arguments\":\"{\\\"content\\\": \\\"OK-7391\\\", \\\"path\\\": \\\"report.txt\\\"}\",\"name\":\"write_file\"},\"id\":\"chatcmpl-tool-91d742e24ec5fea2\",\"type\":\"function\"}]},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787643859,\"id\":\"devshard-61252-915\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-84ef373a\",\"usage\":{\"completion_tokens\":78,\"prompt_tokens\":250,\"prompt_tokens_details\":null,\"total_tokens\":328}}",
+      "parsed": {
+        "kind": "call",
+        "name": "write_file",
+        "dialect": "specified",
+        "args": {
+          "content": "OK-7391",
+          "path": "report.txt"
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "ms": 1665,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003eThe file has been created successfully with the exact content \\\"OK-7391\\\". The task is complete.\\n\\u003c/think\\u003e\\n\\nDone. I created the file `report.txt` with the content `OK-7391`.\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787643871,\"id\":\"devshard-61228-1022\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp2-0cb5bbe5\",\"usage\":{\"completion_tokens\":43,\"prompt_tokens\":358,\"prompt_tokens_details\":null,\"total_tokens\":401}}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

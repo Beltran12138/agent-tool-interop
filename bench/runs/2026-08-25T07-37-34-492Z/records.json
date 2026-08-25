@@ -1,0 +1,107 @@
+{
+  "runId": "2026-08-25T07-37-34-492Z",
+  "argv": [
+    "--backends=ds-direct",
+    "--forms=S1",
+    "--tasks=T1",
+    "--no-baseline",
+    "--no-controls"
+  ],
+  "backends": [
+    {
+      "id": "ds-direct",
+      "label": "DeepSeek V4 Flash (direct)",
+      "model": "deepseek-v4-flash",
+      "baseEnv": null,
+      "baseUrl": "https://api.deepseek.com",
+      "keyEnv": "DEEPSEEK_API_KEY",
+      "family": "deepseek",
+      "note": "transport control A — same model family as ds-gateway, different transport",
+      "available": true,
+      "unavailableReason": null
+    },
+    {
+      "id": "ds-gateway",
+      "label": "DeepSeek V4 Flash (via gateway)",
+      "model": "deepseek-ai/DeepSeek-V4-Flash-0731",
+      "baseEnv": "BENCH_GATEWAY_BASE_URL",
+      "keyEnv": "BENCH_GATEWAY_API_KEY",
+      "family": "deepseek",
+      "note": "transport control B — isolates gateway middleware from schema effects",
+      "baseUrl": "https://api.gonkarouter.io/v1",
+      "available": true,
+      "unavailableReason": null
+    },
+    {
+      "id": "kimi",
+      "label": "Kimi K2.6 (via gateway)",
+      "model": "moonshotai/Kimi-K2.6",
+      "baseEnv": "BENCH_GATEWAY_BASE_URL",
+      "keyEnv": "BENCH_GATEWAY_API_KEY",
+      "family": "moonshot",
+      "note": "reasoning-style model",
+      "baseUrl": "https://api.gonkarouter.io/v1",
+      "available": true,
+      "unavailableReason": null
+    },
+    {
+      "id": "minimax",
+      "label": "MiniMax M2.7 (via gateway)",
+      "model": "MiniMaxAI/MiniMax-M2.7",
+      "baseEnv": "BENCH_GATEWAY_BASE_URL",
+      "keyEnv": "BENCH_GATEWAY_API_KEY",
+      "family": "minimax",
+      "note": "reasoning-style model",
+      "baseUrl": "https://api.gonkarouter.io/v1",
+      "available": true,
+      "unavailableReason": null
+    }
+  ],
+  "records": [
+    {
+      "cellId": "grid_ds-direct_S1_T1",
+      "backend": "ds-direct",
+      "model": "deepseek-v4-flash",
+      "form": "S1",
+      "task": "T1",
+      "toolCount": 5,
+      "outcome": "OK",
+      "errorDetail": null,
+      "verify": {
+        "ok": true
+      },
+      "flags": {
+        "anyCall": true,
+        "anyMalformed": false,
+        "anyUnknownTool": false,
+        "anyArgViolation": false,
+        "calledExpected": true,
+        "calledOtherKnown": false,
+        "reasoningStripped": false,
+        "truncatedReasoning": false
+      },
+      "turns": 2,
+      "trace": [
+        {
+          "turn": 0,
+          "transport": "ok",
+          "ms": 1518,
+          "raw": "{\"id\":\"afe7081a-7fca-40f7-ac39-ecaa5a796948\",\"object\":\"chat.completion\",\"created\":1787643455,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"\",\"reasoning_content\":\"The user wants me to create a file named report.txt with exactly the content \\\"OK-7391\\\".\",\"tool_calls\":[{\"index\":0,\"id\":\"call_00_K9CWp7BdLiNq4fr1Yqcs9571\",\"type\":\"function\",\"function\":{\"name\":\"write_file\",\"arguments\":\"{\\\"path\\\": \\\"report.txt\\\", \\\"content\\\": \\\"OK-7391\\\"}\"}}]},\"logprobs\":null,\"finish_reason\":\"tool_calls\"}],\"usage\":{\"prompt_tokens\":708,\"completion_tokens\":85,\"total_tokens\":793,\"prompt_tokens_details\":{\"cached_tokens\":0},\"completion_tokens_details\":{\"reasoning_tokens\":21},\"prompt_cache_hit_tokens\":0,\"prompt_cache_miss_tokens\":708},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}",
+          "parsed": {
+            "kind": "call",
+            "name": "write_file"
+          }
+        },
+        {
+          "turn": 1,
+          "transport": "ok",
+          "ms": 642,
+          "raw": "{\"id\":\"46b6124a-e763-4699-8f2d-b6c2c8db28f9\",\"object\":\"chat.completion\",\"created\":1787643456,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"Created `report.txt` with the exact content `OK-7391`.\",\"reasoning_content\":\"\"},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":821,\"completion_tokens\":16,\"total_tokens\":837,\"prompt_tokens_details\":{\"cached_tokens\":768},\"completion_tokens_details\":{\"reasoning_tokens\":0},\"prompt_cache_hit_tokens\":768,\"prompt_cache_miss_tokens\":53},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}",
+          "parsed": {
+            "kind": "none"
+          }
+        }
+      ]
+    }
+  ]
+}

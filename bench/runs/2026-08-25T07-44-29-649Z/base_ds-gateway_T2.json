@@ -1,0 +1,11 @@
+{
+  "cellId": "base_ds-gateway_T2",
+  "backend": "ds-gateway",
+  "model": "deepseek-ai/DeepSeek-V4-Flash-0731",
+  "form": "S0",
+  "task": "T2",
+  "outcome": "OK",
+  "errorDetail": null,
+  "answer": "gamma,beta,alpha",
+  "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"gamma,beta,alpha\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787643886,\"id\":\"devshard-61836-275\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"deepseek-ai/DeepSeek-V4-Flash-0731\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-d1135963\",\"usage\":{\"completion_tokens\":6,\"prompt_tokens\":63,\"prompt_tokens_details\":null,\"total_tokens\":69}}"
+}
