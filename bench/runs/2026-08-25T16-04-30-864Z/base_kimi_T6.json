@@ -1,0 +1,12 @@
+{
+  "cellId": "base_kimi_T6",
+  "backend": "kimi",
+  "model": "moonshotai/Kimi-K2.6",
+  "form": "S0",
+  "task": "T6",
+  "outcome": "OK",
+  "outcomeTolerant": "OK",
+  "errorDetail": null,
+  "answer": "{\"key\": \"value\", \"n\": 3}\n<tag attr=\"x\">body</tag>\nquote: \" backslash: \\ brace: }",
+  "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\" {\\\"key\\\": \\\"value\\\", \\\"n\\\": 3}\\n\\u003ctag attr=\\\"x\\\"\\u003ebody\\u003c/tag\\u003e\\nquote: \\\" backslash: \\\\ brace: }\",\"function_call\":null,\"reasoning\":\" The user wants me to reply with exactly three lines and nothing else:\\n\\n1. `{\\\"key\\\": \\\"value\\\", \\\"n\\\": 3}`\\n2. `\\u003ctag attr=\\\"x\\\"\\u003ebody\\u003c/tag\\u003e`\\n3. `quote: \\\" backslash: \\\\ brace: }`\\n\\nI need to output exactly these three lines with no explanation, no formatting, no extra whitespace, no code blocks. Just the raw text exactly as specified.\\n\\nLet me verify each line:\\nLine 1: `{\\\"key\\\": \\\"value\\\", \\\"n\\\": 3}`\\nLine 2: `\\u003ctag attr=\\\"x\\\"\\u003ebody\\u003c/tag\\u003e`\\nLine 3: `quote: \\\" backslash: \\\\ brace: }`\\n\\nI should make sure there are no trailing spaces and that the line breaks are correct. The user said \\\"exactly these three lines and nothing else\\\".\\n\\nSo the output should be:\\n```\\n{\\\"key\\\": \\\"value\\\", \\\"n\\\": 3}\\n\\u003ctag attr=\\\"x\\\"\\u003ebody\\u003c/tag\\u003e\\nquote: \\\" backslash: \\\\ brace: }\\n```\\n\\nNo markdown code fences. Just the raw text. \",\"refusal\":null,\"role\":\"assistant\",\"tool_calls\":[]},\"stop_reason\":163586}],\"created\":1787675115,\"id\":\"devshard-62371-64\",\"kv_transfer_params\":null,\"model\":\"moonshotai/Kimi-K2.6\",\"object\":\"chat.completion\",\"service_tier\":null,\"system_fingerprint\":null,\"usage\":{\"completion_tokens\":253,\"prompt_tokens\":67,\"prompt_tokens_details\":null,\"total_tokens\":320}}"
+}

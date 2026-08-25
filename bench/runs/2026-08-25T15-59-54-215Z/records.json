@@ -1,0 +1,316 @@
+{
+  "runId": "2026-08-25T15-59-54-215Z",
+  "maxTurns": 6,
+  "argv": [
+    "--backends=ds-direct,minimax",
+    "--forms=S4,S4b",
+    "--tasks=T1",
+    "--no-baseline",
+    "--no-controls"
+  ],
+  "backends": [
+    {
+      "id": "ds-direct",
+      "label": "DeepSeek V4 Flash (direct)",
+      "model": "deepseek-v4-flash",
+      "baseEnv": null,
+      "baseUrl": "https://api.deepseek.com",
+      "keyEnv": "DEEPSEEK_API_KEY",
+      "family": "deepseek",
+      "note": "transport control A — same model family as ds-gateway, different transport",
+      "available": true,
+      "unavailableReason": null
+    },
+    {
+      "id": "ds-gateway",
+      "label": "DeepSeek V4 Flash (via gateway)",
+      "model": "deepseek-ai/DeepSeek-V4-Flash-0731",
+      "baseEnv": "BENCH_GATEWAY_BASE_URL",
+      "keyEnv": "BENCH_GATEWAY_API_KEY",
+      "family": "deepseek",
+      "note": "transport control B — isolates gateway middleware from schema effects",
+      "baseUrl": "https://api.gonkarouter.io/v1",
+      "available": true,
+      "unavailableReason": null
+    },
+    {
+      "id": "kimi",
+      "label": "Kimi K2.6 (via gateway)",
+      "model": "moonshotai/Kimi-K2.6",
+      "baseEnv": "BENCH_GATEWAY_BASE_URL",
+      "keyEnv": "BENCH_GATEWAY_API_KEY",
+      "family": "moonshot",
+      "note": "reasoning-style model",
+      "baseUrl": "https://api.gonkarouter.io/v1",
+      "available": true,
+      "unavailableReason": null
+    },
+    {
+      "id": "minimax",
+      "label": "MiniMax M2.7 (via gateway)",
+      "model": "MiniMaxAI/MiniMax-M2.7",
+      "baseEnv": "BENCH_GATEWAY_BASE_URL",
+      "keyEnv": "BENCH_GATEWAY_API_KEY",
+      "family": "minimax",
+      "note": "reasoning-style model",
+      "baseUrl": "https://api.gonkarouter.io/v1",
+      "available": true,
+      "unavailableReason": null
+    }
+  ],
+  "records": [
+    {
+      "cellId": "grid_ds-direct_S4_T1",
+      "backend": "ds-direct",
+      "model": "deepseek-v4-flash",
+      "form": "S4",
+      "task": "T1",
+      "toolCount": 15,
+      "outcome": "OK",
+      "outcomeTolerant": "OK",
+      "recovered": true,
+      "errorDetail": null,
+      "verify": {
+        "ok": true
+      },
+      "flags": {
+        "anyCall": true,
+        "anyMalformed": false,
+        "anyUnknownTool": false,
+        "anyArgViolation": true,
+        "calledExpected": true,
+        "calledOtherKnown": false,
+        "reasoningStripped": false,
+        "truncatedReasoning": false,
+        "variantDialect": false,
+        "coercions": [],
+        "escapingUsed": false,
+        "paramSyntaxFailure": true,
+        "calledDistractor": false
+      },
+      "turns": 3,
+      "trace": [
+        {
+          "turn": 0,
+          "transport": "ok",
+          "attempts": 1,
+          "ms": 2551,
+          "raw": "{\"id\":\"c0204cb7-c193-4f92-87e0-a64313b06114\",\"object\":\"chat.completion\",\"created\":1787673596,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"<tool_call>\\n<function=write_file>\\n<parameter=path>report.txt</parameter>\\n<parameter>content>OK-7391</parameter>\\n</function>\\n</tool_call>\",\"reasoning_content\":\"We need to create a file named report.txt with content exactly OK-7391. Use write_file or create_file? The task says create a file named report.txt whose entire content is exactly: OK-7391. Use write_file with path report.txt and content OK-7391.\"},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":1076,\"completion_tokens\":99,\"total_tokens\":1175,\"prompt_tokens_details\":{\"cached_tokens\":1024},\"completion_tokens_details\":{\"reasoning_tokens\":58},\"prompt_cache_hit_tokens\":1024,\"prompt_cache_miss_tokens\":52},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}",
+          "parsed": {
+            "kind": "call",
+            "name": "write_file",
+            "dialect": "specified",
+            "args": {
+              "path": "report.txt"
+            }
+          },
+          "validation": "missing required parameter: content"
+        },
+        {
+          "turn": 1,
+          "transport": "ok",
+          "attempts": 1,
+          "ms": 1309,
+          "raw": "{\"id\":\"8694707a-1ba7-41d1-a03c-f505dbe461fc\",\"object\":\"chat.completion\",\"created\":1787673598,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"<tool_call>\\n<function=write_file>\\n<parameter=path>report.txt</parameter>\\n<parameter=content>OK-7391</parameter>\\n</function>\\n</tool_call>\",\"reasoning_content\":\"The parameter wasn't parsed correctly. I need to re-emit with proper parameter syntax. The content is \\\"OK-7391\\\".\"},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":1136,\"completion_tokens\":67,\"total_tokens\":1203,\"prompt_tokens_details\":{\"cached_tokens\":1024},\"completion_tokens_details\":{\"reasoning_tokens\":27},\"prompt_cache_hit_tokens\":1024,\"prompt_cache_miss_tokens\":112},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}",
+          "parsed": {
+            "kind": "call",
+            "name": "write_file",
+            "dialect": "specified",
+            "args": {
+              "path": "report.txt",
+              "content": "OK-7391"
+            }
+          },
+          "validation": "ok"
+        },
+        {
+          "turn": 2,
+          "transport": "ok",
+          "attempts": 1,
+          "ms": 1413,
+          "raw": "{\"id\":\"627cbf1b-d785-48e2-a7cb-2a4a23d4e8bb\",\"object\":\"chat.completion\",\"created\":1787673599,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"DONE\",\"reasoning_content\":\"The file was written successfully. The task is complete.\"},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":1203,\"completion_tokens\":14,\"total_tokens\":1217,\"prompt_tokens_details\":{\"cached_tokens\":1152},\"completion_tokens_details\":{\"reasoning_tokens\":11},\"prompt_cache_hit_tokens\":1152,\"prompt_cache_miss_tokens\":51},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}",
+          "parsed": {
+            "kind": "none"
+          }
+        }
+      ]
+    },
+    {
+      "cellId": "grid_ds-direct_S4b_T1",
+      "backend": "ds-direct",
+      "model": "deepseek-v4-flash",
+      "form": "S4b",
+      "task": "T1",
+      "toolCount": 15,
+      "outcome": "OK",
+      "outcomeTolerant": "OK",
+      "errorDetail": null,
+      "verify": {
+        "ok": true
+      },
+      "flags": {
+        "anyCall": true,
+        "anyMalformed": false,
+        "anyUnknownTool": false,
+        "anyArgViolation": false,
+        "calledExpected": true,
+        "calledOtherKnown": false,
+        "reasoningStripped": false,
+        "truncatedReasoning": false,
+        "variantDialect": false,
+        "coercions": [],
+        "escapingUsed": false,
+        "paramSyntaxFailure": false,
+        "calledDistractor": false
+      },
+      "turns": 2,
+      "trace": [
+        {
+          "turn": 0,
+          "transport": "ok",
+          "attempts": 1,
+          "ms": 1700,
+          "raw": "{\"id\":\"1d91a644-4611-404c-a0c2-99b9c0e56bac\",\"object\":\"chat.completion\",\"created\":1787673600,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"<tool_call>\\n<function name=\\\"write_file\\\">\\n<parameter name=\\\"path\\\">report.txt</parameter>\\n<parameter name=\\\"content\\\">OK-7391</parameter>\\n</function>\\n</tool_call>\",\"reasoning_content\":\"We need create file report.txt with exact content OK-7391. Use write_file.\"},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":1080,\"completion_tokens\":61,\"total_tokens\":1141,\"prompt_tokens_details\":{\"cached_tokens\":768},\"completion_tokens_details\":{\"reasoning_tokens\":18},\"prompt_cache_hit_tokens\":768,\"prompt_cache_miss_tokens\":312},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}",
+          "parsed": {
+            "kind": "call",
+            "name": "write_file",
+            "dialect": "specified",
+            "args": {
+              "path": "report.txt",
+              "content": "OK-7391"
+            }
+          },
+          "validation": "ok"
+        },
+        {
+          "turn": 1,
+          "transport": "ok",
+          "attempts": 1,
+          "ms": 2144,
+          "raw": "{\"id\":\"fa75363b-58a1-477a-9a4d-aed4c0bf3b22\",\"object\":\"chat.completion\",\"created\":1787673602,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"DONE\",\"reasoning_content\":\"The file was created with the exact content \\\"OK-7391\\\". Task complete.\"},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":1150,\"completion_tokens\":20,\"total_tokens\":1170,\"prompt_tokens_details\":{\"cached_tokens\":1024},\"completion_tokens_details\":{\"reasoning_tokens\":17},\"prompt_cache_hit_tokens\":1024,\"prompt_cache_miss_tokens\":126},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}",
+          "parsed": {
+            "kind": "none"
+          }
+        }
+      ]
+    },
+    {
+      "cellId": "grid_minimax_S4_T1",
+      "backend": "minimax",
+      "model": "MiniMaxAI/MiniMax-M2.7",
+      "form": "S4",
+      "task": "T1",
+      "toolCount": 15,
+      "outcome": "F2",
+      "outcomeTolerant": "OK",
+      "errorDetail": null,
+      "verify": {
+        "ok": true
+      },
+      "flags": {
+        "anyCall": true,
+        "anyMalformed": false,
+        "anyUnknownTool": false,
+        "anyArgViolation": false,
+        "calledExpected": true,
+        "calledOtherKnown": false,
+        "reasoningStripped": true,
+        "truncatedReasoning": false,
+        "variantDialect": true,
+        "coercions": [],
+        "escapingUsed": false,
+        "paramSyntaxFailure": false,
+        "calledDistractor": false
+      },
+      "turns": 2,
+      "trace": [
+        {
+          "turn": 0,
+          "transport": "ok",
+          "attempts": 1,
+          "ms": 3928,
+          "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003eThe user wants me to create a file named \\\"report.txt\\\" with the exact content \\\"OK-7391\\\". I'll use the write_file function to create this file.\\n\\u003c/think\\u003e\\n\\n\\u003ctool_call\\u003e\\n\\u003cfunction=write_file\\u003e\\n\\u003cparameter name=\\\"path\\\"\\u003ereport.txt\\u003c/parameter\\u003e\\n\\u003cparameter name=\\\"content\\\"\\u003eOK-7391\\u003c/parameter\\u003e\\n\\u003c/function\\u003e\\n\\u003c/tool_call\\u003e\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787673597,\"id\":\"devshard-62078-398\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp2-0cb5bbe5\",\"usage\":{\"completion_tokens\":78,\"prompt_tokens\":998,\"prompt_tokens_details\":null,\"total_tokens\":1076}}",
+          "parsed": {
+            "kind": "call",
+            "name": "write_file",
+            "dialect": "variant",
+            "args": {
+              "path": "report.txt",
+              "content": "OK-7391"
+            }
+          },
+          "validation": "ok"
+        },
+        {
+          "turn": 1,
+          "transport": "ok",
+          "attempts": 3,
+          "ms": 3256,
+          "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003eThe file has been created successfully with the exact content \\\"OK-7391\\\". The task is complete.\\n\\u003c/think\\u003e\\n\\nDONE\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787673795,\"id\":\"devshard-62021-504\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp2-0cb5bbe5\",\"usage\":{\"completion_tokens\":26,\"prompt_tokens\":1073,\"prompt_tokens_details\":null,\"total_tokens\":1099}}",
+          "parsed": {
+            "kind": "none"
+          }
+        }
+      ]
+    },
+    {
+      "cellId": "grid_minimax_S4b_T1",
+      "backend": "minimax",
+      "model": "MiniMaxAI/MiniMax-M2.7",
+      "form": "S4b",
+      "task": "T1",
+      "toolCount": 15,
+      "outcome": "OK",
+      "outcomeTolerant": "OK",
+      "errorDetail": null,
+      "verify": {
+        "ok": true
+      },
+      "flags": {
+        "anyCall": true,
+        "anyMalformed": false,
+        "anyUnknownTool": false,
+        "anyArgViolation": false,
+        "calledExpected": true,
+        "calledOtherKnown": false,
+        "reasoningStripped": true,
+        "truncatedReasoning": false,
+        "variantDialect": false,
+        "coercions": [],
+        "escapingUsed": false,
+        "paramSyntaxFailure": false,
+        "calledDistractor": false
+      },
+      "turns": 2,
+      "trace": [
+        {
+          "turn": 0,
+          "transport": "ok",
+          "attempts": 1,
+          "ms": 6434,
+          "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003eThe user wants me to create a file named \\\"report.txt\\\" with the exact content \\\"OK-7391\\\". I'll use the write_file function to create this file.\\n\\u003c/think\\u003e\\n\\n\\u003ctool_call\\u003e\\n\\u003cfunction name=\\\"write_file\\\"\\u003e\\n\\u003cparameter name=\\\"path\\\"\\u003ereport.txt\\u003c/parameter\\u003e\\n\\u003cparameter name=\\\"content\\\"\\u003eOK-7391\\u003c/parameter\\u003e\\n\\u003c/function\\u003e\\n\\u003c/tool_call\\u003e\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787673797,\"id\":\"devshard-62052-410\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-84ef373a\",\"usage\":{\"completion_tokens\":79,\"prompt_tokens\":1002,\"prompt_tokens_details\":null,\"total_tokens\":1081}}",
+          "parsed": {
+            "kind": "call",
+            "name": "write_file",
+            "dialect": "specified",
+            "args": {
+              "path": "report.txt",
+              "content": "OK-7391"
+            }
+          },
+          "validation": "ok"
+        },
+        {
+          "turn": 1,
+          "transport": "ok",
+          "attempts": 1,
+          "ms": 2319,
+          "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003eThe file has been created successfully with the exact content \\\"OK-7391\\\". The task is complete.\\n\\u003c/think\\u003e\\n\\nDONE\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787673804,\"id\":\"devshard-62078-405\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp2-0cb5bbe5\",\"usage\":{\"completion_tokens\":26,\"prompt_tokens\":1078,\"prompt_tokens_details\":null,\"total_tokens\":1104}}",
+          "parsed": {
+            "kind": "none"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "cellId": "grid_kimi_S4b_T1",
+  "backend": "kimi",
+  "model": "moonshotai/Kimi-K2.6",
+  "form": "S4b",
+  "task": "T1",
+  "toolCount": 15,
+  "outcome": "OK",
+  "outcomeTolerant": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": false,
+    "reasoningStripped": false,
+    "truncatedReasoning": false,
+    "variantDialect": false,
+    "coercions": [],
+    "escapingUsed": false,
+    "paramSyntaxFailure": false,
+    "calledDistractor": false
+  },
+  "turns": 2,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 411,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\" \\u003ctool_call\\u003e\\n\\u003cfunction name=\\\"write_file\\\"\\u003e\\n\\u003cparameter name=\\\"path\\\"\\u003ereport.txt\\u003c/parameter\\u003e\\n\\u003cparameter name=\\\"content\\\"\\u003eOK-7391\\u003c/parameter\\u003e\\n\\u003c/function\\u003e\\n\\u003c/tool_call\\u003e\",\"function_call\":null,\"reasoning\":\" The user wants me to create a file named report.txt with the exact content \\\"OK-7391\\\". I should use the write_file tool for this. \",\"refusal\":null,\"role\":\"assistant\",\"tool_calls\":[]},\"stop_reason\":163586}],\"created\":1787674746,\"id\":\"devshard-62370-58\",\"kv_transfer_params\":null,\"model\":\"moonshotai/Kimi-K2.6\",\"object\":\"chat.completion\",\"service_tier\":null,\"system_fingerprint\":null,\"usage\":{\"completion_tokens\":75,\"prompt_tokens\":999,\"prompt_tokens_details\":null,\"total_tokens\":1074}}",
+      "parsed": {
+        "kind": "call",
+        "name": "write_file",
+        "dialect": "specified",
+        "args": {
+          "path": "report.txt",
+          "content": "OK-7391"
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 947,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\" DONE\",\"function_call\":null,\"reasoning\":\" The user asked me to create a file named report.txt with content exactly \\\"OK-7391\\\". The tool call succeeded, writing 7 bytes. The task is complete. I should reply with DONE and no tool call. \",\"refusal\":null,\"role\":\"assistant\",\"tool_calls\":[]},\"stop_reason\":163586}],\"created\":1787674892,\"id\":\"devshard-62370-88\",\"kv_transfer_params\":null,\"model\":\"moonshotai/Kimi-K2.6\",\"object\":\"chat.completion\",\"service_tier\":null,\"system_fingerprint\":null,\"usage\":{\"completion_tokens\":48,\"prompt_tokens\":1075,\"prompt_tokens_details\":null,\"total_tokens\":1123}}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

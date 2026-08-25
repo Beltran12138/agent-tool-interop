@@ -1,0 +1,12 @@
+{
+  "cellId": "base_minimax_T1",
+  "backend": "minimax",
+  "model": "MiniMaxAI/MiniMax-M2.7",
+  "form": "S0",
+  "task": "T1",
+  "outcome": "OK",
+  "outcomeTolerant": "OK",
+  "errorDetail": null,
+  "answer": "OK-7391",
+  "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003eThe user asks: \\\"A file named report.txt must be created containing a specific token. Reply with the exact content that file should have. The content is the token OK-7391.\\\"\\n\\nWe need to respond with the exact content that file should have. The content is the token \\\"OK-7391\\\". So we just output \\\"OK-7391\\\". The user wants the exact content. So we just output \\\"OK-7391\\\". There's no extra formatting. The system says \\\"Answer with the requested content only. No explanation, no formatting.\\\" So we should just output the token. No extra whitespace? Probably just the token. So answer: OK-7391.\\n\\u003c/think\\u003e\\n\\nOK-7391\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787674080,\"id\":\"devshard-62001-398\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp2-0cb5bbe5\",\"usage\":{\"completion_tokens\":143,\"prompt_tokens\":62,\"prompt_tokens_details\":null,\"total_tokens\":205}}"
+}

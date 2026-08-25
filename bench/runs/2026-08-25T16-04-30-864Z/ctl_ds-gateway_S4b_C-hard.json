@@ -1,0 +1,67 @@
+{
+  "cellId": "ctl_ds-gateway_S4b_C-hard",
+  "backend": "ds-gateway",
+  "model": "deepseek-ai/DeepSeek-V4-Flash-0731",
+  "form": "S4b",
+  "task": "T4",
+  "toolCount": 15,
+  "outcome": "OK",
+  "outcomeTolerant": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": false,
+    "reasoningStripped": false,
+    "truncatedReasoning": false,
+    "variantDialect": false,
+    "coercions": [
+      "tags:string->array",
+      "retries:string->integer",
+      "owner:string->object"
+    ],
+    "escapingUsed": false,
+    "paramSyntaxFailure": false,
+    "calledDistractor": false
+  },
+  "turns": 2,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 5576,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003ctool_call\\u003e\\n\\u003cfunction name=\\\"create_record\\\"\\u003e\\n\\u003cparameter name=\\\"path\\\"\\u003erecord.json\\u003c/parameter\\u003e\\n\\u003cparameter name=\\\"title\\\"\\u003eQuarterly Review\\u003c/parameter\\u003e\\n\\u003cparameter name=\\\"tags\\\"\\u003e[\\\"finance\\\",\\\"q3\\\",\\\"urgent\\\"]\\u003c/parameter\\u003e\\n\\u003cparameter name=\\\"priority\\\"\\u003ehigh\\u003c/parameter\\u003e\\n\\u003cparameter name=\\\"retries\\\"\\u003e4\\u003c/parameter\\u003e\\n\\u003cparameter name=\\\"owner\\\"\\u003e{\\\"name\\\":\\\"Dana Wu\\\",\\\"email\\\":\\\"dana@example.com\\\"}\\u003c/parameter\\u003e\\n\\u003c/function\\u003e\\n\\u003c/tool_call\\u003e\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787673947,\"id\":\"devshard-62359-1707\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"deepseek-ai/DeepSeek-V4-Flash-0731\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp4-f0993dd5\",\"usage\":{\"completion_tokens\":105,\"prompt_tokens\":1056,\"prompt_tokens_details\":null,\"total_tokens\":1161}}",
+      "parsed": {
+        "kind": "call",
+        "name": "create_record",
+        "dialect": "specified",
+        "args": {
+          "path": "record.json",
+          "title": "Quarterly Review",
+          "tags": "[\"finance\",\"q3\",\"urgent\"]",
+          "priority": "high",
+          "retries": "4",
+          "owner": "{\"name\":\"Dana Wu\",\"email\":\"dana@example.com\"}"
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 1465,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"DONE\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787673953,\"id\":\"devshard-62363-734\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"deepseek-ai/DeepSeek-V4-Flash-0731\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-d1135963\",\"usage\":{\"completion_tokens\":3,\"prompt_tokens\":1185,\"prompt_tokens_details\":null,\"total_tokens\":1188}}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "cellId": "grid_ds-direct_S4_T4",
+  "backend": "ds-direct",
+  "model": "deepseek-v4-flash",
+  "form": "S4",
+  "task": "T4",
+  "toolCount": 15,
+  "outcome": "OK",
+  "outcomeTolerant": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": false,
+    "reasoningStripped": false,
+    "truncatedReasoning": false,
+    "variantDialect": false,
+    "coercions": [
+      "tags:string->array",
+      "retries:string->integer",
+      "owner:string->object"
+    ],
+    "escapingUsed": false,
+    "paramSyntaxFailure": false,
+    "calledDistractor": false
+  },
+  "turns": 2,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 3049,
+      "raw": "{\"id\":\"74fdeb19-545f-458c-9867-f51c48fd6a7d\",\"object\":\"chat.completion\",\"created\":1787673965,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"<tool_call>\\n<function=create_record>\\n<parameter=path>record.json</parameter>\\n<parameter=title>Quarterly Review</parameter>\\n<parameter=tags>[\\\"finance\\\",\\\"q3\\\",\\\"urgent\\\"]</parameter>\\n<parameter=priority>high</parameter>\\n<parameter=retries>4</parameter>\\n<parameter=owner>{\\\"name\\\":\\\"Dana Wu\\\",\\\"email\\\":\\\"dana@example.com\\\"}</parameter>\\n</function>\\n</tool_call>\",\"reasoning_content\":\"The user wants me to create a JSON record at record.json with specific values. I should use the create_record tool with the given values. Let me make sure I escape any special characters if needed. The values are all plain strings, so no escaping should be needed for most, though I need to be careful with arrays and objects being in JSON format.\\n\\nLet me call create_record with:\\n- path: record.json\\n- title: Quarterly Review\\n- tags: [\\\"finance\\\", \\\"q3\\\", \\\"urgent\\\"]\\n- priority: high\\n- retries: 4\\n- owner: {\\\"name\\\": \\\"Dana Wu\\\", \\\"email\\\": \\\"dana@example.com\\\"}\"},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":1131,\"completion_tokens\":236,\"total_tokens\":1367,\"prompt_tokens_details\":{\"cached_tokens\":1024},\"completion_tokens_details\":{\"reasoning_tokens\":137},\"prompt_cache_hit_tokens\":1024,\"prompt_cache_miss_tokens\":107},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}",
+      "parsed": {
+        "kind": "call",
+        "name": "create_record",
+        "dialect": "specified",
+        "args": {
+          "path": "record.json",
+          "title": "Quarterly Review",
+          "tags": "[\"finance\",\"q3\",\"urgent\"]",
+          "priority": "high",
+          "retries": "4",
+          "owner": "{\"name\":\"Dana Wu\",\"email\":\"dana@example.com\"}"
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 1753,
+      "raw": "{\"id\":\"297d8196-46d0-4c63-9a37-ace418853a3d\",\"object\":\"chat.completion\",\"created\":1787673968,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"DONE\",\"reasoning_content\":\"The task is complete. The record was created successfully. I should reply with DONE.\"},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":1253,\"completion_tokens\":21,\"total_tokens\":1274,\"prompt_tokens_details\":{\"cached_tokens\":1152},\"completion_tokens_details\":{\"reasoning_tokens\":18},\"prompt_cache_hit_tokens\":1152,\"prompt_cache_miss_tokens\":101},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

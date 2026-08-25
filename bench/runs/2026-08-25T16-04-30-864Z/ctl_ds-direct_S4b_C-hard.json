@@ -1,0 +1,67 @@
+{
+  "cellId": "ctl_ds-direct_S4b_C-hard",
+  "backend": "ds-direct",
+  "model": "deepseek-v4-flash",
+  "form": "S4b",
+  "task": "T4",
+  "toolCount": 15,
+  "outcome": "OK",
+  "outcomeTolerant": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": false,
+    "reasoningStripped": false,
+    "truncatedReasoning": false,
+    "variantDialect": false,
+    "coercions": [
+      "tags:string->array",
+      "retries:string->integer",
+      "owner:string->object"
+    ],
+    "escapingUsed": false,
+    "paramSyntaxFailure": false,
+    "calledDistractor": false
+  },
+  "turns": 2,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 2844,
+      "raw": "{\"id\":\"664ca793-b534-4a6a-8f43-6f865997c9ac\",\"object\":\"chat.completion\",\"created\":1787673909,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"<tool_call>\\n<function name=\\\"create_record\\\">\\n<parameter name=\\\"path\\\">record.json</parameter>\\n<parameter name=\\\"title\\\">Quarterly Review</parameter>\\n<parameter name=\\\"tags\\\">[\\\"finance\\\",\\\"q3\\\",\\\"urgent\\\"]</parameter>\\n<parameter name=\\\"priority\\\">high</parameter>\\n<parameter name=\\\"retries\\\">4</parameter>\\n<parameter name=\\\"owner\\\">{\\\"name\\\":\\\"Dana Wu\\\",\\\"email\\\":\\\"dana@example.com\\\"}</parameter>\\n</function>\\n</tool_call>\",\"reasoning_content\":\"Need to create a JSON record using create_record. Fields: title Quarterly Review, tags [\\\"finance\\\",\\\"q3\\\",\\\"urgent\\\"], priority high, retries 4, owner object with name Dana Wu, email dana@example.com. Path record.json.\"},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":1135,\"completion_tokens\":157,\"total_tokens\":1292,\"prompt_tokens_details\":{\"cached_tokens\":1024},\"completion_tokens_details\":{\"reasoning_tokens\":52},\"prompt_cache_hit_tokens\":1024,\"prompt_cache_miss_tokens\":111},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}",
+      "parsed": {
+        "kind": "call",
+        "name": "create_record",
+        "dialect": "specified",
+        "args": {
+          "path": "record.json",
+          "title": "Quarterly Review",
+          "tags": "[\"finance\",\"q3\",\"urgent\"]",
+          "priority": "high",
+          "retries": "4",
+          "owner": "{\"name\":\"Dana Wu\",\"email\":\"dana@example.com\"}"
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 1735,
+      "raw": "{\"id\":\"f8bf2291-1e39-4daf-aa34-78bf75b4d70f\",\"object\":\"chat.completion\",\"created\":1787673912,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"DONE\",\"reasoning_content\":\"\"},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":1264,\"completion_tokens\":3,\"total_tokens\":1267,\"prompt_tokens_details\":{\"cached_tokens\":1024},\"completion_tokens_details\":{\"reasoning_tokens\":0},\"prompt_cache_hit_tokens\":1024,\"prompt_cache_miss_tokens\":240},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

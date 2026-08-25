@@ -1,0 +1,59 @@
+{
+  "cellId": "ctl_ds-direct_S4b_C-easy",
+  "backend": "ds-direct",
+  "model": "deepseek-v4-flash",
+  "form": "S4b",
+  "task": "T1",
+  "toolCount": 1,
+  "outcome": "OK",
+  "outcomeTolerant": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": false,
+    "reasoningStripped": false,
+    "truncatedReasoning": false,
+    "variantDialect": false,
+    "coercions": [],
+    "escapingUsed": false,
+    "paramSyntaxFailure": false,
+    "calledDistractor": false
+  },
+  "turns": 2,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 2174,
+      "raw": "{\"id\":\"5305b5ea-5fc8-44b5-9599-6149cc02d510\",\"object\":\"chat.completion\",\"created\":1787673901,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"<tool_call>\\n<function name=\\\"write_file\\\">\\n<parameter name=\\\"path\\\">report.txt</parameter>\\n<parameter name=\\\"content\\\">OK-7391</parameter>\\n</function>\\n</tool_call>\",\"reasoning_content\":\"We need to write file report.txt with exact content \\\"OK-7391\\\". Use write_file.\"},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":427,\"completion_tokens\":63,\"total_tokens\":490,\"prompt_tokens_details\":{\"cached_tokens\":0},\"completion_tokens_details\":{\"reasoning_tokens\":20},\"prompt_cache_hit_tokens\":0,\"prompt_cache_miss_tokens\":427},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}",
+      "parsed": {
+        "kind": "call",
+        "name": "write_file",
+        "dialect": "specified",
+        "args": {
+          "path": "report.txt",
+          "content": "OK-7391"
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 1764,
+      "raw": "{\"id\":\"08eb0479-e8cf-4697-8adb-9ea4bb2125a4\",\"object\":\"chat.completion\",\"created\":1787673903,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"DONE\",\"reasoning_content\":\"The file was written successfully. The task is complete.\"},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":497,\"completion_tokens\":14,\"total_tokens\":511,\"prompt_tokens_details\":{\"cached_tokens\":384},\"completion_tokens_details\":{\"reasoning_tokens\":11},\"prompt_cache_hit_tokens\":384,\"prompt_cache_miss_tokens\":113},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

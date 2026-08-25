@@ -1,0 +1,12 @@
+{
+  "cellId": "base_ds-direct_T4",
+  "backend": "ds-direct",
+  "model": "deepseek-v4-flash",
+  "form": "S0",
+  "task": "T4",
+  "outcome": "OK",
+  "outcomeTolerant": "OK",
+  "errorDetail": null,
+  "answer": "{\"title\": \"Quarterly Review\", \"tags\": [\"finance\", \"q3\", \"urgent\"], \"priority\": \"high\", \"retries\": 4, \"owner\": {\"name\": \"Dana Wu\", \"email\": \"dana@example.com\"}}",
+  "raw": "{\"id\":\"05c3c04e-942a-48b5-bd1a-6d66bd0ce864\",\"object\":\"chat.completion\",\"created\":1787673915,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\\"title\\\": \\\"Quarterly Review\\\", \\\"tags\\\": [\\\"finance\\\", \\\"q3\\\", \\\"urgent\\\"], \\\"priority\\\": \\\"high\\\", \\\"retries\\\": 4, \\\"owner\\\": {\\\"name\\\": \\\"Dana Wu\\\", \\\"email\\\": \\\"dana@example.com\\\"}}\",\"reasoning_content\":\"We need to output JSON object with specified properties. Title: \\\"Quarterly Review\\\". Tags: [\\\"finance\\\", \\\"q3\\\", \\\"urgent\\\"] in that order. Priority: \\\"high\\\". Retries: 4. Owner: object with name \\\"Dana Wu\\\" and email \\\"dana@example.com\\\". Just JSON.\"},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":148,\"completion_tokens\":125,\"total_tokens\":273,\"prompt_tokens_details\":{\"cached_tokens\":128},\"completion_tokens_details\":{\"reasoning_tokens\":67},\"prompt_cache_hit_tokens\":128,\"prompt_cache_miss_tokens\":20},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}"
+}

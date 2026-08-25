@@ -1,0 +1,12 @@
+{
+  "cellId": "base_ds-direct_T6",
+  "backend": "ds-direct",
+  "model": "deepseek-v4-flash",
+  "form": "S0",
+  "task": "T6",
+  "outcome": "OK",
+  "outcomeTolerant": "OK",
+  "errorDetail": null,
+  "answer": "{\"key\": \"value\", \"n\": 3}\n<tag attr=\"x\">body</tag>\nquote: \" backslash: \\ brace: }",
+  "raw": "{\"id\":\"9acfe580-5dbf-4e72-bec0-5ae3ccc120b4\",\"object\":\"chat.completion\",\"created\":1787673918,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\\"key\\\": \\\"value\\\", \\\"n\\\": 3}\\n<tag attr=\\\"x\\\">body</tag>\\nquote: \\\" backslash: \\\\ brace: }\",\"reasoning_content\":\"We need to output exactly three lines as specified. The first line is a JSON-like structure. Second line is an XML-like tag. Third line has quote, backslash, brace. Ensure no extra text. Use newlines between. Let me produce exactly.\"},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":138,\"completion_tokens\":85,\"total_tokens\":223,\"prompt_tokens_details\":{\"cached_tokens\":128},\"completion_tokens_details\":{\"reasoning_tokens\":52},\"prompt_cache_hit_tokens\":128,\"prompt_cache_miss_tokens\":10},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}"
+}

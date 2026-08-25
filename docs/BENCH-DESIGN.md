@@ -183,3 +183,58 @@ sensitivity that does not exist. In Slice 0 that happened at the level of the *e
 and both controls passed while the grid measured nothing. A third control at grid difficulty
 was added for Slice 0.1. The general form of the rule is: **a control can only speak to the
 range it spans, and a grid needs a control at its own hardest point, not below it.**
+
+---
+
+## Pre-registration, 2026-08-25 — Slice 0.3, dialect swap
+
+Written before the cells run, and before the parser change it requires. Slice 0.2's headline
+was that the prompt-XML form scored 0.74 strict against 0.96 / 1.00 for the other two, and
+that **the whole deficit was one model**. Two explanations survive that result, and Slice 0.2
+cannot separate them.
+
+- **H1, form effect.** Prompt-embedded XML is intrinsically harder to conform to. The deficit
+  is a property of the envelope.
+- **H2, dialect prior.** Which XML dialect a model emits is a fingerprint of the harness it was
+  post-trained against. Prompt-embedded XML has **no canonical dialect**, so any dialect the
+  scaffold specifies will mismatch some models' priors. The deficit is a property of the
+  ecosystem, not of the envelope.
+
+### Why the existing sample cannot decide it
+
+The sampling unit is the **model**, not the cell. Seven tasks inside one backend share a
+checkpoint and a dialect prior; they are not seven independent observations. `S4 = 0.74` is
+therefore "one of four clusters failed", and **adding tasks adds no power** — they are
+within-cluster. Slice 0.2's own limits section said n was too small; the correction here is
+that the fix is not a bigger between-model sample, which available credentials cannot supply
+anyway (three independent model lineages are reachable).
+
+### The design
+
+Add `S4b`: identical to `S4` in every respect except that the prompt specifies the attribute
+dialect `<function name="X"><parameter name="Y">` rather than `<function=X><parameter=Y>`.
+Each backend is then **its own control**, and the comparison is within-subject.
+
+Predictions, stated now:
+
+| | `S4` (positional spec) | `S4b` (attribute spec) |
+|---|---|---|
+| **H1** | MiniMax low, others high | MiniMax low, others high — *no change* |
+| **H2** | MiniMax low, others high | **MiniMax high, others low** — a crossover |
+
+A crossover interaction is the discriminating observation. It is hard to produce by chance and
+hard to produce by parser leniency, which is why it is worth the run.
+
+### The one change that must be correct first
+
+`variantDialect` currently hard-codes "attribute dialect = variant". Under `S4b` that inverts.
+**Dialect conformance must be scored relative to the dialect the form itself specified**,
+or the metric would manufacture exactly the artifact this slice exists to test. This is the
+single highest-risk line in the slice, and it is stated here before it is written.
+
+### What would make this slice uninformative
+
+- Both forms at ceiling for every backend — the `S4` deficit was a one-run accident.
+- MiniMax low on both — consistent with H1, but also with "this model is bad at XML for some
+  third reason"; H1 would then need a fourth lineage to survive, which credentials do not
+  currently allow. That limit is acknowledged in advance rather than discovered afterwards.

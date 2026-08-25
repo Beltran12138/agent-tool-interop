@@ -9,6 +9,8 @@
 | `2026-08-25T12-42-28-766Z` | Slice 0.2, **first attempt, superseded**. Kept because its traces are what revealed the two parser defects: the dropped second `<function>` block and the parameter-syntax failure misread as argument omission. Its numbers are not the reported ones. |
 | `2026-08-25T13-59-18-477Z` | **Turn-budget experiment.** Only `T7`, `--max-turns=10`. Shows `ds-direct/S4/T7` going F4 → OK while `minimax/S4/T7` stays F2, separating a budget effect from a conformance effect by moving a parameter. |
 | `2026-08-25T14-05-02-161Z` | **Slice 0.2.** 148 cells, post-fix. The reported run. `../FINDINGS-SLICE0.2.md`. |
+| `2026-08-25T15-59-54-215Z` | 4-cell smoke test for the dialect-swap pipeline, run before the grid. Kept because it is where the `S4`→`S4b` signature first appears on MiniMax, and because a smoke test that is discarded once it agrees with the hypothesis is not a smoke test. |
+| `2026-08-25T16-04-30-864Z` | **Slice 0.3.** Dialect swap, `S1`/`S4`/`S4b` × 5 tasks, `--max-turns=10`. `../FINDINGS-SLICE0.3.md`. Contains `grid_ds-gateway_S4b_T8`, the cleanest trace of data-to-control syntax contamination: two conformant turns, then a turn in the dialect the model had just been handed as file content. |
 | `identity-probe.json` | Endpoint identity probe: 8 deterministic prompts to both DeepSeek serving paths. 6/7 byte-identical, 1 divergent. |
 
 Three runs are deliberately absent: one contaminated by a gateway outage (52 ERROR cells in

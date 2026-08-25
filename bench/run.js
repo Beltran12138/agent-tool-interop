@@ -271,6 +271,13 @@ async function main() {
 
   const forms = FORMS.filter((f) => !onlyForms || onlyForms.has(f.id));
   const tasks = TASKS.filter((t) => !onlyTasks || onlyTasks.has(t.id));
+  // A mistyped id used to silently select nothing, which reads downstream as a
+  // form or task that produced no data rather than one that never ran.
+  for (const [label, req, got] of [['form', onlyForms, forms], ['task', onlyTasks, tasks]]) {
+    if (!req) continue;
+    const missing = [...req].filter((id) => !got.some((x) => x.id === id));
+    if (missing.length) { console.error(`\nunknown ${label} id(s): ${missing.join(', ')}`); process.exit(2); }
+  }
   const allToolNames = TOOLS.map((t) => t.name);
 
   // Backends run in parallel; cells within a backend run serially so no single

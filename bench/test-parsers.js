@@ -11,7 +11,7 @@
  * unreadable).
  */
 
-const { S1, S4, S5, stripReasoning } = require('./schemas');
+const { S1, S4, S4B, S5, stripReasoning } = require('./schemas');
 
 let pass = 0;
 const failures = [];
@@ -226,6 +226,50 @@ eq(S5.parse('{"done": true}').kind, 'none', 'S5: done sentinel still none after 
      'S4: a single call yields a one-element calls array (the form does not FORBID more)');
 }
 
+/* --- Slice 0.3: dialect conformance is RELATIVE TO THE FORM'S OWN SPEC ----
+ *
+ * These are the assertions that guard the one line able to invalidate the whole
+ * slice. If `variant` stayed hard-coded to "attribute dialect", then S4b — which
+ * ASKS for the attribute dialect — would score every conformant call as a
+ * violation and every violation as conformant, producing a crossover out of
+ * nothing. The crossover is the finding, so the metric that detects it must not
+ * be able to fabricate it.
+ */
+const POSITIONAL = '<tool_call><function=read_file><parameter=path>a</parameter></function></tool_call>';
+const ATTRIBUTE = '<tool_call><function name="read_file"><parameter name="path">a</parameter></function></tool_call>';
+
+{
+  eq(S4.parse(POSITIONAL).dialect, 'specified', 'S4 (asks positional): positional call conforms');
+  eq(S4.parse(ATTRIBUTE).dialect, 'variant', 'S4 (asks positional): attribute call is a variant');
+  eq(S4B.parse(ATTRIBUTE).dialect, 'specified', 'S4b (asks attribute): attribute call conforms');
+  eq(S4B.parse(POSITIONAL).dialect, 'variant', 'S4b (asks attribute): positional call is a variant');
+}
+{
+  // Same bytes, opposite verdicts, and the args must be identical either way:
+  // conformance is a separate axis from drivability, which is the entire reason
+  // strict and tolerant are both reported.
+  eq([S4.parse(ATTRIBUTE).args.path, S4B.parse(POSITIONAL).args.path], ['a', 'a'],
+     'dialect verdict does not affect the arguments actually parsed');
+  eq(S4.parse(ATTRIBUTE).dialectsUsed, ['attribute'], 'S4: which dialect was used is recorded, not just that it mismatched');
+  eq(S4B.parse(POSITIONAL).dialectsUsed, ['positional'], 'S4b: same, mirrored');
+}
+{
+  // A block whose function tag and parameter tags disagree conforms to neither
+  // spec. Recording it as conformant under whichever half matched would hide a
+  // real malformation behind a passing dialect check.
+  const mixed = '<tool_call><function=read_file><parameter name="path">a</parameter></function></tool_call>';
+  eq(S4.parse(mixed).dialect, 'variant', 'S4: mixed-dialect block does not conform');
+  eq(S4B.parse(mixed).dialect, 'variant', 'S4b: mixed-dialect block does not conform either');
+  eq(S4.parse(mixed).dialectsUsed, ['attribute', 'positional'], 'mixed block reports both syntaxes');
+}
+{
+  // The paramSyntaxFailure detector must stay dialect-agnostic: the two
+  // malformations observed in the wild were captured under the positional spec,
+  // and they are just as unreadable under the attribute spec.
+  const brokenQuote = '<tool_call><function name="list_dir"><parameter name="path>.</parameter></function></tool_call>';
+  eq(S4B.parse(brokenQuote).paramSyntaxFailure, true, 'S4b: unterminated quote is still a syntax failure, not a missing argument');
+  eq(Object.keys(S4B.parse(brokenQuote).args).length, 0, 'S4b: nothing parses out of it');
+}
 
 /* ------------------------------------------------------------------------- */
 console.log(`\nparser assertions: ${pass} passed, ${failures.length} failed`);

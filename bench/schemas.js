@@ -153,11 +153,37 @@ const S1 = {
   },
 };
 
-// --- S4: prompt-embedded XML (the shape shipped by real scaffolds) ----------
+// --- S4 family: prompt-embedded XML (the shape shipped by real scaffolds) ---
+//
+// TWO FORMS, ONE DIFFERENCE. `S4` specifies the positional dialect
+// `<function=X><parameter=Y>`; `S4b` specifies the attribute dialect
+// `<function name="X"><parameter name="Y">`. Everything else — wording, escaping
+// convention, one-call-at-a-time instruction, result rendering — is identical.
+//
+// The point is that prompt-embedded XML has no canonical dialect, so whichever
+// one a scaffold picks, some models were post-trained against the other. Slice
+// 0.2 measured a deficit on `S4` that was entirely one model, and could not tell
+// "this envelope is hard" from "this envelope's dialect was not that model's".
+// Running both dialects makes each model its own control.
+//
+// CONFORMANCE IS SCORED RELATIVE TO THE FORM'S OWN SPEC. The parser detects
+// which dialect was *used* and the form declares which was *asked for*; variant
+// means they disagree. Hard-coding "attribute = variant" would have inverted the
+// metric under `S4b` and manufactured precisely the artifact being tested.
 const XML_MARKER = /<tool_call>/i;
-const S4 = {
-  id: 'S4',
-  label: 'prompt-embedded XML tool schema',
+
+const XML_DIALECTS = {
+  positional: { fn: 'TOOL_NAME', open: (n) => `<function=${n}>`, param: (n) => `<parameter=${n}>` },
+  attribute: { fn: 'TOOL_NAME', open: (n) => `<function name="${n}">`, param: (n) => `<parameter name="${n}">` },
+};
+
+function makeXmlForm({ id, label, specDialect }) {
+  const D = XML_DIALECTS[specDialect];
+  if (!D) throw new Error(`unknown XML dialect: ${specDialect}`);
+  return {
+  id,
+  label,
+  specDialect,
   buildRequest(tools) {
     return {
       toolsField: null,
@@ -170,14 +196,14 @@ ${describeToolsHuman(tools)}
 To call a tool, emit EXACTLY this structure and nothing else after it:
 
 <tool_call>
-<function=TOOL_NAME>
-<parameter=PARAM_NAME>value</parameter>
+${D.open('TOOL_NAME')}
+${D.param('PARAM_NAME')}value</parameter>
 </function>
 </tool_call>
 
 Every parameter value is text. A parameter that is not a plain string — an array,
 an object, or a number — must be written as its JSON encoding, for example
-<parameter=tags>["a","b"]</parameter> or <parameter=retries>4</parameter>.
+${D.param('tags')}["a","b"]</parameter> or ${D.param('retries')}4</parameter>.
 
 Inside a parameter value, escape the three XML metacharacters, otherwise the
 value cannot be told apart from the markup around it:
@@ -227,7 +253,7 @@ Emit one tool call at a time and then stop. The result will be given to you in a
     const fnRe = /<function(?:=([^>\s]+)|\s+name\s*=\s*["']([^"']+)["'])\s*>([\s\S]*?)(?=<function[=\s]|$)/gi;
     let fm;
     while ((fm = fnRe.exec(body)) !== null) {
-      fnBlocks.push({ name: fm[1] || fm[2], dialect: fm[1] ? 'specified' : 'variant', body: fm[3] });
+      fnBlocks.push({ name: fm[1] || fm[2], used: fm[1] ? 'positional' : 'attribute', body: fm[3] });
     }
     if (fnBlocks.length === 0) return { kind: 'malformed', detail: 'no function name in any known dialect' };
 
@@ -238,12 +264,20 @@ Emit one tool call at a time and then stop. The result will be given to you in a
     const parseOne = (fb, idx) => {
       const rawArgs = {};
       let m;
-      const specified = /<parameter=([^>\s]+)\s*>([\s\S]*?)<\/parameter>/gi;
-      while ((m = specified.exec(fb.body)) !== null) rawArgs[m[1]] = m[2];
+      // Both dialects are read. Which syntaxes actually appeared is collected —
+      // including the function tag's own — and conformance is decided afterwards
+      // against this form's spec, never against a hard-coded dialect.
+      const syntaxes = new Set([fb.used]);
+      const positional = /<parameter=([^>\s]+)\s*>([\s\S]*?)<\/parameter>/gi;
+      while ((m = positional.exec(fb.body)) !== null) { rawArgs[m[1]] = m[2]; syntaxes.add('positional'); }
       const attr = /<parameter\s+name\s*=\s*["']([^"']+)["']\s*>([\s\S]*?)<\/parameter>/gi;
       while ((m = attr.exec(fb.body)) !== null) {
-        if (!(m[1] in rawArgs)) { rawArgs[m[1]] = m[2]; fb.dialect = 'variant'; }
+        if (!(m[1] in rawArgs)) rawArgs[m[1]] = m[2];
+        syntaxes.add('attribute');
       }
+      fb.syntaxes = [...syntaxes].sort();
+      // Conformant only if every syntax observed is the one asked for.
+      fb.dialect = fb.syntaxes.every((s) => s === specDialect) ? 'specified' : 'variant';
 
       // PARAMETER SYNTAX FAILURE, distinct from "no parameters were given".
       // Observed in the wild: `<parameter name="path>.</parameter>` (quote opened,
@@ -261,16 +295,22 @@ Emit one tool call at a time and then stop. The result will be given to you in a
         args[k] = v.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
       }
       if (fb.dialect === 'variant') dialect = 'variant';
-      return { name: fb.name, args, id: `xml_${idx}`, dialect: fb.dialect };
+      return { name: fb.name, args, id: `xml_${idx}`, dialect: fb.dialect, syntaxes: fb.syntaxes };
     };
 
     const calls = fnBlocks.map(parseOne);
+    // The raw syntaxes are surfaced too: "variant" says the call did not match
+    // the spec, `dialectsUsed` says which dialect it matched instead. Slice 0.3
+    // needs the second to tell a dialect prior from an envelope effect.
+    const dialectsUsed = [...new Set(calls.flatMap((c) => c.syntaxes))].sort();
     return {
       kind: 'call',
       name: calls[0].name,
       args: calls[0].args,
       id: calls[0].id,
       dialect,
+      dialectsUsed,
+      specDialect,
       escapingUsed,
       paramSyntaxFailure,
       calls,
@@ -279,7 +319,19 @@ Emit one tool call at a time and then stop. The result will be given to you in a
   renderResult(call, result) {
     return { role: 'user', content: `<tool_result>\n${JSON.stringify(result)}\n</tool_result>` };
   },
-};
+  };
+}
+
+const S4 = makeXmlForm({
+  id: 'S4',
+  label: 'prompt-embedded XML tool schema (positional dialect)',
+  specDialect: 'positional',
+});
+const S4B = makeXmlForm({
+  id: 'S4b',
+  label: 'prompt-embedded XML tool schema (attribute dialect)',
+  specDialect: 'attribute',
+});
 
 // --- S5: prompt-embedded JSON, no native tool field at all (the floor) ------
 // The marker must cover every dialect the parser accepts. A marker narrower
@@ -352,4 +404,4 @@ JSON object. When the task is complete, reply with {"done": true}.`,
   },
 };
 
-module.exports = { S0, S1, S4, S5, stripReasoning, FORMS: [S1, S4, S5] };
+module.exports = { S0, S1, S4, S4B, S5, stripReasoning, FORMS: [S1, S4, S4B, S5] };

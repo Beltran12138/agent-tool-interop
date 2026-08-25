@@ -1,0 +1,37 @@
+{
+  "cellId": "ctl_kimi_S4_C-dense",
+  "backend": "kimi",
+  "model": "moonshotai/Kimi-K2.6",
+  "form": "S4",
+  "task": "T1",
+  "toolCount": 15,
+  "outcome": "ERROR",
+  "outcomeTolerant": "ERROR",
+  "errorDetail": "network_error fetch failed",
+  "verify": null,
+  "flags": {
+    "anyCall": false,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": false,
+    "calledOtherKnown": false,
+    "reasoningStripped": false,
+    "truncatedReasoning": false,
+    "variantDialect": false,
+    "coercions": [],
+    "escapingUsed": false,
+    "paramSyntaxFailure": false,
+    "calledDistractor": false
+  },
+  "turns": 1,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "network_error",
+      "attempts": 3,
+      "ms": 5025,
+      "error": "fetch failed"
+    }
+  ]
+}
