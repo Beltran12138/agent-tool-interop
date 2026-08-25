@@ -1,0 +1,58 @@
+{
+  "cellId": "grid_minimax_S4_T3",
+  "backend": "minimax",
+  "model": "MiniMaxAI/MiniMax-M2.7",
+  "form": "S4",
+  "task": "T3",
+  "toolCount": 15,
+  "outcome": "F2",
+  "outcomeTolerant": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": false,
+    "reasoningStripped": true,
+    "truncatedReasoning": false,
+    "variantDialect": true,
+    "coercions": [],
+    "escapingUsed": false,
+    "calledDistractor": false
+  },
+  "turns": 2,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 5153,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003eThe user wants me to add a new line containing exactly \\\"DONE\\\" to the end of log.txt. I should use the append_file function to add this line without losing the existing content.\\n\\u003c/think\\u003e\\n\\n\\u003ctool_call\\u003e\\n\\u003cfunction=append_file\\u003e\\n\\u003cparameter name=\\\"path\\\"\\u003elog.txt\\u003c/parameter\\u003e\\n\\u003cparameter name=\\\"content\\\"\\u003e\\nDONE\\u003c/parameter\\u003e\\n\\u003c/function\\u003e\\n\\u003c/tool_call\\u003e\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\",\"tool_calls\":[]},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787662137,\"id\":\"devshard-62001-218\",\"kv_transfer_params\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.23.0-30b587b4\",\"usage\":{\"completion_tokens\":81,\"prompt_tokens\":1009,\"prompt_tokens_details\":null,\"total_tokens\":1090}}",
+      "parsed": {
+        "kind": "call",
+        "name": "append_file",
+        "dialect": "variant",
+        "args": {
+          "path": "log.txt",
+          "content": "\nDONE"
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 2363,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003eThe file has been successfully updated with the new line containing \\\"DONE\\\" appended to the end of log.txt. The task is complete.\\n\\u003c/think\\u003e\\n\\nDONE\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787662142,\"id\":\"devshard-62021-325\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp2-0cb5bbe5\",\"usage\":{\"completion_tokens\":33,\"prompt_tokens\":1082,\"prompt_tokens_details\":null,\"total_tokens\":1115}}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

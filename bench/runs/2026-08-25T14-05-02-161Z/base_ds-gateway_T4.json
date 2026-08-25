@@ -1,0 +1,12 @@
+{
+  "cellId": "base_ds-gateway_T4",
+  "backend": "ds-gateway",
+  "model": "deepseek-ai/DeepSeek-V4-Flash-0731",
+  "form": "S0",
+  "task": "T4",
+  "outcome": "OK",
+  "outcomeTolerant": "OK",
+  "errorDetail": null,
+  "answer": "{\"title\": \"Quarterly Review\", \"tags\": [\"finance\", \"q3\", \"urgent\"], \"priority\": \"high\", \"retries\": 4, \"owner\": {\"name\": \"Dana Wu\", \"email\": \"dana@example.com\"}}",
+  "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"{\\\"title\\\": \\\"Quarterly Review\\\", \\\"tags\\\": [\\\"finance\\\", \\\"q3\\\", \\\"urgent\\\"], \\\"priority\\\": \\\"high\\\", \\\"retries\\\": 4, \\\"owner\\\": {\\\"name\\\": \\\"Dana Wu\\\", \\\"email\\\": \\\"dana@example.com\\\"}}\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787666716,\"id\":\"devshard-62337-261\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"deepseek-ai/DeepSeek-V4-Flash-0731\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-16d5fe49\",\"usage\":{\"completion_tokens\":58,\"prompt_tokens\":69,\"prompt_tokens_details\":null,\"total_tokens\":127}}"
+}

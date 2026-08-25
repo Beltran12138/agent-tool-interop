@@ -41,6 +41,23 @@ eq(code({ anyArgViolation: true }, { ok: false, detail: 'x' }), 'F2',
 eq(code({ anyCall: true, anyUnknownTool: true }, { ok: false, detail: 'x does not exist' }), 'F1',
    'only ever called a nonexistent tool is F1');
 
+/* -- strict mode (the Slice 0.2 dependent variable) ----------------------- */
+// Under tolerance the harness silently absorbs syntax the prompt never
+// specified, so a cell can read OK that a real scaffold would have rejected
+// outright. Strict scoring moves conformance into the outcome. Both codes are
+// always reported; neither alone is honest.
+const okVariant = { ...base, anyCall: true, calledExpected: true, variantDialect: true };
+eq(classify({ flags: okVariant, verify: { ok: true }, strict: true }).outcome, 'F2',
+   'strict: a success reached via a non-specified dialect is F2');
+eq(classify({ flags: okVariant, verify: { ok: true } }).outcome, 'OK',
+   'tolerant: the same cell is OK');
+eq(classify({ flags: okVariant, verify: { ok: true }, strict: true }).strictRejected, true,
+   'strict rejection is flagged, not silent');
+eq(classify({ flags: { ...base, anyCall: true, calledExpected: true }, verify: { ok: true }, strict: true }).outcome, 'OK',
+   'strict does not penalise a cell that used the specified dialect');
+eq(classify({ flags: okVariant, verify: null, transportOutcome: 'ERROR', strict: true }).outcome, 'ERROR',
+   'strict never converts a transport failure into a model verdict');
+
 console.log(`\nclassifier assertions: ${pass} passed, ${failures.length} failed`);
 if (failures.length) { for (const f of failures) console.error('  FAIL ' + f); process.exit(1); }
 console.log('all classifier assertions green\n');

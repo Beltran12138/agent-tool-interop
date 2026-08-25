@@ -1,0 +1,94 @@
+{
+  "cellId": "grid_ds-direct_S1_T7",
+  "backend": "ds-direct",
+  "model": "deepseek-v4-flash",
+  "form": "S1",
+  "task": "T7",
+  "toolCount": 15,
+  "outcome": "OK",
+  "outcomeTolerant": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": true,
+    "reasoningStripped": false,
+    "truncatedReasoning": false,
+    "variantDialect": false,
+    "coercions": [],
+    "escapingUsed": false,
+    "calledDistractor": false,
+    "parallelCalls": 2
+  },
+  "turns": 4,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 1497,
+      "raw": "{\"id\":\"dab4ea55-b771-4e13-8916-7816bc12d172\",\"object\":\"chat.completion\",\"created\":1787661817,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"\",\"reasoning_content\":\"Let me start by listing the directory to see what files are there.\",\"tool_calls\":[{\"index\":0,\"id\":\"call_00_jbFej4AS6izi7AqoY3KN4693\",\"type\":\"function\",\"function\":{\"name\":\"list_dir\",\"arguments\":\"{\\\"path\\\": \\\".\\\"}\"}}]},\"logprobs\":null,\"finish_reason\":\"tool_calls\"}],\"usage\":{\"prompt_tokens\":1706,\"completion_tokens\":57,\"total_tokens\":1763,\"prompt_tokens_details\":{\"cached_tokens\":1664},\"completion_tokens_details\":{\"reasoning_tokens\":14},\"prompt_cache_hit_tokens\":1664,\"prompt_cache_miss_tokens\":42},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}",
+      "parsed": {
+        "kind": "call",
+        "name": "list_dir",
+        "dialect": "specified",
+        "args": {
+          "path": "."
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 1438,
+      "raw": "{\"id\":\"41f9eb33-3384-45f6-bec2-2b7f4c1b45f7\",\"object\":\"chat.completion\",\"created\":1787661819,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"\",\"reasoning_content\":\"There are a.txt and b.txt (both .txt files), and notes.md. Let me read the .txt files.\",\"tool_calls\":[{\"index\":0,\"id\":\"call_00_WY0ZeFG7rbcMmWvJOtNb2877\",\"type\":\"function\",\"function\":{\"name\":\"read_file\",\"arguments\":\"{\\\"path\\\": \\\"a.txt\\\"}\"}},{\"index\":1,\"id\":\"call_01_0xCx7aPk7MjpOFSDZv9t9062\",\"type\":\"function\",\"function\":{\"name\":\"read_file\",\"arguments\":\"{\\\"path\\\": \\\"b.txt\\\"}\"}}]},\"logprobs\":null,\"finish_reason\":\"tool_calls\"}],\"usage\":{\"prompt_tokens\":1791,\"completion_tokens\":101,\"total_tokens\":1892,\"prompt_tokens_details\":{\"cached_tokens\":1664},\"completion_tokens_details\":{\"reasoning_tokens\":25},\"prompt_cache_hit_tokens\":1664,\"prompt_cache_miss_tokens\":127},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}",
+      "parsed": {
+        "kind": "call",
+        "name": "read_file",
+        "dialect": "specified",
+        "args": {
+          "path": "a.txt"
+        }
+      },
+      "validation": [
+        "ok",
+        "ok"
+      ]
+    },
+    {
+      "turn": 2,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 1446,
+      "raw": "{\"id\":\"659f7a8c-1110-4555-be2b-a3bd02c2fc81\",\"object\":\"chat.completion\",\"created\":1787661820,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"\",\"reasoning_content\":\"a.txt contains 17, b.txt contains 25. Sum = 42. Write to total.txt as digits only.\",\"tool_calls\":[{\"index\":0,\"id\":\"call_00_IEq6OlqILzzZ8iX7WClQ8037\",\"type\":\"function\",\"function\":{\"name\":\"write_file\",\"arguments\":\"{\\\"path\\\": \\\"total.txt\\\", \\\"content\\\": \\\"42\\\"}\"}}]},\"logprobs\":null,\"finish_reason\":\"tool_calls\"}],\"usage\":{\"prompt_tokens\":1930,\"completion_tokens\":86,\"total_tokens\":2016,\"prompt_tokens_details\":{\"cached_tokens\":1792},\"completion_tokens_details\":{\"reasoning_tokens\":25},\"prompt_cache_hit_tokens\":1792,\"prompt_cache_miss_tokens\":138},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}",
+      "parsed": {
+        "kind": "call",
+        "name": "write_file",
+        "dialect": "specified",
+        "args": {
+          "path": "total.txt",
+          "content": "42"
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 3,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 1210,
+      "raw": "{\"id\":\"58d46813-4826-4b85-9956-c96c54c8b4d2\",\"object\":\"chat.completion\",\"created\":1787661821,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"Done. I listed the directory and found `a.txt`, `b.txt`, and `notes.md`. Reading the `.txt` files:\\n\\n- `a.txt` = 17\\n- `b.txt` = 25\\n\\nSum = 42, which I wrote as digits only into `total.txt`.\",\"reasoning_content\":\"\"},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":2044,\"completion_tokens\":63,\"total_tokens\":2107,\"prompt_tokens_details\":{\"cached_tokens\":1920},\"completion_tokens_details\":{\"reasoning_tokens\":0},\"prompt_cache_hit_tokens\":1920,\"prompt_cache_miss_tokens\":124},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

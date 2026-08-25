@@ -1,0 +1,58 @@
+{
+  "cellId": "grid_ds-direct_S4_T1",
+  "backend": "ds-direct",
+  "model": "deepseek-v4-flash",
+  "form": "S4",
+  "task": "T1",
+  "toolCount": 15,
+  "outcome": "OK",
+  "outcomeTolerant": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": false,
+    "reasoningStripped": false,
+    "truncatedReasoning": false,
+    "variantDialect": false,
+    "coercions": [],
+    "escapingUsed": false,
+    "calledDistractor": false
+  },
+  "turns": 2,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 1527,
+      "raw": "{\"id\":\"7f6c7114-77c2-4b3b-a626-cbe20a525573\",\"object\":\"chat.completion\",\"created\":1787661839,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"<tool_call>\\n<function=write_file>\\n<parameter=path>report.txt</parameter>\\n<parameter=content>OK-7391</parameter>\\n</function>\\n</tool_call>\",\"reasoning_content\":\"We need to create a file named report.txt with content exactly \\\"OK-7391\\\". Use write_file.\"},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":1076,\"completion_tokens\":62,\"total_tokens\":1138,\"prompt_tokens_details\":{\"cached_tokens\":1024},\"completion_tokens_details\":{\"reasoning_tokens\":22},\"prompt_cache_hit_tokens\":1024,\"prompt_cache_miss_tokens\":52},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}",
+      "parsed": {
+        "kind": "call",
+        "name": "write_file",
+        "dialect": "specified",
+        "args": {
+          "path": "report.txt",
+          "content": "OK-7391"
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 1137,
+      "raw": "{\"id\":\"f2426474-862a-45e4-8ed2-217f185aa825\",\"object\":\"chat.completion\",\"created\":1787661840,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"DONE\",\"reasoning_content\":\"The file was written successfully. The task is complete.\"},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":1143,\"completion_tokens\":14,\"total_tokens\":1157,\"prompt_tokens_details\":{\"cached_tokens\":1024},\"completion_tokens_details\":{\"reasoning_tokens\":11},\"prompt_cache_hit_tokens\":1024,\"prompt_cache_miss_tokens\":119},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

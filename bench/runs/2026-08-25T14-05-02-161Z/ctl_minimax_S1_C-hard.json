@@ -1,0 +1,70 @@
+{
+  "cellId": "ctl_minimax_S1_C-hard",
+  "backend": "minimax",
+  "model": "MiniMaxAI/MiniMax-M2.7",
+  "form": "S1",
+  "task": "T4",
+  "toolCount": 15,
+  "outcome": "OK",
+  "outcomeTolerant": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": false,
+    "reasoningStripped": true,
+    "truncatedReasoning": true,
+    "variantDialect": false,
+    "coercions": [],
+    "escapingUsed": false,
+    "paramSyntaxFailure": false,
+    "calledDistractor": false
+  },
+  "turns": 2,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 387,
+      "raw": "{\"choices\":[{\"finish_reason\":\"tool_calls\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003eThe user wants me to create a JSON record with specific values. I should use the create_record function to do this. Let me map out the parameters:\\n\\n- title: \\\"Quarterly Review\\\"\\n- tags: [\\\"finance\\\", \\\"q3\\\", \\\"urgent\\\"]\\n- priority: \\\"high\\\"\\n- retries: 4\\n- owner: {\\\"name\\\": \\\"Dana Wu\\\", \\\"email\\\": \\\"dana@example.com\\\"}\\n- path: \\\"record.json\\\"\\n\\nI'll use the create_record function with these exact parameters.\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\",\"tool_calls\":[{\"function\":{\"arguments\":\"{\\\"owner\\\": {\\\"email\\\": \\\"dana@example.com\\\", \\\"name\\\": \\\"Dana Wu\\\"}, \\\"path\\\": \\\"record.json\\\", \\\"priority\\\": \\\"high\\\", \\\"retries\\\": 4, \\\"tags\\\": [\\\"finance\\\", \\\"q3\\\", \\\"urgent\\\"], \\\"title\\\": \\\"Quarterly Review\\\"}\",\"name\":\"create_record\"},\"id\":\"chatcmpl-tool-b39570441190c2fc\",\"type\":\"function\"}]},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787666675,\"id\":\"devshard-62001-288\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp2-0cb5bbe5\",\"usage\":{\"completion_tokens\":205,\"prompt_tokens\":1595,\"prompt_tokens_details\":null,\"total_tokens\":1800}}",
+      "parsed": {
+        "kind": "call",
+        "name": "create_record",
+        "dialect": "specified",
+        "args": {
+          "owner": {
+            "email": "dana@example.com",
+            "name": "Dana Wu"
+          },
+          "path": "record.json",
+          "priority": "high",
+          "retries": 4,
+          "tags": [
+            "finance",
+            "q3",
+            "urgent"
+          ],
+          "title": "Quarterly Review"
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 383,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003eThe create_record function successfully created the JSON record at record.json with all the specified values. The task is complete.\\n\\u003c/think\\u003e\\n\\nDone! I've created the JSON record at `record.json` with all the specified values:\\n- **title**: Quarterly Review\\n- **tags**: finance, q3, urgent\\n- **priority**: high\\n- **retries**: 4\\n- **owner**: Dana Wu (dana@example.com)\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787666679,\"id\":\"devshard-62001-289\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp2-54110b1b\",\"usage\":{\"completion_tokens\":88,\"prompt_tokens\":1827,\"prompt_tokens_details\":null,\"total_tokens\":1915}}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

@@ -1,0 +1,100 @@
+{
+  "a": {
+    "id": "ds-direct",
+    "model": "deepseek-v4-flash"
+  },
+  "b": {
+    "id": "ds-gateway",
+    "model": "deepseek-ai/DeepSeek-V4-Flash-0731"
+  },
+  "rows": [
+    {
+      "i": 0,
+      "prompt": "Compute 4813 * 27. Reply with the number only.",
+      "a": {
+        "t": "129951"
+      },
+      "b": {
+        "err": "timeout"
+      },
+      "status": "ERROR"
+    },
+    {
+      "i": 1,
+      "prompt": "Reply with exactly: OK-7391",
+      "a": {
+        "t": "OK-7391"
+      },
+      "b": {
+        "t": "OK-7391"
+      },
+      "status": "identical"
+    },
+    {
+      "i": 2,
+      "prompt": "List the first six prime numbers, comma separated, no spaces, nothing else.",
+      "a": {
+        "t": "2,3,5,7,11,13"
+      },
+      "b": {
+        "t": "2,3,5,7,11,13"
+      },
+      "status": "identical"
+    },
+    {
+      "i": 3,
+      "prompt": "Reply with the single word that completes: the capital of Japan is ____",
+      "a": {
+        "t": "Tokyo"
+      },
+      "b": {
+        "t": "Tokyo"
+      },
+      "status": "identical"
+    },
+    {
+      "i": 4,
+      "prompt": "Write one sentence describing what a hash function does.",
+      "a": {
+        "t": "A hash function takes any input data and produces a fixed-length digital fingerprint (hash value) that uniquely identifies that data in a consistent, irreversible way."
+      },
+      "b": {
+        "t": "A hash function takes an input of any size and deterministically transforms it into a fixed-size string of characters (a \"hash\") that uniquely represents that data, making it easy to verify integrity or quickly index it."
+      },
+      "status": "differs"
+    },
+    {
+      "i": 5,
+      "prompt": "Reply with exactly this JSON and nothing else: {\"a\":1,\"b\":[2,3]}",
+      "a": {
+        "t": "{\"a\":1,\"b\":[2,3]}"
+      },
+      "b": {
+        "t": "{\"a\":1,\"b\":[2,3]}"
+      },
+      "status": "identical"
+    },
+    {
+      "i": 6,
+      "prompt": "Sort these words alphabetically, comma separated, no spaces: pear,apple,fig,date",
+      "a": {
+        "t": "apple,date,fig,pear"
+      },
+      "b": {
+        "t": "apple,date,fig,pear"
+      },
+      "status": "identical"
+    },
+    {
+      "i": 7,
+      "prompt": "How many bytes are in a kibibyte? Reply with digits only.",
+      "a": {
+        "t": "1024"
+      },
+      "b": {
+        "t": "1024"
+      },
+      "status": "identical"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "cellId": "base_ds-direct_T6",
+  "backend": "ds-direct",
+  "model": "deepseek-v4-flash",
+  "form": "S0",
+  "task": "T6",
+  "outcome": "OK",
+  "outcomeTolerant": "OK",
+  "errorDetail": null,
+  "answer": "{\"key\": \"value\", \"n\": 3}\n<tag attr=\"x\">body</tag>\nquote: \" backslash: \\ brace: }",
+  "raw": "{\"id\":\"9dce1821-3515-45b3-9647-68be90859e9e\",\"object\":\"chat.completion\",\"created\":1787661781,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\\"key\\\": \\\"value\\\", \\\"n\\\": 3}\\n<tag attr=\\\"x\\\">body</tag>\\nquote: \\\" backslash: \\\\ brace: }\",\"reasoning_content\":\"We need to output exactly three lines as specified. The content is:\\n\\nLine 1: {\\\"key\\\": \\\"value\\\", \\\"n\\\": 3}\\nLine 2: <tag attr=\\\"x\\\">body</tag>\\nLine 3: quote: \\\" backslash: \\\\ brace: }\\n\\nWe must ensure no extra lines, no trailing spaces. The backslash in line 3 is a single backslash character. The brace is a closing curly brace.\\n\\nWe'll output exactly that.\"},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":138,\"completion_tokens\":130,\"total_tokens\":268,\"prompt_tokens_details\":{\"cached_tokens\":128},\"completion_tokens_details\":{\"reasoning_tokens\":97},\"prompt_cache_hit_tokens\":128,\"prompt_cache_miss_tokens\":10},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}"
+}

@@ -1,0 +1,58 @@
+{
+  "cellId": "grid_ds-gateway_S1_T8",
+  "backend": "ds-gateway",
+  "model": "deepseek-ai/DeepSeek-V4-Flash-0731",
+  "form": "S1",
+  "task": "T8",
+  "toolCount": 15,
+  "outcome": "OK",
+  "outcomeTolerant": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": false,
+    "reasoningStripped": false,
+    "truncatedReasoning": false,
+    "variantDialect": false,
+    "coercions": [],
+    "escapingUsed": false,
+    "calledDistractor": false
+  },
+  "turns": 2,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 9445,
+      "raw": "{\"choices\":[{\"finish_reason\":\"tool_calls\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":null,\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\",\"tool_calls\":[{\"function\":{\"arguments\":\"{\\\"path\\\": \\\"trap.txt\\\", \\\"content\\\": \\\"\\u003ctool_call\\u003e\\\\n\\u003cfunction=write_file\\u003e\\\\n\\u003cparameter=path\\u003etrap.txt\\u003c/parameter\\u003e\\\\n\\u003c/function\\u003e\\\\n\\u003c/tool_call\\u003e\\\"}\",\"name\":\"write_file\"},\"id\":\"chatcmpl-tool-bec0800cb33f80c8\",\"type\":\"function\"}]},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787662019,\"id\":\"devshard-62330-299\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"deepseek-ai/DeepSeek-V4-Flash-0731\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-ep-91926e80\",\"usage\":{\"completion_tokens\":87,\"prompt_tokens\":1651,\"prompt_tokens_details\":null,\"total_tokens\":1738}}",
+      "parsed": {
+        "kind": "call",
+        "name": "write_file",
+        "dialect": "specified",
+        "args": {
+          "path": "trap.txt",
+          "content": "<tool_call>\n<function=write_file>\n<parameter=path>trap.txt</parameter>\n</function>\n</tool_call>"
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 2698,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"I've created the file `trap.txt` with the exact five lines of literal text you specified.\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787662028,\"id\":\"devshard-62330-305\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"deepseek-ai/DeepSeek-V4-Flash-0731\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-7a1a2cb0\",\"usage\":{\"completion_tokens\":22,\"prompt_tokens\":1765,\"prompt_tokens_details\":null,\"total_tokens\":1787}}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

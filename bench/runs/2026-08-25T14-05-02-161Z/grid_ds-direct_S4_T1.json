@@ -1,0 +1,59 @@
+{
+  "cellId": "grid_ds-direct_S4_T1",
+  "backend": "ds-direct",
+  "model": "deepseek-v4-flash",
+  "form": "S4",
+  "task": "T1",
+  "toolCount": 15,
+  "outcome": "OK",
+  "outcomeTolerant": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": false,
+    "reasoningStripped": false,
+    "truncatedReasoning": false,
+    "variantDialect": false,
+    "coercions": [],
+    "escapingUsed": false,
+    "paramSyntaxFailure": false,
+    "calledDistractor": false
+  },
+  "turns": 2,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 1493,
+      "raw": "{\"id\":\"4d37f382-f226-41ad-b958-65f7175c4525\",\"object\":\"chat.completion\",\"created\":1787666795,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"<tool_call>\\n<function=write_file>\\n<parameter=path>report.txt</parameter>\\n<parameter=content>OK-7391</parameter>\\n</function>\\n</tool_call>\",\"reasoning_content\":\"We need to create report.txt with exact content \\\"OK-7391\\\". Use write_file.\"},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":1076,\"completion_tokens\":60,\"total_tokens\":1136,\"prompt_tokens_details\":{\"cached_tokens\":1024},\"completion_tokens_details\":{\"reasoning_tokens\":19},\"prompt_cache_hit_tokens\":1024,\"prompt_cache_miss_tokens\":52},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}",
+      "parsed": {
+        "kind": "call",
+        "name": "write_file",
+        "dialect": "specified",
+        "args": {
+          "path": "report.txt",
+          "content": "OK-7391"
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 1804,
+      "raw": "{\"id\":\"2c4ef358-33d6-40c5-a451-578bd1264765\",\"object\":\"chat.completion\",\"created\":1787666796,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"DONE\",\"reasoning_content\":\"The file has been created with the exact content \\\"OK-7391\\\". The task is complete.\"},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":1143,\"completion_tokens\":23,\"total_tokens\":1166,\"prompt_tokens_details\":{\"cached_tokens\":1024},\"completion_tokens_details\":{\"reasoning_tokens\":20},\"prompt_cache_hit_tokens\":1024,\"prompt_cache_miss_tokens\":119},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

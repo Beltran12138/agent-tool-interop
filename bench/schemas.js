@@ -179,6 +179,12 @@ Every parameter value is text. A parameter that is not a plain string — an arr
 an object, or a number — must be written as its JSON encoding, for example
 <parameter=tags>["a","b"]</parameter> or <parameter=retries>4</parameter>.
 
+Inside a parameter value, escape the three XML metacharacters, otherwise the
+value cannot be told apart from the markup around it:
+  &  ->  &amp;      <  ->  &lt;      >  ->  &gt;
+Escape & first. These are decoded before the value reaches the tool, so a value
+containing </parameter> must be written as &lt;/parameter&gt;.
+
 Emit one tool call at a time and then stop. The result will be given to you in a
 <tool_result> block. When the task is complete, reply with DONE and no tool call.`,
     };
@@ -205,23 +211,70 @@ Emit one tool call at a time and then stop. The result will be given to you in a
     if (!block) return { kind: 'malformed', detail: '<tool_call> opened but never closed' };
     const body = block[1];
 
-    let dialect = 'specified';
-    let fn = body.match(/<function=([^>\s]+)\s*>/i);
-    if (!fn) {
-      fn = body.match(/<function\s+name\s*=\s*["']([^"']+)["']\s*>/i);
-      if (fn) dialect = 'variant';
+    // MULTIPLE FUNCTIONS IN ONE BLOCK.
+    //
+    // The prompt says one call at a time, and an earlier version therefore read
+    // only the first `<function>` — silently discarding any others. It then
+    // reported "parallelism appeared only in the native form", a clean
+    // directional claim that was false: one model attempted two calls in a
+    // single XML block in 5 of 181 observed blocks, and every one of them was
+    // thrown away before it could be counted. Silent drops do not merely lose
+    // data, they manufacture the opposite finding.
+    //
+    // Every function block is surfaced now. Attempting parallelism in a form
+    // that does not specify it is itself a measurement, not an error to hide.
+    const fnBlocks = [];
+    const fnRe = /<function(?:=([^>\s]+)|\s+name\s*=\s*["']([^"']+)["'])\s*>([\s\S]*?)(?=<function[=\s]|$)/gi;
+    let fm;
+    while ((fm = fnRe.exec(body)) !== null) {
+      fnBlocks.push({ name: fm[1] || fm[2], dialect: fm[1] ? 'specified' : 'variant', body: fm[3] });
     }
-    if (!fn) return { kind: 'malformed', detail: 'no function name in any known dialect' };
+    if (fnBlocks.length === 0) return { kind: 'malformed', detail: 'no function name in any known dialect' };
 
-    const args = {};
-    let m;
-    const specified = /<parameter=([^>\s]+)\s*>([\s\S]*?)<\/parameter>/gi;
-    while ((m = specified.exec(body)) !== null) args[m[1]] = m[2];
-    const attr = /<parameter\s+name\s*=\s*["']([^"']+)["']\s*>([\s\S]*?)<\/parameter>/gi;
-    while ((m = attr.exec(body)) !== null) {
-      if (!(m[1] in args)) { args[m[1]] = m[2]; dialect = 'variant'; }
-    }
-    return { kind: 'call', name: fn[1], args, id: 'xml_0', dialect };
+    let escapingUsed = false;
+    let paramSyntaxFailure = false;
+    let dialect = 'specified';
+
+    const parseOne = (fb, idx) => {
+      const rawArgs = {};
+      let m;
+      const specified = /<parameter=([^>\s]+)\s*>([\s\S]*?)<\/parameter>/gi;
+      while ((m = specified.exec(fb.body)) !== null) rawArgs[m[1]] = m[2];
+      const attr = /<parameter\s+name\s*=\s*["']([^"']+)["']\s*>([\s\S]*?)<\/parameter>/gi;
+      while ((m = attr.exec(fb.body)) !== null) {
+        if (!(m[1] in rawArgs)) { rawArgs[m[1]] = m[2]; fb.dialect = 'variant'; }
+      }
+
+      // PARAMETER SYNTAX FAILURE, distinct from "no parameters were given".
+      // Observed in the wild: `<parameter name="path>.</parameter>` (quote opened,
+      // never closed) and `<parameter>content>42</parameter>` (no name marker at
+      // all). Both parse to zero parameters, and an earlier version reported the
+      // result as an argument omission — i.e. as a reasoning failure, when it was
+      // a syntax failure. Counting the tags that are present and comparing tells
+      // the two apart.
+      const declared = (fb.body.match(/<parameter/gi) || []).length;
+      if (declared > Object.keys(rawArgs).length) paramSyntaxFailure = true;
+
+      const args = {};
+      for (const [k, v] of Object.entries(rawArgs)) {
+        if (/&(amp|lt|gt);/.test(v)) escapingUsed = true;
+        args[k] = v.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
+      }
+      if (fb.dialect === 'variant') dialect = 'variant';
+      return { name: fb.name, args, id: `xml_${idx}`, dialect: fb.dialect };
+    };
+
+    const calls = fnBlocks.map(parseOne);
+    return {
+      kind: 'call',
+      name: calls[0].name,
+      args: calls[0].args,
+      id: calls[0].id,
+      dialect,
+      escapingUsed,
+      paramSyntaxFailure,
+      calls,
+    };
   },
   renderResult(call, result) {
     return { role: 'user', content: `<tool_result>\n${JSON.stringify(result)}\n</tool_result>` };

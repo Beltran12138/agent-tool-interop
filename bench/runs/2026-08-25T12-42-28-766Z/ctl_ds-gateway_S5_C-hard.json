@@ -1,0 +1,69 @@
+{
+  "cellId": "ctl_ds-gateway_S5_C-hard",
+  "backend": "ds-gateway",
+  "model": "deepseek-ai/DeepSeek-V4-Flash-0731",
+  "form": "S5",
+  "task": "T4",
+  "toolCount": 15,
+  "outcome": "OK",
+  "outcomeTolerant": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": false,
+    "reasoningStripped": false,
+    "truncatedReasoning": false,
+    "variantDialect": false,
+    "coercions": [],
+    "escapingUsed": false,
+    "calledDistractor": false
+  },
+  "turns": 2,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 2741,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"{\\\"tool\\\": \\\"create_record\\\", \\\"args\\\": {\\\"path\\\": \\\"record.json\\\", \\\"title\\\": \\\"Quarterly Review\\\", \\\"tags\\\": [\\\"finance\\\", \\\"q3\\\", \\\"urgent\\\"], \\\"priority\\\": \\\"high\\\", \\\"retries\\\": 4, \\\"owner\\\": {\\\"name\\\": \\\"Dana Wu\\\", \\\"email\\\": \\\"dana@example.com\\\"}}}\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787661967,\"id\":\"devshard-62331-95\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"deepseek-ai/DeepSeek-V4-Flash-0731\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp2-8aac2e07\",\"usage\":{\"completion_tokens\":75,\"prompt_tokens\":889,\"prompt_tokens_details\":null,\"total_tokens\":964}}",
+      "parsed": {
+        "kind": "call",
+        "name": "create_record",
+        "dialect": "specified",
+        "args": {
+          "path": "record.json",
+          "title": "Quarterly Review",
+          "tags": [
+            "finance",
+            "q3",
+            "urgent"
+          ],
+          "priority": "high",
+          "retries": 4,
+          "owner": {
+            "name": "Dana Wu",
+            "email": "dana@example.com"
+          }
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 1586,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"{\\\"done\\\": true}\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787661970,\"id\":\"devshard-62330-257\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"deepseek-ai/DeepSeek-V4-Flash-0731\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-7a1a2cb0\",\"usage\":{\"completion_tokens\":6,\"prompt_tokens\":984,\"prompt_tokens_details\":null,\"total_tokens\":990}}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

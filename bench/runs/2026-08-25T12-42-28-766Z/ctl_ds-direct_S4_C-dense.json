@@ -1,0 +1,58 @@
+{
+  "cellId": "ctl_ds-direct_S4_C-dense",
+  "backend": "ds-direct",
+  "model": "deepseek-v4-flash",
+  "form": "S4",
+  "task": "T1",
+  "toolCount": 15,
+  "outcome": "OK",
+  "outcomeTolerant": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": false,
+    "reasoningStripped": false,
+    "truncatedReasoning": false,
+    "variantDialect": false,
+    "coercions": [],
+    "escapingUsed": false,
+    "calledDistractor": false
+  },
+  "turns": 2,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 1918,
+      "raw": "{\"id\":\"2d277ba6-60ac-4fb0-b7e7-21dead6bddc1\",\"object\":\"chat.completion\",\"created\":1787661763,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"<tool_call>\\n<function=write_file>\\n<parameter=path>report.txt</parameter>\\n<parameter=content>OK-7391</parameter>\\n</function>\\n</tool_call>\",\"reasoning_content\":\"We need to create a file report.txt with exact content OK-7391. Use write_file or append_file. write_file ensures replacement. Content is \\\"OK-7391\\\". No newline specified? \\\"entire content is exactly: OK-7391\\\" Could include newline? Usually exact content includes the line. We'll write exactly OK-7391 without trailing newline. write_file writes content exactly.\"},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":1076,\"completion_tokens\":124,\"total_tokens\":1200,\"prompt_tokens_details\":{\"cached_tokens\":896},\"completion_tokens_details\":{\"reasoning_tokens\":84},\"prompt_cache_hit_tokens\":896,\"prompt_cache_miss_tokens\":180},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}",
+      "parsed": {
+        "kind": "call",
+        "name": "write_file",
+        "dialect": "specified",
+        "args": {
+          "path": "report.txt",
+          "content": "OK-7391"
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 928,
+      "raw": "{\"id\":\"7cd923da-7125-41a4-b31d-88cf424affb4\",\"object\":\"chat.completion\",\"created\":1787661765,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"DONE\",\"reasoning_content\":\"The file was created successfully. The task is complete.\"},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":1143,\"completion_tokens\":14,\"total_tokens\":1157,\"prompt_tokens_details\":{\"cached_tokens\":1024},\"completion_tokens_details\":{\"reasoning_tokens\":11},\"prompt_cache_hit_tokens\":1024,\"prompt_cache_miss_tokens\":119},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

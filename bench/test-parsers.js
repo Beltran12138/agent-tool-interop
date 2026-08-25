@@ -123,6 +123,73 @@ eq(S5.parse('{"done": true}').kind, 'none', 'S5: done sentinel still none after 
   eq(S4.parse(r.text).kind, 'none', 'strip+parse: a call mentioned only inside reasoning is not a call');
 }
 
+/* -- in-band payloads and entity escaping (Slice 0.2) ---------------------- */
+// A prompt-embedded envelope shares one channel with its data, so a payload
+// containing the envelope's own delimiters is ambiguous unless escaped. These
+// assertions pin both halves: escaping works, and NOT escaping visibly breaks
+// rather than silently producing a plausible wrong value.
+{
+  const r = S4.parse('<tool_call>\n<function=write_file>\n<parameter=path>trap.txt</parameter>\n<parameter=content>&lt;tool_call&gt;\n&lt;/parameter&gt;</parameter>\n</function>\n</tool_call>');
+  eq([r.kind, r.args.content, r.escapingUsed], ['call', '<tool_call>\n</parameter>', true],
+     'S4: entity-escaped payload decodes to the literal delimiters and is flagged as escaped');
+}
+{
+  // Unescaped: the non-greedy match closes at the first inner </parameter>, so
+  // the content is truncated. The value is WRONG, which the task verifier will
+  // catch — it must not silently look right.
+  const r = S4.parse('<tool_call><function=write_file><parameter=content>a</parameter>b</parameter></function></tool_call>');
+  eq(r.args.content, 'a', 'S4: an unescaped inner </parameter> truncates the value rather than being absorbed');
+}
+{
+  const r = S4.parse('<tool_call><function=write_file><parameter=path>a.txt</parameter></function></tool_call>');
+  eq(r.escapingUsed, false, 'S4: a payload needing no escaping is not flagged as escaped');
+}
+{
+  // Ampersand-first ordering: &amp;lt; must decode to the literal text &lt;,
+  // not to <. Getting this backwards would corrupt any payload about escaping.
+  const r = S4.parse('<tool_call><function=write_file><parameter=content>&amp;lt;</parameter></function></tool_call>');
+  eq(r.args.content, '&lt;', 'S4: &amp;lt; decodes to the literal &lt;, not to <');
+}
+{
+  // JSON's escaping is inherent, so the mirror payload needs no convention.
+  const r = S5.parse('{"tool":"write_file","args":{"path":"trap.json","content":"{\\"tool\\": \\"write_file\\"}"}}');
+  eq([r.kind, r.args.content], ['call', '{"tool": "write_file"}'],
+     'S5: a JSON payload containing the envelope\'s own structure round-trips natively');
+}
+
+/* -- syntaxes observed in the wild (Slice 0.2) ----------------------------- */
+// Every string below was emitted by a real backend during a run and is pinned
+// here verbatim. Two of them broke earlier versions of this parser in ways that
+// produced confident wrong claims, so they are regressions, not hypotheticals.
+{
+  // MiniMax put two <function> blocks inside one <tool_call>. The earlier parser
+  // read only the first and silently discarded the second — which is how this
+  // project came to report "parallelism appeared only in the native form".
+  const r = S4.parse('<tool_call>\n<function=read_file>\n<parameter name="path>a.txt</parameter>\n</function>\n<function=read_file>\n<parameter name="path>b.txt</parameter>\n</function>\n</tool_call>');
+  eq([r.kind, r.calls.length, r.calls[0].name, r.calls[1].name], ['call', 2, 'read_file', 'read_file'],
+     'S4: two <function> blocks in one <tool_call> surface as two calls, not one');
+}
+{
+  // Quote opened, never closed: `<parameter name="path>`. Zero parameters parse.
+  // The earlier code reported this as an argument OMISSION — a reasoning error —
+  // when it is a syntax error. The tag count tells them apart.
+  const r = S4.parse('<tool_call>\n<function=list_dir>\n<parameter name="path>.</parameter>\n</function>\n</tool_call>');
+  eq([Object.keys(r.args).length, r.paramSyntaxFailure], [0, true],
+     'S4: unterminated attribute quote is a parameter SYNTAX failure, not an omission');
+}
+{
+  // No name marker at all: `<parameter>content>42</parameter>`. One good
+  // parameter alongside one broken one must still raise the flag.
+  const r = S4.parse('<tool_call>\n<function=write_file>\n<parameter=path>total.txt</parameter>\n<parameter>content>42</parameter>\n</function>\n</tool_call>');
+  eq([r.args.path, 'content' in r.args, r.paramSyntaxFailure], ['total.txt', false, true],
+     'S4: a broken parameter beside a good one still raises paramSyntaxFailure');
+}
+{
+  const r = S4.parse('<tool_call>\n<function=write_file>\n<parameter=path>a.txt</parameter>\n<parameter=content>x</parameter>\n</function>\n</tool_call>');
+  eq([r.paramSyntaxFailure, r.calls.length, r.dialect], [false, 1, 'specified'],
+     'S4: a well-formed call raises no syntax flag');
+}
+
 /* -- parallel tool calls (native form only) -------------------------------- */
 // Regression for a harness bug that produced HTTP 400 on the chain-depth task:
 // the API requires a tool message per tool_call_id, so every call in the
@@ -149,8 +216,14 @@ eq(S5.parse('{"done": true}').kind, 'none', 'S5: done sentinel still none after 
   eq([r.kind, /\[1\]/.test(r.detail)], ['malformed', true], 'S1: malformed second call fails the message and names its index');
 }
 {
+  // This assertion used to read `eq(r.calls, undefined, ...)` — it encoded the
+  // belief that a prompt-embedded form cannot express parallel calls. Observed
+  // data refuted it: a model emitted two <function> blocks in one <tool_call>.
+  // The old assertion was not protecting a property of the envelope, it was
+  // protecting a parser that dropped the evidence. Kept as a single-call case.
   const r = S4.parse('<tool_call><function=read_file><parameter=path>a</parameter></function></tool_call>');
-  eq(r.calls, undefined, 'S4: prompt-embedded form exposes no parallel calls array');
+  eq([r.calls.length, r.calls[0].name], [1, 'read_file'],
+     'S4: a single call yields a one-element calls array (the form does not FORBID more)');
 }
 
 

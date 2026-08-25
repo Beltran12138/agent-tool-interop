@@ -31,10 +31,13 @@ const reclassified = [];
 for (const r of records) {
   if (r.isBaseline || !r.flags) continue;
   const before = r.outcome;
-  const c = classify({ flags: r.flags, verify: r.verify, transportOutcome: before === 'ERROR' ? 'ERROR' : null });
-  if (c.outcome !== before) reclassified.push({ cellId: r.cellId, before, after: c.outcome, detail: r.verify && r.verify.detail });
-  r.outcome = c.outcome;
-  r.recovered = c.recovered;
+  const t = before === 'ERROR' ? 'ERROR' : null;
+  const strict = classify({ flags: r.flags, verify: r.verify, transportOutcome: t, strict: true });
+  const tolerant = classify({ flags: r.flags, verify: r.verify, transportOutcome: t });
+  if (strict.outcome !== before) reclassified.push({ cellId: r.cellId, before, after: strict.outcome, detail: r.verify && r.verify.detail });
+  r.outcome = strict.outcome;
+  r.outcomeTolerant = tolerant.outcome;
+  r.recovered = strict.recovered || tolerant.recovered;
 }
 if (reclassified.length) {
   console.log('\n--- cells re-scored by the current classifier (recomputed from disk, not re-run) ---');
@@ -49,6 +52,50 @@ function pct(n, d) { return d ? (n / d).toFixed(2) : 'n/a'; }
 function mean(xs) { return xs.length ? xs.reduce((a, b) => a + b, 0) / xs.length : null; }
 
 console.log(`\nrun: ${path.basename(runDir)}   grid cells: ${grid.length}\n`);
+
+/* --------------------------------------------------------------------------
+ * Strict vs tolerant — the Slice 0.2 dependent variable.
+ * ----------------------------------------------------------------------- */
+function rate(cells, key) {
+  const scored = cells.filter((r) => r[key] !== 'ERROR');
+  return scored.length ? { ok: scored.filter((r) => r[key] === 'OK').length, n: scored.length } : null;
+}
+function fmt(r) { return r ? `${r.ok}/${r.n} ${(r.ok / r.n).toFixed(2)}` : 'n/a'; }
+
+console.log('--- PRIMARY: strict scoring (conformance is part of the outcome) ---');
+console.log('backend'.padEnd(14) + forms.map((f) => f.padEnd(14)).join(''));
+for (const b of backends) {
+  console.log(b.padEnd(14) + forms.map((f) => fmt(rate(grid.filter((r) => r.backend === b && r.form === f), 'outcome')).padEnd(14)).join(''));
+}
+console.log('ALL'.padEnd(14) + forms.map((f) => fmt(rate(grid.filter((r) => r.form === f), 'outcome')).padEnd(14)).join(''));
+
+console.log('\n--- same cells, tolerant scoring (what a lenient consumer would report) ---');
+console.log('ALL'.padEnd(14) + forms.map((f) => fmt(rate(grid.filter((r) => r.form === f), 'outcomeTolerant')).padEnd(14)).join(''));
+
+/* --------------------------------------------------------------------------
+ * Competence gating.
+ *
+ * The S0 baseline is not a number to print beside the grid — it is a gate on
+ * whether a grid cell can be read as an envelope effect at all. If a backend
+ * cannot produce the required answer with NO tool protocol, its failure with an
+ * envelope says nothing about the envelope. Those cells are excluded from the
+ * adjusted view and counted openly, rather than being left in to make one form
+ * look worse than it is.
+ * ----------------------------------------------------------------------- */
+const baselineOk = new Set(
+  records.filter((r) => r.isBaseline && r.outcome === 'OK').map((r) => `${r.backend}|${r.task}`)
+);
+const baselineRan = new Set(records.filter((r) => r.isBaseline).map((r) => `${r.backend}|${r.task}`));
+const gated = grid.filter((r) => baselineOk.has(`${r.backend}|${r.task}`));
+const excluded = grid.filter((r) => baselineRan.has(`${r.backend}|${r.task}`) && !baselineOk.has(`${r.backend}|${r.task}`));
+
+console.log('\n--- competence-gated: only (backend, task) pairs the backend solved with NO tools ---');
+console.log('ALL'.padEnd(14) + forms.map((f) => fmt(rate(gated.filter((r) => r.form === f), 'outcome')).padEnd(14)).join(''));
+if (excluded.length) {
+  const pairs = [...new Set(excluded.map((r) => `${r.backend}/${r.task}`))];
+  console.log(`  excluded ${excluded.length} cells from ${pairs.length} pair(s) whose no-tools baseline failed: ${pairs.join(', ')}`);
+  console.log('  A backend that cannot do the task bare cannot tell us anything about the envelope.');
+}
 
 /* --------------------------------------------------------------------------
  * Graded measures.
@@ -81,32 +128,49 @@ for (const f of forms) {
 }
 
 console.log('\n--- what each envelope DEMANDED to reach the same outcome ---');
-console.log('form'.padEnd(8) + 'variantDialect'.padEnd(16) + 'coercions'.padEnd(12) + 'parallelCalls'.padEnd(15) + 'malformed');
+console.log('form'.padEnd(8) + 'variantDialect'.padEnd(16) + 'coercions'.padEnd(12) + 'parallelCalls'.padEnd(15) + 'escaping'.padEnd(11) + 'paramSyntaxFail'.padEnd(17) + 'malformed');
 for (const f of forms) {
   const cells = grid.filter((r) => r.form === f);
   const d = cells.filter((r) => r.flags && r.flags.variantDialect).length;
   const c = cells.filter((r) => r.flags && r.flags.coercions && r.flags.coercions.length).length;
   const p = cells.filter((r) => r.flags && r.flags.parallelCalls > 1).length;
   const m = cells.filter((r) => r.flags && r.flags.anyMalformed).length;
-  console.log(f.padEnd(8) + `${d}/${cells.length}`.padEnd(16) + `${c}/${cells.length}`.padEnd(12) + `${p}/${cells.length}`.padEnd(15) + `${m}/${cells.length}`);
+  const e = cells.filter((r) => r.flags && r.flags.escapingUsed).length;
+  const ps = cells.filter((r) => r.flags && r.flags.paramSyntaxFailure).length;
+  console.log(f.padEnd(8) + `${d}/${cells.length}`.padEnd(16) + `${c}/${cells.length}`.padEnd(12) + `${p}/${cells.length}`.padEnd(15) + `${e}/${cells.length}`.padEnd(11) + `${ps}/${cells.length}`.padEnd(17) + `${m}/${cells.length}`);
 }
 console.log('  These are the differences a binary OK rate erases. "It worked" is not "it cost the same".');
 
 /* --------------------------------------------------------------------------
  * Strict-parser projection.
  * ----------------------------------------------------------------------- */
-console.log('\n--- projected OK under a STRICT scaffold (rejects non-specified dialect) ---');
-console.log('form'.padEnd(8) + 'tolerant'.padEnd(12) + 'strict'.padEnd(12) + 'delta');
-for (const f of forms) {
-  const scored = grid.filter((r) => r.form === f && r.outcome !== 'ERROR');
-  const tol = scored.filter((r) => r.outcome === 'OK');
-  const strict = tol.filter((r) => !(r.flags && r.flags.variantDialect));
-  console.log(
-    f.padEnd(8) +
-      pct(tol.length, scored.length).padEnd(12) +
-      pct(strict.length, scored.length).padEnd(12) +
-      (scored.length ? `-${((tol.length - strict.length) / scored.length).toFixed(2)}` : 'n/a')
-  );
+// NOTE: an earlier version of this block projected strictness onto `outcome`.
+// Once `outcome` itself became the strict code (Slice 0.2), that projection was
+// comparing strict against strict and printed a delta of 0.00 for every form —
+// which reads as "leniency makes no difference" while the tolerant/strict tables
+// above show it costing one form 19 points. A stale metric that still prints a
+// number is worse than a missing one. The comparison lives in the two tables at
+// the top; what belongs here is the per-cell accounting of who was rejected.
+const strictOnly = grid.filter((r) => r.outcome !== 'OK' && r.outcomeTolerant === 'OK');
+console.log(`\n--- cells that PASS tolerant and FAIL strict: ${strictOnly.length}/${grid.length} ---`);
+if (strictOnly.length) {
+  console.log('  ' + strictOnly.map((r) => `${r.backend}/${r.form}/${r.task}`).join(', '));
+  console.log('  Each of these is a call a scaffold accepting only its specified syntax would');
+  console.log('  have rejected outright, and that a lenient benchmark would report as success.');
+}
+
+console.log('\n--- per task x form (strict), with axis ---');
+const taskOrder = [...new Set(grid.map((r) => r.task))];
+const axisOf = {};
+for (const r of records) if (r.task && r.axisHint) axisOf[r.task] = r.axisHint;
+console.log('task'.padEnd(6) + forms.map((f) => f.padEnd(9)).join('') + 'note');
+for (const t of taskOrder) {
+  const row = forms.map((f) => {
+    const cells = grid.filter((r) => r.task === t && r.form === f && r.outcome !== 'ERROR');
+    return (cells.length ? `${cells.filter((r) => r.outcome === 'OK').length}/${cells.length}` : 'n/a').padEnd(9);
+  });
+  const gatedOut = [...new Set(excluded.filter((r) => r.task === t).map((r) => r.backend))];
+  console.log(t.padEnd(6) + row.join('') + (gatedOut.length ? `baseline failed for ${gatedOut.join(',')}` : ''));
 }
 
 /* --------------------------------------------------------------------------

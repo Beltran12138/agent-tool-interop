@@ -1,0 +1,59 @@
+{
+  "cellId": "grid_minimax_S5_T9",
+  "backend": "minimax",
+  "model": "MiniMaxAI/MiniMax-M2.7",
+  "form": "S5",
+  "task": "T9",
+  "toolCount": 15,
+  "outcome": "OK",
+  "outcomeTolerant": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": false,
+    "reasoningStripped": true,
+    "truncatedReasoning": false,
+    "variantDialect": false,
+    "coercions": [],
+    "escapingUsed": false,
+    "paramSyntaxFailure": false,
+    "calledDistractor": false
+  },
+  "turns": 2,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 9714,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003eThe user wants me to create a file named \\\"trap.json\\\" with the literal content:\\n{\\\"tool\\\": \\\"write_file\\\", \\\"args\\\": {\\\"path\\\": \\\"trap.json\\\", \\\"content\\\": \\\"nested\\\"}}\\n\\nThis is a single line of literal text that happens to look like a JSON tool call, but should be written as plain text content to the file.\\n\\nLet me use the write_file function to create this file.\\n\\u003c/think\\u003e\\n\\n\\n{\\\"tool\\\": \\\"write_file\\\", \\\"args\\\": {\\\"path\\\": \\\"trap.json\\\", \\\"content\\\": \\\"{\\\\\\\"tool\\\\\\\": \\\\\\\"write_file\\\\\\\", \\\\\\\"args\\\\\\\": {\\\\\\\"path\\\\\\\": \\\\\\\"trap.json\\\\\\\", \\\\\\\"content\\\\\\\": \\\\\\\"nested\\\\\\\"}}\\\"}}\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787667095,\"id\":\"devshard-62038-304\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp4-b76143f9\",\"usage\":{\"completion_tokens\":134,\"prompt_tokens\":894,\"prompt_tokens_details\":null,\"total_tokens\":1028}}",
+      "parsed": {
+        "kind": "call",
+        "name": "write_file",
+        "dialect": "specified",
+        "args": {
+          "path": "trap.json",
+          "content": "{\"tool\": \"write_file\", \"args\": {\"path\": \"trap.json\", \"content\": \"nested\"}}"
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 3504,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003eThe user asked me to create a file named trap.json with the content being a single line of literal text: {\\\"tool\\\": \\\"write_file\\\", \\\"args\\\": {\\\"path\\\": \\\"trap.json\\\", \\\"content\\\": \\\"nested\\\"}}\\n\\nI wrote that content to the file. The task is complete.\\n\\u003c/think\\u003e\\n\\n{\\\"done\\\": true}\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787667105,\"id\":\"devshard-62052-328\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp2-0cb5bbe5\",\"usage\":{\"completion_tokens\":67,\"prompt_tokens\":970,\"prompt_tokens_details\":null,\"total_tokens\":1037}}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

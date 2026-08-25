@@ -1,0 +1,58 @@
+{
+  "cellId": "grid_ds-gateway_S4_T8",
+  "backend": "ds-gateway",
+  "model": "deepseek-ai/DeepSeek-V4-Flash-0731",
+  "form": "S4",
+  "task": "T8",
+  "toolCount": 15,
+  "outcome": "OK",
+  "outcomeTolerant": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": false,
+    "reasoningStripped": false,
+    "truncatedReasoning": false,
+    "variantDialect": false,
+    "coercions": [],
+    "escapingUsed": true,
+    "calledDistractor": false
+  },
+  "turns": 2,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 3530,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003ctool_call\\u003e\\n\\u003cfunction=write_file\\u003e\\n\\u003cparameter=path\\u003etrap.txt\\u003c/parameter\\u003e\\n\\u003cparameter=content\\u003e\\u0026lt;tool_call\\u0026gt;\\n\\u0026lt;function=write_file\\u0026gt;\\n\\u0026lt;parameter=path\\u0026gt;trap.txt\\u0026lt;/parameter\\u0026gt;\\n\\u0026lt;/function\\u0026gt;\\n\\u0026lt;/tool_call\\u0026gt;\\u003c/parameter\\u003e\\n\\u003c/function\\u003e\\n\\u003c/tool_call\\u003e\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787662058,\"id\":\"devshard-62331-148\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"deepseek-ai/DeepSeek-V4-Flash-0731\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp2-8aac2e07\",\"usage\":{\"completion_tokens\":76,\"prompt_tokens\":1060,\"prompt_tokens_details\":null,\"total_tokens\":1136}}",
+      "parsed": {
+        "kind": "call",
+        "name": "write_file",
+        "dialect": "specified",
+        "args": {
+          "path": "trap.txt",
+          "content": "<tool_call>\n<function=write_file>\n<parameter=path>trap.txt</parameter>\n</function>\n</tool_call>"
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 1031,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"DONE\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787662062,\"id\":\"devshard-62331-149\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"deepseek-ai/DeepSeek-V4-Flash-0731\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-16d5fe49\",\"usage\":{\"completion_tokens\":3,\"prompt_tokens\":1163,\"prompt_tokens_details\":null,\"total_tokens\":1166}}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

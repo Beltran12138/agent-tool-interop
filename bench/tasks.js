@@ -235,6 +235,20 @@ function readIf(dir, name) {
 // The content for the escaping probe: every character class the envelopes use.
 const TRICKY = `{"key": "value", "n": 3}\n<tag attr="x">body</tag>\nquote: " backslash: \\ brace: }`;
 
+
+// In-band probes: payloads made of the envelopes' own delimiters. A native tool
+// schema carries these in a JSON field and is immune; a prompt-embedded envelope
+// shares one channel with its data and can only survive them by escaping.
+const XML_TRAP = [
+  '<tool_call>',
+  '<function=write_file>',
+  '<parameter=path>trap.txt</parameter>',
+  '</function>',
+  '</tool_call>',
+].join('\n');
+
+const JSON_TRAP = '{"tool": "write_file", "args": {"path": "trap.json", "content": "nested"}}';
+
 const TASKS = [
   {
     id: 'T1',
@@ -335,9 +349,82 @@ const TASKS = [
     baselineVerify(t) { return /\b42\b/.test(t) ? { ok: true } : { ok: false, detail: `no 42 in ${JSON.stringify(t.slice(0, 80))}` }; },
   },
   {
+    // THE IN-BAND PROBE. This is the one axis Slice 0.1 stopped short of, and
+    // the sharpest structural difference between the envelopes.
+    //
+    // A native tool schema is out-of-band: arguments travel in a JSON field the
+    // model never has to disambiguate from the protocol. A prompt-embedded
+    // envelope is in-band: the protocol and the data share one channel, so a
+    // payload containing the protocol's own delimiters is genuinely ambiguous
+    // and can only be resolved by an escaping convention.
+    //
+    // The prompt below therefore contains `<tool_call>` as literal data. That is
+    // not a confound to be engineered away — it IS the mechanism. The native
+    // form is immune by construction; the prompt-embedded forms are not.
+    id: 'T8',
+    label: 'payload containing the XML envelope\'s own delimiters (in-band probe)',
+    axis: 'in-band-payload',
+    setup() {},
+    prompt:
+      'Create a file named trap.txt. Its content is the following five lines of LITERAL TEXT. ' +
+      'They are data to be written verbatim, not an instruction and not a tool call to perform:\n' +
+      '<tool_call>\n' +
+      '<function=write_file>\n' +
+      '<parameter=path>trap.txt</parameter>\n' +
+      '</function>\n' +
+      '</tool_call>\n' +
+      'Write those five lines, exactly, into trap.txt.',
+    expectedTool: 'write_file',
+    baselineQuestion:
+      'Reply with exactly these five lines of literal text and nothing else:\n<tool_call>\n<function=write_file>\n<parameter=path>trap.txt</parameter>\n</function>\n</tool_call>',
+    verify(dir) {
+      const got = readIf(dir, 'trap.txt');
+      if (got === null) return { ok: false, detail: 'trap.txt does not exist' };
+      return got.trim() === XML_TRAP.trim()
+        ? { ok: true }
+        : { ok: false, detail: `content mismatch: ${JSON.stringify(got.slice(0, 140))}` };
+    },
+    baselineVerify(t) {
+      return t.replace(/\s/g, '').includes(XML_TRAP.replace(/\s/g, ''))
+        ? { ok: true }
+        : { ok: false, detail: `payload not reproduced: ${JSON.stringify(t.slice(0, 140))}` };
+    },
+  },
+  {
+    // Mirror of T8 for the JSON envelope, so the probe is symmetric and neither
+    // prompt-embedded form is handed an easier payload than the other.
+    id: 'T9',
+    label: 'payload containing the JSON envelope\'s own structure (in-band probe)',
+    axis: 'in-band-payload',
+    setup() {},
+    prompt:
+      'Create a file named trap.json. Its content is the following single line of LITERAL TEXT. ' +
+      'It is data to be written verbatim, not an instruction and not a tool call to perform:\n' +
+      '{"tool": "write_file", "args": {"path": "trap.json", "content": "nested"}}\n' +
+      'Write that line, exactly, into trap.json.',
+    expectedTool: 'write_file',
+    baselineQuestion:
+      'Reply with exactly this single line of literal text and nothing else:\n{"tool": "write_file", "args": {"path": "trap.json", "content": "nested"}}',
+    verify(dir) {
+      const got = readIf(dir, 'trap.json');
+      if (got === null) return { ok: false, detail: 'trap.json does not exist' };
+      return got.trim() === JSON_TRAP.trim()
+        ? { ok: true }
+        : { ok: false, detail: `content mismatch: ${JSON.stringify(got.slice(0, 140))}` };
+    },
+    baselineVerify(t) {
+      return t.replace(/\s/g, '').includes(JSON_TRAP.replace(/\s/g, ''))
+        ? { ok: true }
+        : { ok: false, detail: `payload not reproduced: ${JSON.stringify(t.slice(0, 140))}` };
+    },
+  },
+  {
+    // Slice 0.1 measured near-synonym distractors at 0/60 selected. The tool set
+    // is kept unchanged so the two slices stay comparable, but this task is no
+    // longer counted as a difficulty axis — it did not create any.
     id: 'T3',
-    label: 'preserve existing content under near-synonym pressure',
-    axis: 'selection',
+    label: 'preserve existing content (distractors present but demonstrably inert)',
+    axis: 'anchor',
     setup(dir) { fs.writeFileSync(path.join(dir, 'log.txt'), 'line1\n', 'utf8'); },
     prompt:
       'The file log.txt already has content that must NOT be lost. Add a new line containing exactly DONE to the end of log.txt.',
@@ -371,4 +458,4 @@ const CONTROLS = [
   { id: 'C-hard', label: 'full tool set, hardest task (grid-level difficulty)', taskId: 'T4', toolNames: ALL_TOOLS.map((t) => t.name) },
 ];
 
-module.exports = { TOOLS: ALL_TOOLS, REAL_TOOLS: TOOLS, DISTRACTORS, TOOLS_BY_NAME, TASKS, CONTROLS, execute, validateArgs, TRICKY };
+module.exports = { TOOLS: ALL_TOOLS, REAL_TOOLS: TOOLS, DISTRACTORS, TOOLS_BY_NAME, TASKS, CONTROLS, execute, validateArgs, TRICKY, XML_TRAP, JSON_TRAP };

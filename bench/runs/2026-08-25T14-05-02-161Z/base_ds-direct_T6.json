@@ -1,0 +1,12 @@
+{
+  "cellId": "base_ds-direct_T6",
+  "backend": "ds-direct",
+  "model": "deepseek-v4-flash",
+  "form": "S0",
+  "task": "T6",
+  "outcome": "OK",
+  "outcomeTolerant": "OK",
+  "errorDetail": null,
+  "answer": "{\"key\": \"value\", \"n\": 3}\n<tag attr=\"x\">body</tag>\nquote: \" backslash: \\ brace: }",
+  "raw": "{\"id\":\"cbb46451-e70d-46ec-afc2-0eb618db859b\",\"object\":\"chat.completion\",\"created\":1787666741,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\\"key\\\": \\\"value\\\", \\\"n\\\": 3}\\n<tag attr=\\\"x\\\">body</tag>\\nquote: \\\" backslash: \\\\ brace: }\",\"reasoning_content\":\"We need to output exactly three lines as specified. The lines are:\\n\\n1. {\\\"key\\\": \\\"value\\\", \\\"n\\\": 3}\\n2. <tag attr=\\\"x\\\">body</tag>\\n3. quote: \\\" backslash: \\\\ brace: }\\n\\nWe must ensure no extra spaces or characters. Also note the third line has a backslash before the brace? Actually the user wrote: quote: \\\" backslash: \\\\ brace: } — that's exactly: quote: \\\" backslash: \\\\ brace: }\\n\\nLet me output that.\"},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":138,\"completion_tokens\":142,\"total_tokens\":280,\"prompt_tokens_details\":{\"cached_tokens\":128},\"completion_tokens_details\":{\"reasoning_tokens\":109},\"prompt_cache_hit_tokens\":128,\"prompt_cache_miss_tokens\":10},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}"
+}

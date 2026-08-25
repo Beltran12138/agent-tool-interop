@@ -1,0 +1,12 @@
+{
+  "cellId": "base_ds-direct_T7",
+  "backend": "ds-direct",
+  "model": "deepseek-v4-flash",
+  "form": "S0",
+  "task": "T7",
+  "outcome": "OK",
+  "outcomeTolerant": "OK",
+  "errorDetail": null,
+  "answer": "42",
+  "raw": "{\"id\":\"0a4506ae-f489-4474-a10c-e317a0a294dd\",\"object\":\"chat.completion\",\"created\":1787666743,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"42\",\"reasoning_content\":\"We need answer exact content total.txt. Need compute sum 17+25=42. Need reply with exact content of total.txt, digits only. So \\\"42\\\".\"},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":133,\"completion_tokens\":36,\"total_tokens\":169,\"prompt_tokens_details\":{\"cached_tokens\":128},\"completion_tokens_details\":{\"reasoning_tokens\":34},\"prompt_cache_hit_tokens\":128,\"prompt_cache_miss_tokens\":5},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}"
+}

@@ -113,11 +113,20 @@ async function chat(backend, opts) {
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     last = await chatOnce(backend, opts);
     last.attempts = attempt;
+    // 429 belongs here too. It is a rate limit — a fact about our request
+    // pacing, not about the model's ability to drive an envelope. Leaving it out
+    // (as the first version did) turns our own concurrency into an ERROR cell,
+    // and ERROR cells are excluded from rates, so the missing measurement is
+    // silent. Backoff is longer for 429 than for a 5xx: retrying a rate limit at
+    // the same pace is how a rate limit becomes a rate-limit storm.
+    const rateLimited = last.transport === 'http_error' && last.status === 429;
     const retriable =
+      rateLimited ||
       last.transport === 'network_error' ||
       (last.transport === 'http_error' && typeof last.status === 'number' && last.status >= 500);
     if (!retriable || attempt === MAX_ATTEMPTS) return last;
-    await new Promise((r) => setTimeout(r, 2000 * Math.pow(3, attempt - 1)));
+    const base = rateLimited ? 10000 : 2000;
+    await new Promise((r) => setTimeout(r, base * Math.pow(3, attempt - 1)));
   }
   return last;
 }

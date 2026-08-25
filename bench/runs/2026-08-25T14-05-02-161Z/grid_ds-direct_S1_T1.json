@@ -1,0 +1,59 @@
+{
+  "cellId": "grid_ds-direct_S1_T1",
+  "backend": "ds-direct",
+  "model": "deepseek-v4-flash",
+  "form": "S1",
+  "task": "T1",
+  "toolCount": 15,
+  "outcome": "OK",
+  "outcomeTolerant": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": false,
+    "reasoningStripped": false,
+    "truncatedReasoning": false,
+    "variantDialect": false,
+    "coercions": [],
+    "escapingUsed": false,
+    "paramSyntaxFailure": false,
+    "calledDistractor": false
+  },
+  "turns": 2,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 1345,
+      "raw": "{\"id\":\"2915c2c4-ec59-4b4f-873e-d5e5859fcf83\",\"object\":\"chat.completion\",\"created\":1787666758,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"\",\"reasoning_content\":\"The task is to create a file named report.txt with content exactly \\\"OK-7391\\\". Let me use the write_file tool.\",\"tool_calls\":[{\"index\":0,\"id\":\"call_00_FVvviLlBjnq0E3fN4jyn2233\",\"type\":\"function\",\"function\":{\"name\":\"write_file\",\"arguments\":\"{\\\"path\\\": \\\"report.txt\\\", \\\"content\\\": \\\"OK-7391\\\"}\"}}]},\"logprobs\":null,\"finish_reason\":\"tool_calls\"}],\"usage\":{\"prompt_tokens\":1682,\"completion_tokens\":91,\"total_tokens\":1773,\"prompt_tokens_details\":{\"cached_tokens\":1664},\"completion_tokens_details\":{\"reasoning_tokens\":27},\"prompt_cache_hit_tokens\":1664,\"prompt_cache_miss_tokens\":18},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}",
+      "parsed": {
+        "kind": "call",
+        "name": "write_file",
+        "dialect": "specified",
+        "args": {
+          "path": "report.txt",
+          "content": "OK-7391"
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 1530,
+      "raw": "{\"id\":\"53da6c7f-b4be-4da5-9b64-bfaaa9ea5481\",\"object\":\"chat.completion\",\"created\":1787666759,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"The file `report.txt` has been created with the exact content `OK-7391`.\",\"reasoning_content\":\"The file was created successfully with the exact content \\\"OK-7391\\\". Let me verify it.\"},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":1801,\"completion_tokens\":40,\"total_tokens\":1841,\"prompt_tokens_details\":{\"cached_tokens\":1664},\"completion_tokens_details\":{\"reasoning_tokens\":20},\"prompt_cache_hit_tokens\":1664,\"prompt_cache_miss_tokens\":137},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

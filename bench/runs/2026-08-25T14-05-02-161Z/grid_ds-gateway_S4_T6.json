@@ -1,0 +1,75 @@
+{
+  "cellId": "grid_ds-gateway_S4_T6",
+  "backend": "ds-gateway",
+  "model": "deepseek-ai/DeepSeek-V4-Flash-0731",
+  "form": "S4",
+  "task": "T6",
+  "toolCount": 15,
+  "outcome": "OK",
+  "outcomeTolerant": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": true,
+    "reasoningStripped": false,
+    "truncatedReasoning": false,
+    "variantDialect": false,
+    "coercions": [],
+    "escapingUsed": false,
+    "paramSyntaxFailure": false,
+    "calledDistractor": false
+  },
+  "turns": 3,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 1570,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"I'll create the file with the exact content specified.\\n\\n\\u003ctool_call\\u003e\\n\\u003cfunction=write_file\\u003e\\n\\u003cparameter=path\\u003epayload.txt\\u003c/parameter\\u003e\\n\\u003cparameter=content\\u003e{\\\"key\\\": \\\"value\\\", \\\"n\\\": 3}\\n\\u003ctag attr=\\\"x\\\"\\u003ebody\\u003c/tag\\u003e\\nquote: \\\" backslash: \\\\ brace: }\\u003c/parameter\\u003e\\n\\u003c/function\\u003e\\n\\u003c/tool_call\\u003e\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787666762,\"id\":\"devshard-62337-293\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"deepseek-ai/DeepSeek-V4-Flash-0731\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-16d5fe49\",\"usage\":{\"completion_tokens\":79,\"prompt_tokens\":1045,\"prompt_tokens_details\":null,\"total_tokens\":1124}}",
+      "parsed": {
+        "kind": "call",
+        "name": "write_file",
+        "dialect": "specified",
+        "args": {
+          "path": "payload.txt",
+          "content": "{\"key\": \"value\", \"n\": 3}\n<tag attr=\"x\">body</tag>\nquote: \" backslash: \\ brace: }"
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 2234,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"The file has been created with the exact content. Let me verify it by reading it back.\\n\\n\\u003ctool_call\\u003e\\n\\u003cfunction=read_file\\u003e\\n\\u003cparameter=path\\u003epayload.txt\\u003c/parameter\\u003e\\n\\u003c/function\\u003e\\n\\u003c/tool_call\\u003e\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787666763,\"id\":\"devshard-62337-295\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"deepseek-ai/DeepSeek-V4-Flash-0731\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp4-f0993dd5\",\"usage\":{\"completion_tokens\":47,\"prompt_tokens\":1151,\"prompt_tokens_details\":null,\"total_tokens\":1198}}",
+      "parsed": {
+        "kind": "call",
+        "name": "read_file",
+        "dialect": "specified",
+        "args": {
+          "path": "payload.txt"
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 2,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 1366,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"The file content is verified. It contains exactly the three lines as specified:\\n\\n1. `{\\\"key\\\": \\\"value\\\", \\\"n\\\": 3}`\\n2. `\\u003ctag attr=\\\"x\\\"\\u003ebody\\u003c/tag\\u003e`\\n3. `quote: \\\" backslash: \\\\ brace: }`\\n\\nAll characters including quotes, braces, backslash, and angle brackets are reproduced exactly.\\n\\nDONE\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787666765,\"id\":\"devshard-62337-298\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"deepseek-ai/DeepSeek-V4-Flash-0731\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-16d5fe49\",\"usage\":{\"completion_tokens\":78,\"prompt_tokens\":1253,\"prompt_tokens_details\":null,\"total_tokens\":1331}}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

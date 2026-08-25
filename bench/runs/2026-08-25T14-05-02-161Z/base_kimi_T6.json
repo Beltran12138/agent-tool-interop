@@ -1,0 +1,12 @@
+{
+  "cellId": "base_kimi_T6",
+  "backend": "kimi",
+  "model": "moonshotai/Kimi-K2.6",
+  "form": "S0",
+  "task": "T6",
+  "outcome": "OK",
+  "outcomeTolerant": "OK",
+  "errorDetail": null,
+  "answer": "{\"key\": \"value\", \"n\": 3}\n<tag attr=\"x\">body</tag>\nquote: \" backslash: \\ brace: }",
+  "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\" {\\\"key\\\": \\\"value\\\", \\\"n\\\": 3}\\n\\u003ctag attr=\\\"x\\\"\\u003ebody\\u003c/tag\\u003e\\nquote: \\\" backslash: \\\\ brace: }\",\"function_call\":null,\"reasoning\":\" The user wants me to reply with exactly three lines and nothing else. The three lines are:\\n\\n1. `{\\\"key\\\": \\\"value\\\", \\\"n\\\": 3}`\\n2. `\\u003ctag attr=\\\"x\\\"\\u003ebody\\u003c/tag\\u003e`\\n3. `quote: \\\" backslash: \\\\ brace: }`\\n\\nI need to output exactly these three lines with no explanation, no formatting, no extra whitespace or newlines beyond what is necessary for the three lines. I should ensure there are exactly two newline characters separating the three lines, and no trailing newline at the end (or if there is, it shouldn't matter too much, but typically \\\"exactly these three lines\\\" means no extra blank lines).\\n\\nLet me verify the content:\\nLine 1: `{\\\"key\\\": \\\"value\\\", \\\"n\\\": 3}`\\nLine 2: `\\u003ctag attr=\\\"x\\\"\\u003ebody\\u003c/tag\\u003e`\\nLine 3: `quote: \\\" backslash: \\\\ brace: }`\\n\\nI will output exactly this. \",\"refusal\":null,\"role\":\"assistant\",\"tool_calls\":[]},\"stop_reason\":163586}],\"created\":1787667026,\"id\":\"devshard-62316-463\",\"kv_transfer_params\":null,\"model\":\"moonshotai/Kimi-K2.6\",\"object\":\"chat.completion\",\"service_tier\":null,\"system_fingerprint\":null,\"usage\":{\"completion_tokens\":231,\"prompt_tokens\":67,\"prompt_tokens_details\":null,\"total_tokens\":298}}"
+}

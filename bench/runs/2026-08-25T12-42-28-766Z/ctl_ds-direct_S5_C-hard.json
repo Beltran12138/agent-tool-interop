@@ -1,0 +1,69 @@
+{
+  "cellId": "ctl_ds-direct_S5_C-hard",
+  "backend": "ds-direct",
+  "model": "deepseek-v4-flash",
+  "form": "S5",
+  "task": "T4",
+  "toolCount": 15,
+  "outcome": "OK",
+  "outcomeTolerant": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": false,
+    "reasoningStripped": false,
+    "truncatedReasoning": false,
+    "variantDialect": false,
+    "coercions": [],
+    "escapingUsed": false,
+    "calledDistractor": false
+  },
+  "turns": 2,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 1926,
+      "raw": "{\"id\":\"42daa48b-d9d1-474f-9d9b-7557c3d6ae03\",\"object\":\"chat.completion\",\"created\":1787661775,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\\"tool\\\": \\\"create_record\\\", \\\"args\\\": {\\\"path\\\": \\\"record.json\\\", \\\"title\\\": \\\"Quarterly Review\\\", \\\"tags\\\": [\\\"finance\\\", \\\"q3\\\", \\\"urgent\\\"], \\\"priority\\\": \\\"high\\\", \\\"retries\\\": 4, \\\"owner\\\": {\\\"name\\\": \\\"Dana Wu\\\", \\\"email\\\": \\\"dana@example.com\\\"}}}\",\"reasoning_content\":\"We need to create a JSON record at record.json with exact values. Tool: create_record. Need path record.json, title, tags, priority, retries, owner. Let's call.\"},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":968,\"completion_tokens\":114,\"total_tokens\":1082,\"prompt_tokens_details\":{\"cached_tokens\":896},\"completion_tokens_details\":{\"reasoning_tokens\":39},\"prompt_cache_hit_tokens\":896,\"prompt_cache_miss_tokens\":72},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}",
+      "parsed": {
+        "kind": "call",
+        "name": "create_record",
+        "dialect": "specified",
+        "args": {
+          "path": "record.json",
+          "title": "Quarterly Review",
+          "tags": [
+            "finance",
+            "q3",
+            "urgent"
+          ],
+          "priority": "high",
+          "retries": 4,
+          "owner": {
+            "name": "Dana Wu",
+            "email": "dana@example.com"
+          }
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 1824,
+      "raw": "{\"id\":\"d3f0f0f9-9b1f-44ca-87ee-fa53ef3ebe57\",\"object\":\"chat.completion\",\"created\":1787661777,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\\"done\\\": true}\",\"reasoning_content\":\"The task is complete. I created the JSON record at record.json with the exact values requested. I should reply with {\\\"done\\\": true}.\"},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":1063,\"completion_tokens\":34,\"total_tokens\":1097,\"prompt_tokens_details\":{\"cached_tokens\":1024},\"completion_tokens_details\":{\"reasoning_tokens\":28},\"prompt_cache_hit_tokens\":1024,\"prompt_cache_miss_tokens\":39},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

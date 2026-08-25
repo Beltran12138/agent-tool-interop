@@ -1,0 +1,70 @@
+{
+  "cellId": "grid_kimi_S1_T4",
+  "backend": "kimi",
+  "model": "moonshotai/Kimi-K2.6",
+  "form": "S1",
+  "task": "T4",
+  "toolCount": 15,
+  "outcome": "OK",
+  "outcomeTolerant": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": false,
+    "reasoningStripped": false,
+    "truncatedReasoning": false,
+    "variantDialect": false,
+    "coercions": [],
+    "escapingUsed": false,
+    "paramSyntaxFailure": false,
+    "calledDistractor": false
+  },
+  "turns": 2,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 820,
+      "raw": "{\"choices\":[{\"finish_reason\":\"tool_calls\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":null,\"function_call\":null,\"reasoning\":\" The user wants me to create a JSON record at `record.json` with specific values:\\n- title: \\\"Quarterly Review\\\"\\n- tags: [\\\"finance\\\", \\\"q3\\\", \\\"urgent\\\"]\\n- priority: \\\"high\\\"\\n- retries: 4\\n- owner: { name: \\\"Dana Wu\\\", email: \\\"dana@example.com\\\" }\\n\\nI should use the `create_record` tool since the user explicitly asked to \\\"Use the tool that creates JSON records.\\\"\\n\\nLet me map the parameters:\\n- path: \\\"record.json\\\"\\n- title: \\\"Quarterly Review\\\"\\n- tags: [\\\"finance\\\", \\\"q3\\\", \\\"urgent\\\"]\\n- priority: \\\"high\\\"\\n- retries: 4\\n- owner: { name: \\\"Dana Wu\\\", email: \\\"dana@example.com\\\" } \",\"refusal\":null,\"role\":\"assistant\",\"tool_calls\":[{\"function\":{\"arguments\":\"{\\\"path\\\":\\\"record.json\\\",\\\"title\\\":\\\"Quarterly Review\\\",\\\"tags\\\":[\\\"finance\\\",\\\"q3\\\",\\\"urgent\\\"],\\\"priority\\\":\\\"high\\\",\\\"retries\\\":4,\\\"owner\\\":{\\\"name\\\":\\\"Dana Wu\\\",\\\"email\\\":\\\"dana@example.com\\\"}}\",\"name\":\"create_record\"},\"id\":\"functions.create_record:0\",\"type\":\"function\"}]},\"stop_reason\":163586}],\"created\":1787666677,\"id\":\"devshard-62309-655\",\"kv_transfer_params\":null,\"model\":\"moonshotai/Kimi-K2.6\",\"object\":\"chat.completion\",\"service_tier\":null,\"system_fingerprint\":null,\"usage\":{\"completion_tokens\":221,\"prompt_tokens\":913,\"prompt_tokens_details\":null,\"total_tokens\":1134}}",
+      "parsed": {
+        "kind": "call",
+        "name": "create_record",
+        "dialect": "specified",
+        "args": {
+          "path": "record.json",
+          "title": "Quarterly Review",
+          "tags": [
+            "finance",
+            "q3",
+            "urgent"
+          ],
+          "priority": "high",
+          "retries": 4,
+          "owner": {
+            "name": "Dana Wu",
+            "email": "dana@example.com"
+          }
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 477,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\" Done. The JSON record has been created at `record.json` with the specified values.\",\"function_call\":null,\"reasoning\":\" The user asked me to create a JSON record at record.json with specific values. I used the create_record tool with the exact values provided:\\n- title: \\\"Quarterly Review\\\"\\n- tags: [\\\"finance\\\", \\\"q3\\\", \\\"urgent\\\"]\\n- priority: \\\"high\\\"\\n- retries: 4\\n- owner: {name: \\\"Dana Wu\\\", email: \\\"dana@example.com\\\"}\\n\\nThe tool returned success, indicating the record was written to record.json. The task is complete. \",\"refusal\":null,\"role\":\"assistant\",\"tool_calls\":[]},\"stop_reason\":163586}],\"created\":1787666686,\"id\":\"devshard-62309-656\",\"kv_transfer_params\":null,\"model\":\"moonshotai/Kimi-K2.6\",\"object\":\"chat.completion\",\"service_tier\":null,\"system_fingerprint\":null,\"usage\":{\"completion_tokens\":120,\"prompt_tokens\":1017,\"prompt_tokens_details\":null,\"total_tokens\":1137}}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

@@ -35,7 +35,11 @@ function loadEnv(file) {
 }
 loadEnv(path.join(__dirname, '.env'));
 
-const MAX_TURNS = 6;
+// Turn budget. This is a PARAMETER, not a property of any envelope, and it is
+// overridable precisely so that a failure attributed to per-turn overhead can be
+// tested against it: if raising the cap turns the failures into successes, the
+// finding is about margin, not capability. Reported in every run record.
+const MAX_TURNS = Number(process.argv.find((a) => a.startsWith('--max-turns='))?.split('=')[1] || 6);
 // Measured: one Kimi reply took 63s. 120s produced timeouts that would have been
 // misread as backend failures, so the ceiling is set well clear of observed latency.
 const REQ_TIMEOUT_MS = 300000;
@@ -81,6 +85,8 @@ async function runCell({ backend, form, task, toolNames, runDir, cellId }) {
     truncatedReasoning: false,
     variantDialect: false, // a strict scaffold would have rejected at least one call
     coercions: [],         // non-string args that arrived JSON-encoded as text
+    escapingUsed: false,   // entity escaping applied inside a prompt-embedded value
+    paramSyntaxFailure: false, // <parameter> tags present but unreadable (NOT an omission)
     calledDistractor: false,
   };
   let outcome = null;
@@ -119,6 +125,8 @@ async function runCell({ backend, form, task, toolNames, runDir, cellId }) {
     const parsed = form.parse(text, message);
     trace[trace.length - 1].parsed = { kind: parsed.kind, name: parsed.name, detail: parsed.detail, dialect: parsed.dialect, args: parsed.args };
     if (parsed.dialect === 'variant') flags.variantDialect = true;
+    if (parsed.escapingUsed) flags.escapingUsed = true;
+    if (parsed.paramSyntaxFailure) flags.paramSyntaxFailure = true;
 
     if (parsed.kind === 'none') {
       if (!flags.anyCall) {
@@ -185,17 +193,21 @@ async function runCell({ backend, form, task, toolNames, runDir, cellId }) {
   // ---- verdict ------------------------------------------------------------
   let verify = null;
   let recovered;
+  let outcomeTolerant;
   if (outcome === null || outcome === 'F0') {
     verify = task.verify(dir);
     if (outcome === null) {
-      const c = classify({ flags, verify, transportOutcome: null });
-      outcome = c.outcome;
-      recovered = c.recovered;
+      const tolerant = classify({ flags, verify, transportOutcome: null });
+      const strict = classify({ flags, verify, transportOutcome: null, strict: true });
+      outcome = strict.outcome;              // Slice 0.2: strict is the primary DV
+      outcomeTolerant = tolerant.outcome;
+      recovered = strict.recovered || tolerant.recovered;
       if (outcome === 'F0') errorDetail = 'loop ended with no tool call';
     }
   }
 
-  const record = { cellId, backend: backend.id, model: backend.model, form: form.id, task: task.id, toolCount: toolNames.length, outcome, recovered, errorDetail, verify, flags, turns: trace.length, trace };
+  if (outcomeTolerant === undefined) outcomeTolerant = outcome;
+  const record = { cellId, backend: backend.id, model: backend.model, form: form.id, task: task.id, toolCount: toolNames.length, outcome, outcomeTolerant, recovered, errorDetail, verify, flags, turns: trace.length, trace };
   fs.writeFileSync(path.join(runDir, `${cellId}.json`), JSON.stringify(record, null, 2));
   fs.rmSync(dir, { recursive: true, force: true });
   return record;
@@ -223,7 +235,8 @@ async function runBaseline({ backend, task, runDir, cellId }) {
       detail = v.detail || null;
     }
   }
-  const record = { cellId, backend: backend.id, model: backend.model, form: 'S0', task: task.id, outcome, errorDetail: detail, answer: answer.slice(0, 400), raw: res.raw ? res.raw.slice(0, 20000) : undefined };
+  // The baseline has no envelope, so strict and tolerant scoring cannot differ.
+  const record = { cellId, backend: backend.id, model: backend.model, form: 'S0', task: task.id, outcome, outcomeTolerant: outcome, errorDetail: detail, answer: answer.slice(0, 400), raw: res.raw ? res.raw.slice(0, 20000) : undefined };
   fs.writeFileSync(path.join(runDir, `${cellId}.json`), JSON.stringify(record, null, 2));
   return record;
 }
@@ -296,7 +309,7 @@ async function main() {
   );
   const records = perBackend.flat();
 
-  fs.writeFileSync(path.join(runDir, 'records.json'), JSON.stringify({ runId, argv: process.argv.slice(2), backends: backends.map(({ apiKey, ...b }) => b), records }, null, 2));
+  fs.writeFileSync(path.join(runDir, 'records.json'), JSON.stringify({ runId, maxTurns: MAX_TURNS, argv: process.argv.slice(2), backends: backends.map(({ apiKey, ...b }) => b), records }, null, 2));
   report(records, live, runDir, forms);
 }
 

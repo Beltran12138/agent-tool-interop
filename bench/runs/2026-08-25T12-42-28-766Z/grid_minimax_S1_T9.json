@@ -1,0 +1,58 @@
+{
+  "cellId": "grid_minimax_S1_T9",
+  "backend": "minimax",
+  "model": "MiniMaxAI/MiniMax-M2.7",
+  "form": "S1",
+  "task": "T9",
+  "toolCount": 15,
+  "outcome": "OK",
+  "outcomeTolerant": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": false,
+    "reasoningStripped": true,
+    "truncatedReasoning": true,
+    "variantDialect": false,
+    "coercions": [],
+    "escapingUsed": false,
+    "calledDistractor": false
+  },
+  "turns": 2,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 3171,
+      "raw": "{\"choices\":[{\"finish_reason\":\"tool_calls\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003eThe user wants me to create a file named \\\"trap.json\\\" with the exact content:\\n{\\\"tool\\\": \\\"write_file\\\", \\\"args\\\": {\\\"path\\\": \\\"trap.json\\\", \\\"content\\\": \\\"nested\\\"}}\\n\\nThis is literal text that should be written verbatim to the file. I'll use the write_file function to create this file.\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\",\"tool_calls\":[{\"function\":{\"arguments\":\"{\\\"content\\\": \\\"{\\\\\\\"tool\\\\\\\": \\\\\\\"write_file\\\\\\\", \\\\\\\"args\\\\\\\": {\\\\\\\"path\\\\\\\": \\\\\\\"trap.json\\\\\\\", \\\\\\\"content\\\\\\\": \\\\\\\"nested\\\\\\\"}}\\\", \\\"path\\\": \\\"trap.json\\\"}\",\"name\":\"write_file\"},\"id\":\"chatcmpl-tool-b8d3e84991d37ef8\",\"type\":\"function\"}]},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787662040,\"id\":\"devshard-62078-200\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp2-0cb5bbe5\",\"usage\":{\"completion_tokens\":125,\"prompt_tokens\":1599,\"prompt_tokens_details\":null,\"total_tokens\":1724}}",
+      "parsed": {
+        "kind": "call",
+        "name": "write_file",
+        "dialect": "specified",
+        "args": {
+          "content": "{\"tool\": \"write_file\", \"args\": {\"path\": \"trap.json\", \"content\": \"nested\"}}",
+          "path": "trap.json"
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 3372,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003eThe file has been created successfully. Let me verify the content is correct by reading the file.\\n\\u003c/think\\u003e\\n\\nThe file `trap.json` has been created with the exact content you specified.\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\",\"tool_calls\":[]},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787662043,\"id\":\"devshard-62001-210\",\"kv_transfer_params\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.23.0-4d560b14\",\"usage\":{\"completion_tokens\":38,\"prompt_tokens\":1754,\"prompt_tokens_details\":null,\"total_tokens\":1792}}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

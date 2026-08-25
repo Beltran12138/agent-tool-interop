@@ -1,0 +1,58 @@
+{
+  "cellId": "grid_ds-gateway_S1_T9",
+  "backend": "ds-gateway",
+  "model": "deepseek-ai/DeepSeek-V4-Flash-0731",
+  "form": "S1",
+  "task": "T9",
+  "toolCount": 15,
+  "outcome": "OK",
+  "outcomeTolerant": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": false,
+    "reasoningStripped": false,
+    "truncatedReasoning": false,
+    "variantDialect": false,
+    "coercions": [],
+    "escapingUsed": false,
+    "calledDistractor": false
+  },
+  "turns": 2,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 6330,
+      "raw": "{\"choices\":[{\"finish_reason\":\"tool_calls\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":null,\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\",\"tool_calls\":[{\"function\":{\"arguments\":\"{\\\"path\\\": \\\"trap.json\\\", \\\"content\\\": \\\"{\\\\\\\"tool\\\\\\\": \\\\\\\"write_file\\\\\\\", \\\\\\\"args\\\\\\\": {\\\\\\\"path\\\\\\\": \\\\\\\"trap.json\\\\\\\", \\\\\\\"content\\\\\\\": \\\\\\\"nested\\\\\\\"}}\\\"}\",\"name\":\"write_file\"},\"id\":\"chatcmpl-tool-aa6a47b865cc7b55\",\"type\":\"function\"}]},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787662031,\"id\":\"devshard-62330-307\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"deepseek-ai/DeepSeek-V4-Flash-0731\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp2-8aac2e07\",\"usage\":{\"completion_tokens\":86,\"prompt_tokens\":1648,\"prompt_tokens_details\":null,\"total_tokens\":1734}}",
+      "parsed": {
+        "kind": "call",
+        "name": "write_file",
+        "dialect": "specified",
+        "args": {
+          "path": "trap.json",
+          "content": "{\"tool\": \"write_file\", \"args\": {\"path\": \"trap.json\", \"content\": \"nested\"}}"
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 1608,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"I've created the file `trap.json` with the exact literal text:\\n\\n```\\n{\\\"tool\\\": \\\"write_file\\\", \\\"args\\\": {\\\"path\\\": \\\"trap.json\\\", \\\"content\\\": \\\"nested\\\"}}\\n```\\n\\nThe content was written verbatim as specified.\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787662037,\"id\":\"devshard-62330-311\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"deepseek-ai/DeepSeek-V4-Flash-0731\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-16d5fe49\",\"usage\":{\"completion_tokens\":54,\"prompt_tokens\":1761,\"prompt_tokens_details\":null,\"total_tokens\":1815}}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

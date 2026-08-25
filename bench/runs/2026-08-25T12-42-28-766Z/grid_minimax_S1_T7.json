@@ -1,0 +1,94 @@
+{
+  "cellId": "grid_minimax_S1_T7",
+  "backend": "minimax",
+  "model": "MiniMaxAI/MiniMax-M2.7",
+  "form": "S1",
+  "task": "T7",
+  "toolCount": 15,
+  "outcome": "OK",
+  "outcomeTolerant": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": true,
+    "reasoningStripped": true,
+    "truncatedReasoning": true,
+    "variantDialect": false,
+    "coercions": [],
+    "escapingUsed": false,
+    "calledDistractor": false,
+    "parallelCalls": 2
+  },
+  "turns": 4,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 3271,
+      "raw": "{\"choices\":[{\"finish_reason\":\"tool_calls\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003eLet me start by listing the directory to see what files are there.\\n\\u003c/think\\u003e\\n\\n\\n\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\",\"tool_calls\":[{\"function\":{\"arguments\":\"{\\\"path\\\": \\\".\\\"}\",\"name\":\"list_dir\"},\"id\":\"chatcmpl-tool-9c8f91200b5241e7\",\"type\":\"function\"}]},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787661996,\"id\":\"devshard-62038-197\",\"kv_transfer_params\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.23.0-30b587b4\",\"usage\":{\"completion_tokens\":39,\"prompt_tokens\":1567,\"prompt_tokens_details\":null,\"total_tokens\":1606}}",
+      "parsed": {
+        "kind": "call",
+        "name": "list_dir",
+        "dialect": "specified",
+        "args": {
+          "path": "."
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 3001,
+      "raw": "{\"choices\":[{\"finish_reason\":\"tool_calls\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003eI can see there are three files: a.txt, b.txt, and notes.md. I need to read the files that end in .txt, which are a.txt and b.txt. Let me read both of them.\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\",\"tool_calls\":[{\"function\":{\"arguments\":\"{\\\"path\\\": \\\"a.txt\\\"}\",\"name\":\"read_file\"},\"id\":\"chatcmpl-tool-a231aa2094c07196\",\"type\":\"function\"},{\"function\":{\"arguments\":\"{\\\"path\\\": \\\"b.txt\\\"}\",\"name\":\"read_file\"},\"id\":\"chatcmpl-tool-ba2d339790709357\",\"type\":\"function\"}]},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787661999,\"id\":\"devshard-62001-204\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp2-0cb5bbe5\",\"usage\":{\"completion_tokens\":93,\"prompt_tokens\":1639,\"prompt_tokens_details\":null,\"total_tokens\":1732}}",
+      "parsed": {
+        "kind": "call",
+        "name": "read_file",
+        "dialect": "specified",
+        "args": {
+          "path": "a.txt"
+        }
+      },
+      "validation": [
+        "ok",
+        "ok"
+      ]
+    },
+    {
+      "turn": 2,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 2692,
+      "raw": "{\"choices\":[{\"finish_reason\":\"tool_calls\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003ea.txt contains 17 and b.txt contains 25. The sum is 17 + 25 = 42. I need to write \\\"42\\\" to total.txt with digits only.\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\",\"tool_calls\":[{\"function\":{\"arguments\":\"{\\\"content\\\": \\\"42\\\", \\\"path\\\": \\\"total.txt\\\"}\",\"name\":\"write_file\"},\"id\":\"chatcmpl-tool-ba6b935d73be4bfb\",\"type\":\"function\"}]},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787662002,\"id\":\"devshard-62021-317\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp2-0cb5bbe5\",\"usage\":{\"completion_tokens\":75,\"prompt_tokens\":1770,\"prompt_tokens_details\":null,\"total_tokens\":1845}}",
+      "parsed": {
+        "kind": "call",
+        "name": "write_file",
+        "dialect": "specified",
+        "args": {
+          "content": "42",
+          "path": "total.txt"
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 3,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 2921,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003eI've completed the task:\\n1. Listed the directory and found a.txt, b.txt, and notes.md\\n2. Read a.txt (contains 17) and b.txt (contains 25)\\n3. Added them together: 17 + 25 = 42\\n4. Wrote the sum to total.txt as digits only\\n\\u003c/think\\u003e\\n\\nDone! I found two .txt files:\\n- `a.txt` contains `17`\\n- `b.txt` contains `25`\\n\\nThe sum is 42, which I've written to `total.txt`.\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787662005,\"id\":\"devshard-62038-198\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp2-0cb5bbe5\",\"usage\":{\"completion_tokens\":112,\"prompt_tokens\":1875,\"prompt_tokens_details\":null,\"total_tokens\":1987}}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

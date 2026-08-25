@@ -19,8 +19,26 @@
  * Recovery is a flag, not a verdict.
  */
 
-function classify({ flags, verify, transportOutcome }) {
+function classify({ flags, verify, transportOutcome, strict }) {
   if (transportOutcome === 'ERROR') return { outcome: 'ERROR' };
+
+  // STRICT MODE — the Slice 0.2 dependent variable.
+  //
+  // Slice 0 and Slice 0.1 both scored under a tolerant parser and both saturated
+  // at ceiling. Under tolerance, "did it work" stops discriminating long before
+  // the envelopes stop differing, because the harness quietly absorbs syntax the
+  // prompt never specified. A real scaffold that accepts only its own literal
+  // syntax would have rejected those calls outright.
+  //
+  // So conformance becomes part of the outcome rather than a footnote: a cell
+  // that only succeeded via a non-specified dialect is F2 under strict scoring —
+  // envelope present, emission does not conform. Both codes are always reported
+  // side by side; neither alone is honest. Tolerant overstates what a strict
+  // consumer would accept; strict alone lets the harness's own leniency setting
+  // masquerade as a fact about the model.
+  if (strict && flags.variantDialect) {
+    return { outcome: 'F2', strictRejected: true };
+  }
 
   // F0 vs F2, the distinction this whole bench is organised around — and which
   // the first version of THIS function got wrong. A cell where every turn

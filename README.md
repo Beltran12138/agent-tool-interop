@@ -32,7 +32,8 @@ See [`DISCLAIMER.md`](DISCLAIMER.md).
 | Conformance bench — design | measurement design, written before the code | [`docs/BENCH-DESIGN.md`](docs/BENCH-DESIGN.md) |
 | Conformance bench — harness | 4 backends × 3 exposure forms, 72 offline assertions | [`bench/`](bench/) |
 | Conformance bench — Slice 0 | saturated at ceiling; three false-result mechanisms closed | [`bench/FINDINGS-SLICE0.md`](bench/FINDINGS-SLICE0.md) |
-| Conformance bench — Slice 0.1 | **116 cells, 0 ERROR — envelopes equally drivable, unequally demanding** | [`bench/FINDINGS-SLICE0.1.md`](bench/FINDINGS-SLICE0.1.md) |
+| Conformance bench — Slice 0.1 | 116 cells — envelopes equally drivable, unequally demanding (**one claim since retracted**) | [`bench/FINDINGS-SLICE0.1.md`](bench/FINDINGS-SLICE0.1.md) |
+| Conformance bench — Slice 0.2 | **148 cells, strict scoring — the forms finally separate** | [`bench/FINDINGS-SLICE0.2.md`](bench/FINDINGS-SLICE0.2.md) |
 | Community registry | placeholder | [`registry/`](registry/) |
 
 ## Key finding
@@ -69,8 +70,9 @@ agent-tool-interop/
 - The matrix has five data points (a mix of directly observed and architecture-documented); broader coverage depends on community reports.
 - The reference implementation demonstrates the **Family A → gateway** path (transport adaptation). A full backend-relay reference for the Family B bridging path (track `β`) remains future work, gated on v0 traction.
 - The conformance bench measures a deliberately different half of the problem from Analysis 01 — the backend's ability to emit against a given exposure form, rather than a shipped CLI's exposure form itself. That scope shift is stated in [`docs/BENCH-DESIGN.md`](docs/BENCH-DESIGN.md) §1.1 rather than elided.
-- **Binary drivability has saturated twice** (Slice 0, then Slice 0.1 at higher difficulty: 0.98 with a passing task-competence control). For any task these models can do at all, all three exposure forms get them there — so `OK` is the wrong dependent variable, not the tasks. What still varies is what each envelope *demands*: parallelism only in the native form, string-encoding of structured arguments only in the XML form, dialect drift only in the XML form, and **a fifth of the XML form's successes existing only because the parser was lenient**. See [`bench/FINDINGS-SLICE0.1.md`](bench/FINDINGS-SLICE0.1.md).
-- Both findings files record the harness defects found while running — a parallel-call bug that would have deleted the native form's chain cells, a classifier that inverted the very `F0`/`F2` distinction it enforces, and assertions that could not fail. They are listed because each would otherwise have produced a confident wrong number.
+- **Binary drivability saturated twice under a lenient parser** (Slice 0, then Slice 0.1 at higher difficulty). Making conformance part of the outcome — scoring under a scaffold that accepts only the syntax it specified — is what finally separated the forms: **native 0.96, prompt-JSON 1.00, prompt-XML 0.74**, where a lenient consumer would have reported the XML form at 0.93 and seen none of it. The whole XML deficit is one model. See [`bench/FINDINGS-SLICE0.2.md`](bench/FINDINGS-SLICE0.2.md).
+- **One Slice 0.1 headline has been retracted.** "Parallelism appeared only in the native form" was a parser artifact: the parser read the first tool call in a message and silently dropped the rest, and the contradicting evidence was already on disk in that same run. A silent drop does not only lose data — it manufactures the opposite finding, in the direction the analyst expects.
+- The findings files list every harness defect found while running, because each would otherwise have produced a confident wrong number: a parallel-call bug that 400'd the native form on exactly the task where its advantage shows, a classifier that inverted the `F0`/`F2` distinction it exists to enforce, assertions appended after `process.exit` that could never fail, and a syntax failure reported as a reasoning failure.
 
 ## License
 

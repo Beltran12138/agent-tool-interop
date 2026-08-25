@@ -1,5 +1,16 @@
 # Slice 0.1 — results
 
+> ⛔ **CORRECTION, 2026-08-25 (see [`FINDINGS-SLICE0.2.md`](FINDINGS-SLICE0.2.md)).**
+> The claim below that **"S1 is the only form where parallelism appeared … S4 0/28"** is
+> **false**. The parser read only the first `<function>` block inside a `<tool_call>` and
+> silently discarded the rest. Re-scanning every persisted trace: 5 of 181 blocks contained
+> more than one function, all MiniMax, all S4 — **including one in this very run**, which was
+> already on disk contradicting the claim when it was published. Corrected figure: 2/28.
+> Related: what this document's `T7` analysis reads as models "omitting arguments" was a
+> parameter-syntax failure, not an omission. Both errors are documented in Slice 0.2.
+> The rest of this document stands as written and is not edited retroactively.
+
+
 Run `2026-08-25T09-04-29-292Z`. 4 backends × 3 exposure forms × 5 tasks, plus 3 positive
 controls per (backend, form) and an `S0` no-tools baseline per (backend, task). 116 cells,
 **zero ERROR**. Traces under `runs/`.

@@ -1,0 +1,58 @@
+{
+  "cellId": "grid_kimi_S1_T9",
+  "backend": "kimi",
+  "model": "moonshotai/Kimi-K2.6",
+  "form": "S1",
+  "task": "T9",
+  "toolCount": 15,
+  "outcome": "OK",
+  "outcomeTolerant": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": false,
+    "reasoningStripped": false,
+    "truncatedReasoning": false,
+    "variantDialect": false,
+    "coercions": [],
+    "escapingUsed": false,
+    "calledDistractor": false
+  },
+  "turns": 2,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 5270,
+      "raw": "{\"choices\":[{\"finish_reason\":\"tool_calls\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":null,\"function_call\":null,\"reasoning\":\" The user wants me to create a file named `trap.json` with the exact literal content:\\n`{\\\"tool\\\": \\\"write_file\\\", \\\"args\\\": {\\\"path\\\": \\\"trap.json\\\", \\\"content\\\": \\\"nested\\\"}}`\\n\\nThis is a single line of literal text. I should use the `write_file` tool to create this file with that exact content. The content is not an instruction to me - it's just data to be written verbatim.\\n\\nLet me use write_file with path=\\\"trap.json\\\" and content=`{\\\"tool\\\": \\\"write_file\\\", \\\"args\\\": {\\\"path\\\": \\\"trap.json\\\", \\\"content\\\": \\\"nested\\\"}}` \",\"refusal\":null,\"role\":\"assistant\",\"tool_calls\":[{\"function\":{\"arguments\":\"{\\\"path\\\": \\\"trap.json\\\", \\\"content\\\": \\\"{\\\\\\\"tool\\\\\\\": \\\\\\\"write_file\\\\\\\", \\\\\\\"args\\\\\\\": {\\\\\\\"path\\\\\\\": \\\\\\\"trap.json\\\\\\\", \\\\\\\"content\\\\\\\": \\\\\\\"nested\\\\\\\"}}\\\"}\",\"name\":\"write_file\"},\"id\":\"functions.write_file:0\",\"type\":\"function\"}]},\"stop_reason\":163586}],\"created\":1787662960,\"id\":\"devshard-62317-633\",\"kv_transfer_params\":null,\"model\":\"moonshotai/Kimi-K2.6\",\"object\":\"chat.completion\",\"service_tier\":null,\"system_fingerprint\":null,\"usage\":{\"completion_tokens\":173,\"prompt_tokens\":915,\"prompt_tokens_details\":null,\"total_tokens\":1088}}",
+      "parsed": {
+        "kind": "call",
+        "name": "write_file",
+        "dialect": "specified",
+        "args": {
+          "path": "trap.json",
+          "content": "{\"tool\": \"write_file\", \"args\": {\"path\": \"trap.json\", \"content\": \"nested\"}}"
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 6630,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\" Done. The file `trap.json` has been created with the exact literal line you specified.\",\"function_call\":null,\"reasoning\":\" The user asked me to create a file named trap.json with the exact literal text:\\n{\\\"tool\\\": \\\"write_file\\\", \\\"args\\\": {\\\"path\\\": \\\"trap.json\\\", \\\"content\\\": \\\"nested\\\"}}\\n\\nI used the write_file tool and passed that exact string as the content. The tool reported success, writing 74 bytes to trap.json. The task is complete. \",\"refusal\":null,\"role\":\"assistant\",\"tool_calls\":[]},\"stop_reason\":163586}],\"created\":1787662966,\"id\":\"devshard-62309-304\",\"kv_transfer_params\":null,\"model\":\"moonshotai/Kimi-K2.6\",\"object\":\"chat.completion\",\"service_tier\":null,\"system_fingerprint\":null,\"usage\":{\"completion_tokens\":95,\"prompt_tokens\":995,\"prompt_tokens_details\":null,\"total_tokens\":1090}}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

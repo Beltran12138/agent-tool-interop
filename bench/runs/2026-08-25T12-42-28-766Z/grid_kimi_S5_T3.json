@@ -1,0 +1,37 @@
+{
+  "cellId": "grid_kimi_S5_T3",
+  "backend": "kimi",
+  "model": "moonshotai/Kimi-K2.6",
+  "form": "S5",
+  "task": "T3",
+  "toolCount": 15,
+  "outcome": "ERROR",
+  "outcomeTolerant": "ERROR",
+  "errorDetail": "http_error 429",
+  "verify": null,
+  "flags": {
+    "anyCall": false,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": false,
+    "calledOtherKnown": false,
+    "reasoningStripped": false,
+    "truncatedReasoning": false,
+    "variantDialect": false,
+    "coercions": [],
+    "escapingUsed": false,
+    "calledDistractor": false
+  },
+  "turns": 1,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "http_error",
+      "attempts": 3,
+      "ms": 4314,
+      "status": 429,
+      "raw": "{\"error\":{\"message\":\"rate limit exceeded: too many concurrent requests\",\"type\":\"upstream_error\",\"param\":\"\",\"code\":null}}"
+    }
+  ]
+}

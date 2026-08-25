@@ -1,0 +1,89 @@
+{
+  "cellId": "ctl_minimax_S4_C-easy",
+  "backend": "minimax",
+  "model": "MiniMaxAI/MiniMax-M2.7",
+  "form": "S4",
+  "task": "T1",
+  "toolCount": 1,
+  "outcome": "F2",
+  "outcomeTolerant": "OK",
+  "recovered": true,
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": true,
+    "calledExpected": true,
+    "calledOtherKnown": false,
+    "reasoningStripped": true,
+    "truncatedReasoning": false,
+    "variantDialect": true,
+    "coercions": [],
+    "escapingUsed": false,
+    "calledDistractor": false
+  },
+  "turns": 4,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 2085,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003eThe user wants me to create a file named report.txt with the exact content \\\"OK-7391\\\". I'll use the write_file function to do this.\\n\\u003c/think\\u003e\\n\\n\\u003ctool_call\\u003e\\n\\u003cfunction=write_file\\u003e\\n\\u003cparameter name=path\\u003ereport.txt\\u003c/parameter\\u003e\\n\\u003cparameter name=content\\\"\\u003eOK-7391\\u003c/parameter\\u003e\\n\\u003c/function\\u003e\\n\\u003c/tool_call\\u003e\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787661793,\"id\":\"devshard-62001-191\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp2-0cb5bbe5\",\"usage\":{\"completion_tokens\":75,\"prompt_tokens\":351,\"prompt_tokens_details\":null,\"total_tokens\":426}}",
+      "parsed": {
+        "kind": "call",
+        "name": "write_file",
+        "dialect": "specified",
+        "args": {}
+      },
+      "validation": "missing required parameter: path"
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 2486,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003eI need to provide both the path and content parameters for the write_file function.\\n\\u003c/think\\u003e\\n\\n\\u003ctool_call\\u003e\\n\\u003cfunction=write_file\\u003e\\n\\u003cparameter name=path\\\"\\u003ereport.txt\\u003c/parameter\\u003e\\n\\u003cparameter name=\\\"content\\\"\\u003eOK-7391\\u003c/parameter\\u003e\\n\\u003c/function\\u003e\\n\\u003c/tool_call\\u003e\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787661795,\"id\":\"devshard-62021-304\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp2-0cb5bbe5\",\"usage\":{\"completion_tokens\":60,\"prompt_tokens\":419,\"prompt_tokens_details\":null,\"total_tokens\":479}}",
+      "parsed": {
+        "kind": "call",
+        "name": "write_file",
+        "dialect": "variant",
+        "args": {
+          "content": "OK-7391"
+        }
+      },
+      "validation": "missing required parameter: path"
+    },
+    {
+      "turn": 2,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 4568,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003eThe system is telling me I'm missing the required \\\"path\\\" parameter, but I clearly provided it. Let me try the call again with proper formatting.\\n\\u003c/think\\u003e\\n\\n\\u003ctool_call\\u003e\\n\\u003cfunction=write_file\\u003e\\n\\u003cparameter name=\\\"path\\\"\\u003ereport.txt\\u003c/parameter\\u003e\\n\\u003cparameter name=\\\"content\\\"\\u003eOK-7391\\u003c/parameter\\u003e\\n\\u003c/function\\u003e\\n\\u003c/tool_call\\u003e\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\",\"tool_calls\":[]},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787661798,\"id\":\"devshard-62038-186\",\"kv_transfer_params\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.23.0-30b587b4\",\"usage\":{\"completion_tokens\":74,\"prompt_tokens\":487,\"prompt_tokens_details\":null,\"total_tokens\":561}}",
+      "parsed": {
+        "kind": "call",
+        "name": "write_file",
+        "dialect": "variant",
+        "args": {
+          "path": "report.txt",
+          "content": "OK-7391"
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 3,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 5126,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003eThe file has been successfully created with the content \\\"OK-7391\\\". The task is complete.\\n\\u003c/think\\u003e\\n\\nDONE\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787661805,\"id\":\"devshard-62052-195\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp2-0cb5bbe5\",\"usage\":{\"completion_tokens\":25,\"prompt_tokens\":562,\"prompt_tokens_details\":null,\"total_tokens\":587}}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

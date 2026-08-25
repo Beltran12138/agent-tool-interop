@@ -1,0 +1,86 @@
+{
+  "cellId": "grid_ds-direct_S1_T4",
+  "backend": "ds-direct",
+  "model": "deepseek-v4-flash",
+  "form": "S1",
+  "task": "T4",
+  "toolCount": 15,
+  "outcome": "OK",
+  "outcomeTolerant": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": true,
+    "reasoningStripped": false,
+    "truncatedReasoning": false,
+    "variantDialect": false,
+    "coercions": [],
+    "escapingUsed": false,
+    "paramSyntaxFailure": false,
+    "calledDistractor": false
+  },
+  "turns": 3,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 2132,
+      "raw": "{\"id\":\"f8b1865c-1964-4700-b098-97e2f5572710\",\"object\":\"chat.completion\",\"created\":1787666760,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"\",\"reasoning_content\":\"The user wants me to create a JSON record at record.json with specific values. The tool that creates JSON records is `create_record`. Let me use it with the exact values specified.\\n\\n- title: Quarterly Review\\n- tags: [\\\"finance\\\", \\\"q3\\\", \\\"urgent\\\"]\\n- priority: high\\n- retries: 4\\n- owner: { name: \\\"Dana Wu\\\", email: \\\"dana@example.com\\\" }\\n\\nPath: record.json\",\"tool_calls\":[{\"index\":0,\"id\":\"call_00_roztpyyR2xMljlvVCK3r6790\",\"type\":\"function\",\"function\":{\"name\":\"create_record\",\"arguments\":\"{\\\"path\\\": \\\"record.json\\\", \\\"title\\\": \\\"Quarterly Review\\\", \\\"tags\\\": [\\\"finance\\\", \\\"q3\\\", \\\"urgent\\\"], \\\"priority\\\": \\\"high\\\", \\\"retries\\\": 4, \\\"owner\\\": {\\\"name\\\": \\\"Dana Wu\\\", \\\"email\\\": \\\"dana@example.com\\\"}}\"}}]},\"logprobs\":null,\"finish_reason\":\"tool_calls\"}],\"usage\":{\"prompt_tokens\":1737,\"completion_tokens\":249,\"total_tokens\":1986,\"prompt_tokens_details\":{\"cached_tokens\":1664},\"completion_tokens_details\":{\"reasoning_tokens\":94},\"prompt_cache_hit_tokens\":1664,\"prompt_cache_miss_tokens\":73},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}",
+      "parsed": {
+        "kind": "call",
+        "name": "create_record",
+        "dialect": "specified",
+        "args": {
+          "path": "record.json",
+          "title": "Quarterly Review",
+          "tags": [
+            "finance",
+            "q3",
+            "urgent"
+          ],
+          "priority": "high",
+          "retries": 4,
+          "owner": {
+            "name": "Dana Wu",
+            "email": "dana@example.com"
+          }
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 1491,
+      "raw": "{\"id\":\"31d30220-a7c9-48fd-b850-e387ed257e16\",\"object\":\"chat.completion\",\"created\":1787666763,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"\",\"reasoning_content\":\"The record was created successfully. Let me verify by reading the file.\",\"tool_calls\":[{\"index\":0,\"id\":\"call_00_OZDO3P49X2sT6qqUqTXG2368\",\"type\":\"function\",\"function\":{\"name\":\"read_file\",\"arguments\":\"{\\\"path\\\": \\\"record.json\\\"}\"}}]},\"logprobs\":null,\"finish_reason\":\"tool_calls\"}],\"usage\":{\"prompt_tokens\":2011,\"completion_tokens\":59,\"total_tokens\":2070,\"prompt_tokens_details\":{\"cached_tokens\":1920},\"completion_tokens_details\":{\"reasoning_tokens\":14},\"prompt_cache_hit_tokens\":1920,\"prompt_cache_miss_tokens\":91},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}",
+      "parsed": {
+        "kind": "call",
+        "name": "read_file",
+        "dialect": "specified",
+        "args": {
+          "path": "record.json"
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 2,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 1493,
+      "raw": "{\"id\":\"bd95639d-f4d9-4ec5-970f-06bf02adba7a\",\"object\":\"chat.completion\",\"created\":1787666764,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"The JSON record was created at `record.json` using the `create_record` tool with all the exact values specified:\\n\\n- **title**: Quarterly Review\\n- **tags**: finance, q3, urgent (in that order)\\n- **priority**: high\\n- **retries**: 4\\n- **owner**: Dana Wu (dana@example.com)\\n\\nThe file was verified and contains the correctly formatted JSON with all requested values.\",\"reasoning_content\":\"The record was created successfully with all the exact values requested. Let me summarize what was done.\"},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":2185,\"completion_tokens\":108,\"total_tokens\":2293,\"prompt_tokens_details\":{\"cached_tokens\":2048},\"completion_tokens_details\":{\"reasoning_tokens\":19},\"prompt_cache_hit_tokens\":2048,\"prompt_cache_miss_tokens\":137},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

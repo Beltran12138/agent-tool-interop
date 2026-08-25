@@ -1,0 +1,58 @@
+{
+  "cellId": "ctl_ds-direct_S4_C-easy",
+  "backend": "ds-direct",
+  "model": "deepseek-v4-flash",
+  "form": "S4",
+  "task": "T1",
+  "toolCount": 1,
+  "outcome": "OK",
+  "outcomeTolerant": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": false,
+    "reasoningStripped": false,
+    "truncatedReasoning": false,
+    "variantDialect": false,
+    "coercions": [],
+    "escapingUsed": false,
+    "calledDistractor": false
+  },
+  "turns": 2,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 1430,
+      "raw": "{\"id\":\"4d24ef19-140d-4036-af28-a1bc6970b634\",\"object\":\"chat.completion\",\"created\":1787661761,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"<tool_call>\\n<function=write_file>\\n<parameter=path>report.txt</parameter>\\n<parameter=content>OK-7391</parameter>\\n</function>\\n</tool_call>\",\"reasoning_content\":\"We need to create a file report.txt with content exactly \\\"OK-7391\\\". Use write_file.\"},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":423,\"completion_tokens\":61,\"total_tokens\":484,\"prompt_tokens_details\":{\"cached_tokens\":256},\"completion_tokens_details\":{\"reasoning_tokens\":21},\"prompt_cache_hit_tokens\":256,\"prompt_cache_miss_tokens\":167},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}",
+      "parsed": {
+        "kind": "call",
+        "name": "write_file",
+        "dialect": "specified",
+        "args": {
+          "path": "report.txt",
+          "content": "OK-7391"
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 991,
+      "raw": "{\"id\":\"6f41dd23-73a1-4140-b21f-c273f542d61c\",\"object\":\"chat.completion\",\"created\":1787661762,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"DONE\",\"reasoning_content\":\"The file was created with the exact content. Task complete.\"},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":490,\"completion_tokens\":15,\"total_tokens\":505,\"prompt_tokens_details\":{\"cached_tokens\":384},\"completion_tokens_details\":{\"reasoning_tokens\":12},\"prompt_cache_hit_tokens\":384,\"prompt_cache_miss_tokens\":106},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

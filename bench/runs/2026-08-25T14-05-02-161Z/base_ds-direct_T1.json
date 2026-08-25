@@ -1,0 +1,12 @@
+{
+  "cellId": "base_ds-direct_T1",
+  "backend": "ds-direct",
+  "model": "deepseek-v4-flash",
+  "form": "S0",
+  "task": "T1",
+  "outcome": "OK",
+  "outcomeTolerant": "OK",
+  "errorDetail": null,
+  "answer": "OK-7391",
+  "raw": "{\"id\":\"a3390d2c-4ac2-4cb3-9155-48bdefac4c94\",\"object\":\"chat.completion\",\"created\":1787666738,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"OK-7391\",\"reasoning_content\":\"We need to reply with exact content of file report.txt: token OK-7391. So just output that.\"},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":129,\"completion_tokens\":28,\"total_tokens\":157,\"prompt_tokens_details\":{\"cached_tokens\":128},\"completion_tokens_details\":{\"reasoning_tokens\":23},\"prompt_cache_hit_tokens\":128,\"prompt_cache_miss_tokens\":1},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}"
+}

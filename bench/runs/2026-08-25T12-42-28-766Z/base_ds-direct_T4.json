@@ -1,0 +1,12 @@
+{
+  "cellId": "base_ds-direct_T4",
+  "backend": "ds-direct",
+  "model": "deepseek-v4-flash",
+  "form": "S0",
+  "task": "T4",
+  "outcome": "OK",
+  "outcomeTolerant": "OK",
+  "errorDetail": null,
+  "answer": "{\n  \"title\": \"Quarterly Review\",\n  \"tags\": [\"finance\", \"q3\", \"urgent\"],\n  \"priority\": \"high\",\n  \"retries\": 4,\n  \"owner\": {\n    \"name\": \"Dana Wu\",\n    \"email\": \"dana@example.com\"\n  }\n}",
+  "raw": "{\"id\":\"272d8ffe-2080-4733-8086-ce1a0ad82b7e\",\"object\":\"chat.completion\",\"created\":1787661780,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\n  \\\"title\\\": \\\"Quarterly Review\\\",\\n  \\\"tags\\\": [\\\"finance\\\", \\\"q3\\\", \\\"urgent\\\"],\\n  \\\"priority\\\": \\\"high\\\",\\n  \\\"retries\\\": 4,\\n  \\\"owner\\\": {\\n    \\\"name\\\": \\\"Dana Wu\\\",\\n    \\\"email\\\": \\\"dana@example.com\\\"\\n  }\\n}\",\"reasoning_content\":\"We need to output JSON. Title \\\"Quarterly Review\\\", tags [\\\"finance\\\",\\\"q3\\\",\\\"urgent\\\"] in that order, priority \\\"high\\\", retries 4, owner object with name \\\"Dana Wu\\\", email \\\"dana@example.com\\\". Keys should be title, tags, priority, retries, owner. Retries numeric. JSON.\"},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":148,\"completion_tokens\":141,\"total_tokens\":289,\"prompt_tokens_details\":{\"cached_tokens\":128},\"completion_tokens_details\":{\"reasoning_tokens\":72},\"prompt_cache_hit_tokens\":128,\"prompt_cache_miss_tokens\":20},\"system_fingerprint\":\"a26a7955944dc5c60445bff77fac9c8e\"}"
+}
