@@ -48,7 +48,7 @@ The failure mode of interest: the agent wraps its tools in a protocol the backen
 ## 6. Non-goals (v0)
 
 - A complete wire protocol (deferred; v0 fixes the interface *shape*, not bytes).
-- A conformance test suite (planned for a later version).
+- A conformance test suite (planned for a later version; the measurement design is drafted in [`docs/BENCH-DESIGN.md`](docs/BENCH-DESIGN.md), which also records what result would falsify it).
 - Tool-result streaming / partial outputs.
 
 ## 7. Status
