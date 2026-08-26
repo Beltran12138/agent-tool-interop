@@ -256,9 +256,6 @@ async function main() {
   const skipControls = process.argv.includes('--no-controls');
 
   const backends = resolve();
-  const runId = new Date().toISOString().replace(/[:.]/g, '-');
-  const runDir = path.join(__dirname, 'runs', runId);
-  fs.mkdirSync(runDir, { recursive: true });
 
   // Rule 5: availability is a result, reported before and separately from scores.
   console.log('\n=== backend availability ===');
@@ -278,6 +275,14 @@ async function main() {
     const missing = [...req].filter((id) => !got.some((x) => x.id === id));
     if (missing.length) { console.error(`\nunknown ${label} id(s): ${missing.join(', ')}`); process.exit(2); }
   }
+  // The run directory is created only once every argument has been accepted.
+  // Creating it first left an empty, unindexed directory behind on every
+  // rejected invocation — litter in exactly the tree whose only claim is that
+  // each directory in it is a run that happened.
+  const runId = new Date().toISOString().replace(/[:.]/g, '-');
+  const runDir = path.join(__dirname, 'runs', runId);
+  fs.mkdirSync(runDir, { recursive: true });
+
   const allToolNames = TOOLS.map((t) => t.name);
 
   // Backends run in parallel; cells within a backend run serially so no single

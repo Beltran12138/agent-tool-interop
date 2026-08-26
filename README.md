@@ -30,6 +30,7 @@ See [`DISCLAIMER.md`](DISCLAIMER.md).
 | Protocol analysis | #1: function tools vs RPC-wrapping | [`analysis/01-function-vs-rpc-wrapping.md`](analysis/01-function-vs-rpc-wrapping.md) |
 | Reference implementation | path-rewrite proxy — 28/28 tests | [`reference/path-rewrite-proxy/`](reference/path-rewrite-proxy/) |
 | Conformance bench — design | measurement design, written before the code | [`docs/BENCH-DESIGN.md`](docs/BENCH-DESIGN.md) |
+| Measurement discipline | **15 rules, each with the run that produced the wrong number** | [`docs/MEASUREMENT-DISCIPLINE.md`](docs/MEASUREMENT-DISCIPLINE.md) |
 | Conformance bench — harness | 4 backends × 3 exposure forms, 72 offline assertions | [`bench/`](bench/) |
 | Conformance bench — Slice 0 | saturated at ceiling; three false-result mechanisms closed | [`bench/FINDINGS-SLICE0.md`](bench/FINDINGS-SLICE0.md) |
 | Conformance bench — Slice 0.1 | 116 cells — envelopes equally drivable, unequally demanding (**one claim since retracted**) | [`bench/FINDINGS-SLICE0.1.md`](bench/FINDINGS-SLICE0.1.md) |
@@ -58,7 +59,8 @@ agent-tool-interop/
 ├── analysis/
 │   └── 01-function-vs-rpc-wrapping.md
 ├── docs/
-│   └── BENCH-DESIGN.md     # conformance bench: measurement design, pre-implementation
+│   ├── BENCH-DESIGN.md            # conformance bench: measurement design, pre-implementation
+│   └── MEASUREMENT-DISCIPLINE.md  # what went wrong, and the rule each failure earned
 ├── bench/                  # the harness + Slice 0 results + every raw trace
 ├── reference/
 │   └── path-rewrite-proxy/ # vendor-neutral proxy (Family A → OpenAI-compatible gateway)
