@@ -19,7 +19,7 @@ const runDir = process.argv[2] ||
     .filter((d) => fs.existsSync(path.join(runsDir, d, 'records.json')))
     .sort().pop());
 
-const { classify } = require('./classify');
+const { classify, dialectDrift } = require('./classify');
 
 const { records } = JSON.parse(fs.readFileSync(path.join(runDir, 'records.json'), 'utf8'));
 
@@ -140,6 +140,72 @@ for (const f of forms) {
   console.log(f.padEnd(8) + `${d}/${cells.length}`.padEnd(16) + `${c}/${cells.length}`.padEnd(12) + `${p}/${cells.length}`.padEnd(15) + `${e}/${cells.length}`.padEnd(11) + `${ps}/${cells.length}`.padEnd(17) + `${m}/${cells.length}`);
 }
 console.log('  These are the differences a binary OK rate erases. "It worked" is not "it cost the same".');
+
+/* --------------------------------------------------------------------------
+ * Dialect drift — the contamination probe.
+ *
+ * The 2x2 is {dialect the prompt specifies} x {dialect the payload contains}.
+ * The prediction is that drift lives on the OFF-diagonal: a model handed the
+ * other dialect as data adopts it. On-diagonal cells and the no-payload control
+ * task give the base rate, without which "2 cells drifted" means nothing.
+ * ----------------------------------------------------------------------- */
+const PAYLOAD_DIALECT = { T8: 'positional', T8b: 'attribute' };
+const SPEC_DIALECT = { S4: 'positional', S4b: 'attribute' };
+const xmlCells = grid.filter((r) => SPEC_DIALECT[r.form] && r.outcome !== 'ERROR');
+if (xmlCells.length) {
+  console.log('\n--- dialect drift within a cell (started one way, switched later) ---');
+  console.log('backend'.padEnd(14) + 'form/task'.padEnd(12) + 'payload'.padEnd(13) + 'agrees'.padEnd(9) + 'drift'.padEnd(8) + 'sequence');
+  for (const r of xmlCells) {
+    const d = dialectDrift(r.trace);
+    if (!d.turns) continue;
+    const pay = PAYLOAD_DIALECT[r.task] || '(none)';
+    const agrees = pay === '(none)' ? 'n/a' : (pay === SPEC_DIALECT[r.form] ? 'yes' : 'NO');
+    console.log(
+      r.backend.padEnd(14) + `${r.form}/${r.task}`.padEnd(12) + pay.padEnd(13) +
+      agrees.padEnd(9) + (d.drifted ? 'DRIFT' : '-').padEnd(8) + d.sequence.join(' > '));
+  }
+  const bucket = (pred) => {
+    const c = xmlCells.filter(pred).filter((r) => dialectDrift(r.trace).turns > 1);
+    return `${c.filter((r) => dialectDrift(r.trace).drifted).length}/${c.length}`;
+  };
+  /* ADOPTION, not just drift.
+   *
+   * The trap payload is in the TASK PROMPT, so it is in context before the first
+   * call. A model can therefore adopt the payload's dialect from turn 1, which is
+   * contamination but is not "drift" — and Slice 0.3's data contains exactly that
+   * case. Scoring only within-cell change would have counted it as no effect.
+   *
+   * The right contrast is per (backend, form): how often the non-specified
+   * dialect appears on a cell whose payload contradicts the spec, against how
+   * often it appears on that same backend's cells with no payload at all. The
+   * second is the model's own base rate under that spec and needs no assumption
+   * about priors.
+   *
+   * On-diagonal cells (payload dialect == spec dialect) cannot measure adoption:
+   * using the payload's dialect there IS conforming. They are reported for
+   * completeness and read as conformance, not as evidence about contamination.
+   */
+  const usedOther = (r) => dialectDrift(r.trace).sequence.includes('variant');
+  console.log('\n  ADOPTION of the non-specified dialect, per backend x spec form:');
+  console.log('  ' + 'backend'.padEnd(14) + 'form'.padEnd(7) + 'no payload (base)'.padEnd(20) + 'payload CONTRADICTS spec');
+  for (const b of backends) {
+    for (const f of Object.keys(SPEC_DIALECT)) {
+      const mine = xmlCells.filter((r) => r.backend === b && r.form === f && dialectDrift(r.trace).turns > 0);
+      if (!mine.length) continue;
+      const none = mine.filter((r) => !PAYLOAD_DIALECT[r.task]);
+      const off = mine.filter((r) => PAYLOAD_DIALECT[r.task] && PAYLOAD_DIALECT[r.task] !== SPEC_DIALECT[f]);
+      if (!off.length && !none.length) continue;
+      console.log('  ' + b.padEnd(14) + f.padEnd(7) +
+        `${none.filter(usedOther).length}/${none.length}`.padEnd(20) +
+        (off.length ? `${off.filter(usedOther).length}/${off.length}` : 'n/a'));
+    }
+  }
+
+  console.log('\n  drift rate, cells with >1 parseable turn (a single turn cannot drift):');
+  console.log(`    payload dialect DISAGREES with spec : ${bucket((r) => PAYLOAD_DIALECT[r.task] && PAYLOAD_DIALECT[r.task] !== SPEC_DIALECT[r.form])}`);
+  console.log(`    payload dialect AGREES with spec    : ${bucket((r) => PAYLOAD_DIALECT[r.task] && PAYLOAD_DIALECT[r.task] === SPEC_DIALECT[r.form])}`);
+  console.log(`    no XML payload at all (base rate)   : ${bucket((r) => !PAYLOAD_DIALECT[r.task])}`);
+}
 
 /* --------------------------------------------------------------------------
  * Strict-parser projection.

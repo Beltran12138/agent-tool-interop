@@ -12,7 +12,7 @@
  *     reported as a schema violation
  */
 
-const { classify } = require('./classify');
+const { classify, dialectDrift } = require('./classify');
 
 let pass = 0; const failures = [];
 const base = { anyCall: false, anyMalformed: false, anyUnknownTool: false, anyArgViolation: false, calledExpected: false, calledOtherKnown: false, calledDistractor: false };
@@ -57,6 +57,43 @@ eq(classify({ flags: { ...base, anyCall: true, calledExpected: true }, verify: {
    'strict does not penalise a cell that used the specified dialect');
 eq(classify({ flags: okVariant, verify: null, transportOutcome: 'ERROR', strict: true }).outcome, 'ERROR',
    'strict never converts a transport failure into a model verdict');
+
+/* --- Slice 0.4: dialect DRIFT, the contamination probe's dependent variable ---
+ *
+ * The distinction these guard is the whole probe. A model that used the other
+ * dialect from turn 1 has a prior. A model that started on the specified dialect
+ * and switched after handling the payload has been contaminated by its data.
+ * A cell-level "a variant appeared somewhere" flag cannot tell those apart, and
+ * scoring the second as the first is how this mechanism would be manufactured
+ * out of Slice 0.3's existing prior effect.
+ */
+const turn = (d) => ({ parsed: { kind: 'call', dialect: d } });
+{
+  eq(dialectDrift([turn('specified'), turn('specified'), turn('variant')]),
+     { sequence: ['specified', 'specified', 'variant'], drifted: true, settledOn: 'variant', turns: 3 },
+     'drift: conformant turns then a switch is drift (the ds-gateway/S4b/T8 shape)');
+  eq(dialectDrift([turn('variant'), turn('variant'), turn('variant')]).drifted, false,
+     'drift: a model that used the other dialect from turn 1 has a PRIOR, not drift');
+  eq(dialectDrift([turn('variant'), turn('specified')]),
+     { sequence: ['variant', 'specified'], drifted: true, settledOn: 'specified', turns: 2 },
+     'drift: switching TOWARD the spec counts too — the measure is change, not failure');
+  eq(dialectDrift([turn('specified')]).drifted, false, 'drift: one turn cannot drift');
+  eq(dialectDrift([]), { sequence: [], drifted: false, settledOn: null, turns: 0 }, 'drift: no calls at all is not drift');
+}
+{
+  // Turns that produced no parseable call are skipped rather than treated as a
+  // dialect. Counting them would let a malformed turn between two conformant
+  // ones read as a switch and back.
+  const mixed = [turn('specified'), { parsed: { kind: 'malformed' } }, { parsed: { kind: 'none' } }, turn('specified')];
+  eq(dialectDrift(mixed), { sequence: ['specified', 'specified'], drifted: false, settledOn: 'specified', turns: 2 },
+     'drift: unparseable turns are skipped, not scored as a dialect');
+}
+{
+  // Independence from the outcome: Slice 0.3's cleanest drift cell verified OK.
+  // If drift were read off failures it would be unable to see that case at all.
+  eq(dialectDrift([turn('specified'), turn('specified'), turn('variant')]).drifted, true,
+     'drift is measured independently of whether the cell passed');
+}
 
 console.log(`\nclassifier assertions: ${pass} passed, ${failures.length} failed`);
 if (failures.length) { for (const f of failures) console.error('  FAIL ' + f); process.exit(1); }

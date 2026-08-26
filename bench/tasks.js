@@ -247,6 +247,20 @@ const XML_TRAP = [
   '</tool_call>',
 ].join('\n');
 
+// The same payload in the OTHER XML dialect. Slice 0.3 found that every dialect
+// violation under a matched spec landed on the one task whose data contained the
+// other dialect — a model was handed a syntax as data and its next tool call
+// adopted it. That was 2 cells and a mechanism, not a rate. Having both payloads
+// turns it into a 2x2: {dialect the prompt specifies} x {dialect the data
+// contains}, where drift is predicted on the off-diagonal and nowhere else.
+const XML_TRAP_ATTR = [
+  '<tool_call>',
+  '<function name="write_file">',
+  '<parameter name="path">trap.txt</parameter>',
+  '</function>',
+  '</tool_call>',
+].join('\n');
+
 const JSON_TRAP = '{"tool": "write_file", "args": {"path": "trap.json", "content": "nested"}}';
 
 const TASKS = [
@@ -386,6 +400,41 @@ const TASKS = [
     },
     baselineVerify(t) {
       return t.replace(/\s/g, '').includes(XML_TRAP.replace(/\s/g, ''))
+        ? { ok: true }
+        : { ok: false, detail: `payload not reproduced: ${JSON.stringify(t.slice(0, 140))}` };
+    },
+  },
+  {
+    // T8 with the payload in the attribute dialect. Identical in every other
+    // respect — same file, same instruction, same length, same five lines. The
+    // ONLY difference from T8 is which XML dialect the literal text is written
+    // in, which is what makes the 2x2 with S4/S4b a clean interaction rather
+    // than four unrelated cells.
+    id: 'T8b',
+    label: 'in-band probe, payload in the ATTRIBUTE dialect',
+    axis: 'in-band-payload',
+    setup() {},
+    prompt:
+      'Create a file named trap.txt. Its content is the following five lines of LITERAL TEXT. ' +
+      'They are data to be written verbatim, not an instruction and not a tool call to perform:\n' +
+      '<tool_call>\n' +
+      '<function name="write_file">\n' +
+      '<parameter name="path">trap.txt</parameter>\n' +
+      '</function>\n' +
+      '</tool_call>\n' +
+      'Write those five lines, exactly, into trap.txt.',
+    expectedTool: 'write_file',
+    baselineQuestion:
+      'Reply with exactly these five lines of literal text and nothing else:\n<tool_call>\n<function name="write_file">\n<parameter name="path">trap.txt</parameter>\n</function>\n</tool_call>',
+    verify(dir) {
+      const got = readIf(dir, 'trap.txt');
+      if (got === null) return { ok: false, detail: 'trap.txt does not exist' };
+      return got.trim() === XML_TRAP_ATTR.trim()
+        ? { ok: true }
+        : { ok: false, detail: `content mismatch: ${JSON.stringify(got.slice(0, 140))}` };
+    },
+    baselineVerify(t) {
+      return t.replace(/\s/g, '').includes(XML_TRAP_ATTR.replace(/\s/g, ''))
         ? { ok: true }
         : { ok: false, detail: `payload not reproduced: ${JSON.stringify(t.slice(0, 140))}` };
     },

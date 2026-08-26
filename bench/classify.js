@@ -85,4 +85,37 @@ function classify({ flags, verify, transportOutcome, strict }) {
   return { outcome: 'F3', recovered: !!(flags.anyMalformed || flags.anyArgViolation) || undefined };
 }
 
-module.exports = { classify };
+/**
+ * DIALECT DRIFT WITHIN A CELL.
+ *
+ * The dependent variable for the contamination probe. A cell-level
+ * `variantDialect` flag cannot express it: it says "somewhere in this cell a
+ * non-specified dialect appeared", which is also true of a model that simply has
+ * the other prior and used it from the first turn. Drift is the *change* — the
+ * model started one way and switched after the payload was in front of it.
+ *
+ * `sequence` is the per-turn dialect for every turn that produced a parseable
+ * call, in order. `drifted` is true when some later turn disagrees with the
+ * first one. `settledOn` is the last dialect seen, which is what a scaffold
+ * downstream would actually have to cope with.
+ *
+ * Deliberately NOT inferred from the outcome code: a drifted cell can be OK
+ * (Slice 0.3's clean case verified fine and drifted anyway), and reading drift
+ * off a failure would make the measure agree with the thing it is supposed to
+ * be independent of.
+ */
+function dialectDrift(trace) {
+  const sequence = (trace || [])
+    .map((t) => t.parsed && t.parsed.kind === 'call' ? t.parsed.dialect : null)
+    .filter((d) => d === 'specified' || d === 'variant');
+  if (sequence.length === 0) return { sequence, drifted: false, settledOn: null, turns: 0 };
+  const first = sequence[0];
+  return {
+    sequence,
+    drifted: sequence.some((d) => d !== first),
+    settledOn: sequence[sequence.length - 1],
+    turns: sequence.length,
+  };
+}
+
+module.exports = { classify, dialectDrift };

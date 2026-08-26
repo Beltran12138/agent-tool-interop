@@ -238,3 +238,65 @@ single highest-risk line in the slice, and it is stated here before it is writte
 - MiniMax low on both — consistent with H1, but also with "this model is bad at XML for some
   third reason"; H1 would then need a fourth lineage to survive, which credentials do not
   currently allow. That limit is acknowledged in advance rather than discovered afterwards.
+
+---
+
+## Pre-registration, 2026-08-25 — Slice 0.4, the contamination 2×2
+
+Slice 0.3 reported that under a matched dialect spec, both dialect violations landed on the one
+task whose file content contained the *other* dialect, and on none of the other four. That is
+two cells. This slice exists to kill it or keep it.
+
+### The design
+
+`T8b` is `T8` with the literal payload rewritten in the attribute dialect — same file, same
+instruction, same five lines, only the dialect of the text changes. Crossed with `S4` /`S4b`
+that gives a 2×2 of *what the prompt specifies* against *what the data contains*:
+
+| | `S4` (specifies positional) | `S4b` (specifies attribute) |
+|---|---|---|
+| `T8` (payload positional) | agrees — control | **contradicts — effect predicted** |
+| `T8b` (payload attribute) | **contradicts — effect predicted** | agrees — control |
+
+Slice 0.3 covered only the top row. The prediction is an effect on the anti-diagonal and
+nowhere else.
+
+### The dependent variable, and why the obvious one is wrong
+
+The natural measure is within-cell **drift**: started conformant, switched later. It is the
+wrong primary measure, and Slice 0.3's own data shows why. **The payload is in the task
+prompt**, so it is in context before the first tool call. A model can adopt the payload's
+dialect from turn 1 — contamination with no drift. Slice 0.3 contains exactly that cell
+(`minimax/S4b/T8`, variant from turn 1), and a drift-only measure would have scored it as no
+effect.
+
+Primary measure is therefore **adoption**: does the non-specified dialect appear at all, in a
+cell whose payload contradicts the spec, compared against the same backend's cells under the
+same spec with no payload at all. That base rate is the model's own tendency and assumes
+nothing about priors. Recomputed from Slice 0.3's persisted traces, it is **0/14** across the
+four backends under `S4b`, against 1/1 for two of them on the single contradicting cell.
+
+Drift is kept as a secondary measure because it distinguishes *when* the syntax was adopted,
+and because it caught something the adoption measure cannot: `minimax/S4/T7` — no payload —
+started conformant and relapsed to its own prior mid-cell. **Base drift is not zero**, and any
+claim about payload-driven drift has to clear that.
+
+On-diagonal cells cannot measure adoption at all: where the payload dialect equals the spec,
+using it *is* conforming. They are controls for conformance, not evidence about contamination.
+
+### Predictions, stated now
+
+1. Adoption is elevated on the anti-diagonal relative to the same backend's no-payload base
+   rate under the same spec, in **both** rows — not only the row Slice 0.3 happened to run.
+2. Adoption on the diagonal is indistinguishable from the no-payload base rate.
+3. The effect is per-backend and partial: Slice 0.3 saw 2 of 4 backends adopt. A result where
+   every backend adopts, or none does, is informative against the current reading either way.
+
+### What would kill it
+
+- Adoption on the anti-diagonal at the no-payload base rate — the two Slice 0.3 cells were
+  coincidence.
+- Adoption elevated on the diagonal too — then the payload is not acting as a *syntax* at all,
+  and something about the task (its length, its markup density) is doing the work.
+- `T8b` failing its `S0` baseline where `T8` passed — the two payloads would not be equally
+  reproducible, and the tasks would not be comparable.

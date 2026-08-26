@@ -11,6 +11,7 @@
 | `2026-08-25T14-05-02-161Z` | **Slice 0.2.** 148 cells, post-fix. The reported run. `../FINDINGS-SLICE0.2.md`. |
 | `2026-08-25T15-59-54-215Z` | 4-cell smoke test for the dialect-swap pipeline, run before the grid. Kept because it is where the `S4`→`S4b` signature first appears on MiniMax, and because a smoke test that is discarded once it agrees with the hypothesis is not a smoke test. |
 | `2026-08-25T16-04-30-864Z` | **Slice 0.3.** Dialect swap, `S1`/`S4`/`S4b` × 5 tasks, `--max-turns=10`. `../FINDINGS-SLICE0.3.md`. Contains `grid_ds-gateway_S4b_T8`, the cleanest trace of data-to-control syntax contamination: two conformant turns, then a turn in the dialect the model had just been handed as file content. |
+| `2026-08-26T03-34-05-263Z` | **Slice 0.4.** The contamination 2×2 — `S4`/`S4b` × `T8`/`T8b`. `../FINDINGS-SLICE0.4.md`. Two things live here that nothing else has: `grid_ds-gateway_S4b_T8` reproducing the Slice 0.3 drift sequence turn for turn a day later, and the `S0` baselines showing one model rewriting a payload's dialect while merely copying it — a prior that survives with no tool protocol present at all. |
 | `identity-probe.json` | Endpoint identity probe: 8 deterministic prompts to both DeepSeek serving paths. 6/7 byte-identical, 1 divergent. |
 
 Three runs are deliberately absent: one contaminated by a gateway outage (52 ERROR cells in

@@ -1,3 +1,19 @@
+> ### ⚠️ Narrowed by Slice 0.4 — read this first
+>
+> The section below titled *"The new result: in-band data leaks syntax into the control
+> channel"* states the mechanism too generally. The mirror test — the same payload written in
+> the **other** dialect — pulled nobody, so the effect is asymmetric and is not a property of
+> prompt-embedded forms in general.
+>
+> Worse, the "2/2 on the payload task" figure below pools **two different causes**. One of the
+> two backends rewrites that dialect even when asked to copy five lines of literal text with no
+> tool protocol at all: its behaviour is a text-level prior, not contamination. Only the other
+> backend's cell is evidence for the mechanism — and that one did replicate exactly, in a run a
+> day later.
+>
+> Same flag, two constructs. Pooled, they made the evidence look twice as strong as it was.
+> See [`FINDINGS-SLICE0.4.md`](FINDINGS-SLICE0.4.md). Nothing below is edited.
+
 # Slice 0.3 — dialect swap
 
 Run `2026-08-25T16-04-30-864Z`. 4 backends × 3 exposure forms (`S1`, `S4`, `S4b`) × 5 tasks,

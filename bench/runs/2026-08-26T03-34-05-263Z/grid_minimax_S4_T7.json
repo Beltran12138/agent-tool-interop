@@ -1,0 +1,122 @@
+{
+  "cellId": "grid_minimax_S4_T7",
+  "backend": "minimax",
+  "model": "MiniMaxAI/MiniMax-M2.7",
+  "form": "S4",
+  "task": "T7",
+  "toolCount": 15,
+  "outcome": "F2",
+  "outcomeTolerant": "OK",
+  "recovered": true,
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": true,
+    "calledExpected": true,
+    "calledOtherKnown": true,
+    "reasoningStripped": true,
+    "truncatedReasoning": false,
+    "variantDialect": true,
+    "coercions": [],
+    "escapingUsed": false,
+    "paramSyntaxFailure": true,
+    "calledDistractor": false
+  },
+  "turns": 6,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 3183,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003eLet me start by listing the directory to see what files are there.\\n\\u003c/think\\u003e\\n\\n\\u003ctool_call\\u003e\\n\\u003cfunction=list_dir\\u003e\\n\\u003cparameter name=\\\"path\\u003e.\\u003c/parameter\\u003e\\n\\u003c/function\\u003e\\n\\u003c/tool_call\\u003e\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\",\"tool_calls\":[]},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787715362,\"id\":\"devshard-62001-955\",\"kv_transfer_params\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.23.0-df22ddb0\",\"usage\":{\"completion_tokens\":41,\"prompt_tokens\":1022,\"prompt_tokens_details\":null,\"total_tokens\":1063}}",
+      "parsed": {
+        "kind": "call",
+        "name": "list_dir",
+        "dialect": "specified",
+        "args": {}
+      },
+      "validation": "missing required parameter: path"
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 3441,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003eLet me try again with the correct format.\\n\\u003c/think\\u003e\\n\\n\\u003ctool_call\\u003e\\n\\u003cfunction=list_dir\\u003e\\n\\u003cparameter name=\\\"path\\\"\\u003e.\\u003c/parameter\\u003e\\n\\u003c/function\\u003e\\n\\u003c/tool_call\\u003e\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787715365,\"id\":\"devshard-62062-925\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp2-0cb5bbe5\",\"usage\":{\"completion_tokens\":37,\"prompt_tokens\":1073,\"prompt_tokens_details\":null,\"total_tokens\":1110}}",
+      "parsed": {
+        "kind": "call",
+        "name": "list_dir",
+        "dialect": "variant",
+        "args": {
+          "path": "."
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 2,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 2865,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003eThe directory contains:\\n- a.txt\\n- b.txt\\n- notes.md\\n\\nI need to read the files that end in .txt, which are a.txt and b.txt. Let me read both of them.\\n\\u003c/think\\u003e\\n\\n\\u003ctool_call\\u003e\\n\\u003cfunction=read_file\\u003e\\n\\u003cparameter name=\\\"path\\\"\\u003ea.txt\\u003c/parameter\\u003e\\n\\u003c/function\\u003e\\n\\u003c/tool_call\\u003e\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787715369,\"id\":\"devshard-62078-961\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp2-0cb5bbe5\",\"usage\":{\"completion_tokens\":74,\"prompt_tokens\":1132,\"prompt_tokens_details\":null,\"total_tokens\":1206}}",
+      "parsed": {
+        "kind": "call",
+        "name": "read_file",
+        "dialect": "variant",
+        "args": {
+          "path": "a.txt"
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 3,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 5770,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003ea.txt contains 17. Now let me read b.txt.\\n\\u003c/think\\u003e\\n\\n\\u003ctool_call\\u003e\\n\\u003cfunction=read_file\\u003e\\n\\u003cparameter name=\\\"path\\\"\\u003eb.txt\\u003c/parameter\\u003e\\n\\u003c/function\\u003e\\n\\u003c/tool_call\\u003e\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787715372,\"id\":\"devshard-62062-926\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp4-b76143f9\",\"usage\":{\"completion_tokens\":44,\"prompt_tokens\":1187,\"prompt_tokens_details\":null,\"total_tokens\":1231}}",
+      "parsed": {
+        "kind": "call",
+        "name": "read_file",
+        "dialect": "variant",
+        "args": {
+          "path": "b.txt"
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 4,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 2652,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003eNow I have both values:\\n- a.txt contains 17\\n- b.txt contains 25\\n\\nThe sum is 17 + 25 = 42\\n\\nI need to write \\\"42\\\" to total.txt as digits only.\\n\\u003c/think\\u003e\\n\\n\\u003ctool_call\\u003e\\n\\u003cfunction=write_file\\u003e\\n\\u003cparameter name=\\\"path\\\"\\u003etotal.txt\\u003c/parameter\\u003e\\n\\u003cparameter name=\\\"content\\\"\\u003e42\\u003c/parameter\\u003e\\n\\u003c/function\\u003e\\n\\u003c/tool_call\\u003e\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\"},\"routed_experts\":null,\"stop_reason\":null}],\"created\":1787715377,\"id\":\"devshard-62001-956\",\"kv_transfer_params\":null,\"metrics\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"prompt_text\":null,\"service_tier\":null,\"system_fingerprint\":\"vllm-0.25.1-tp2-0cb5bbe5\",\"usage\":{\"completion_tokens\":87,\"prompt_tokens\":1242,\"prompt_tokens_details\":null,\"total_tokens\":1329}}",
+      "parsed": {
+        "kind": "call",
+        "name": "write_file",
+        "dialect": "variant",
+        "args": {
+          "path": "total.txt",
+          "content": "42"
+        }
+      },
+      "validation": "ok"
+    },
+    {
+      "turn": 5,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 3453,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"annotations\":null,\"audio\":null,\"content\":\"\\u003cthink\\u003eI've completed the task:\\n1. Listed the directory and found 3 files: a.txt, b.txt, and notes.md\\n2. Read a.txt which contains 17\\n3. Read b.txt which contains 25\\n4. Added them together: 17 + 25 = 42\\n5. Wrote the sum to total.xt as digits only (42)\\n\\nThe task is complete.\\n\\u003c/think\\u003e\\n\\nDONE\",\"function_call\":null,\"reasoning\":null,\"refusal\":null,\"role\":\"assistant\",\"tool_calls\":[]},\"stop_reason\":null}],\"created\":1787715380,\"id\":\"devshard-62062-928\",\"kv_transfer_params\":null,\"model\":\"MiniMaxAI/MiniMax-M2.7\",\"object\":\"chat.completion\",\"service_tier\":null,\"system_fingerprint\":null,\"usage\":{\"completion_tokens\":91,\"prompt_tokens\":1469,\"prompt_tokens_details\":null,\"total_tokens\":1560}}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}
