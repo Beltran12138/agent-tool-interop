@@ -37,6 +37,7 @@ See [`DISCLAIMER.md`](DISCLAIMER.md).
 | Conformance bench — Slice 0.2 | 148 cells, strict scoring — the forms finally separate | [`bench/FINDINGS-SLICE0.2.md`](bench/FINDINGS-SLICE0.2.md) |
 | Conformance bench — Slice 0.3 | dialect swap — the XML deficit was a spec/prior mismatch | [`bench/FINDINGS-SLICE0.3.md`](bench/FINDINGS-SLICE0.3.md) |
 | Conformance bench — Slice 0.4 | **contamination 2×2 — the mirror test failed; a dialect prior survives with no tool protocol at all** | [`bench/FINDINGS-SLICE0.4.md`](bench/FINDINGS-SLICE0.4.md) |
+| Observation 01 — harness fetch fidelity | **a third axis: the read channel refuses and fills the gap with confident prose** | [`docs/OBSERVATION-01-harness-fetch-fidelity.md`](docs/OBSERVATION-01-harness-fetch-fidelity.md) |
 | Community registry | placeholder | [`registry/`](registry/) |
 
 ## Key finding
@@ -60,7 +61,9 @@ agent-tool-interop/
 │   └── 01-function-vs-rpc-wrapping.md
 ├── docs/
 │   ├── BENCH-DESIGN.md            # conformance bench: measurement design, pre-implementation
-│   └── MEASUREMENT-DISCIPLINE.md  # what went wrong, and the rule each failure earned
+│   ├── MEASUREMENT-DISCIPLINE.md  # what went wrong, and the rule each failure earned
+│   ├── OBSERVATION-01-harness-fetch-fidelity.md   # the harness read channel as a third axis
+│   └── observations/              # raw transcripts backing the observations
 ├── bench/                  # the harness + Slice 0 results + every raw trace
 ├── reference/
 │   └── path-rewrite-proxy/ # vendor-neutral proxy (Family A → OpenAI-compatible gateway)
