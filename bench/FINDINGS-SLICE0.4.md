@@ -1,5 +1,15 @@
 # Slice 0.4 — the contamination 2×2
 
+> ⛔ **CORRECTION, 2026-09-25 (see [`../docs/OPEN-CODING-01.md`](../docs/OPEN-CODING-01.md) §5.1).**
+> The trace under *"What did replicate — exactly"* is `specified > specified > variant` only as
+> the parser saw it. The third reply, in both runs, is a completion message quoting the file in
+> a fenced code block and ending `DONE`; the parser read the quotation as a call. What
+> replicated is the quotation, not a change in emitted syntax. The conclusion of *"Where this
+> leaves the in-band claim"* — narrowed, not retracted, resting on "one backend with no prior did
+> it, twice" — therefore loses its only support: **retracted**, not narrowed. The `S0` baseline
+> result (MiniMax rewrites the positional dialect even when copying plain text) is unaffected.
+> The rest of this document stands as written and is not edited retroactively.
+
 Run `2026-08-26T03-34-05-263Z`. 4 backends × 2 exposure forms (`S4`, `S4b`) × 4 tasks
 (`T1`, `T7`, `T8`, `T8b`), 3 positive controls per (backend, form), an `S0` no-tools baseline
 per (backend, task), `MAX_TURNS=10`. 32 grid cells. Traces under `runs/`.
