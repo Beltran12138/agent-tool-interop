@@ -1,3 +1,23 @@
+> ### ⛔ CORRECTION, 2026-09-25 — the clean case is a parser reading a quotation (see [`../docs/OPEN-CODING-01.md`](../docs/OPEN-CODING-01.md) §5.1)
+>
+> The section below calls `ds-gateway/S4b/T8` "the clean case" and says **turn 3 is emitted in
+> the positional dialect**. It was not emitted as a call. The raw reply on that turn, in this run
+> (`2026-08-25T16-04-30-864Z`) and in Slice 0.4's replication (`2026-08-26T03-34-05-263Z`), is a
+> completion message: *"The file contains exactly the five lines of literal text requested:"*,
+> the payload inside a fenced code block, then `DONE`. The parser scanned the whole message and
+> read the quotation as a `write_file` call in the variant dialect, which then failed validation
+> (`missing required parameter: content`) and produced the `F2`. `verify` was `ok` in both runs.
+>
+> What replicated is that this model **quotes the file it read back in its closing message**.
+> Nothing in the trace shows the payload changing what the model emits next. With the MiniMax
+> cell already reassigned to a text-level prior by Slice 0.4, **the in-band contamination claim
+> has no clean evidence left in either slice.** The hazard that remains is the parser's: any
+> scaffold that scans a whole assistant message for envelopes will execute a model's quotation
+> of its own tool results. That belongs to the instrument, not to the backend's syntax choice.
+>
+> The raw traces were on disk when this was published and when it was replicated. Nothing below
+> is edited.
+
 > ### ⚠️ Narrowed by Slice 0.4 — read this first
 >
 > The section below titled *"The new result: in-band data leaks syntax into the control

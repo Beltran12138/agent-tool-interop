@@ -252,6 +252,13 @@ text-level prior. One is contamination. They raise an identical flag.
 **Mechanical check.** For every flagged cell, ask what the same backend does on the cells where
 the hypothesised cause is absent. If that was never computed, the flag count is not evidence.
 
+**Amendment, 2026-09-25.** The cell called *contamination* above was neither cause. Its raw
+reply is a completion message quoting the read-back file in a fenced block; the parser read the
+quotation as a call (`OPEN-CODING-01.md` §5.1). So the one flag had **three** candidate causes,
+and the check above would not have found the third: it compares cells, and this was a single
+turn misread. Add to the check: **for every flagged turn, read the raw reply, not the parsed
+record.**
+
 ---
 
 ## 14. Publish the traces, index the runs, retract in place

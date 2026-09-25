@@ -36,7 +36,8 @@ See [`DISCLAIMER.md`](DISCLAIMER.md).
 | Conformance bench — Slice 0.1 | 116 cells — envelopes equally drivable, unequally demanding (**one claim since retracted**) | [`bench/FINDINGS-SLICE0.1.md`](bench/FINDINGS-SLICE0.1.md) |
 | Conformance bench — Slice 0.2 | 148 cells, strict scoring — the forms finally separate | [`bench/FINDINGS-SLICE0.2.md`](bench/FINDINGS-SLICE0.2.md) |
 | Conformance bench — Slice 0.3 | dialect swap — the XML deficit was a spec/prior mismatch | [`bench/FINDINGS-SLICE0.3.md`](bench/FINDINGS-SLICE0.3.md) |
-| Conformance bench — Slice 0.4 | **contamination 2×2 — the mirror test failed; a dialect prior survives with no tool protocol at all** | [`bench/FINDINGS-SLICE0.4.md`](bench/FINDINGS-SLICE0.4.md) |
+| Conformance bench — Slice 0.4 | **contamination 2×2 — the mirror test failed; a dialect prior survives with no tool protocol at all** (**in-band claim retracted 2026-09-25**) | [`bench/FINDINGS-SLICE0.4.md`](bench/FINDINGS-SLICE0.4.md) |
+| Open coding 01 | **22 real failure traces read before the next slice; the replicated contamination trace was the parser** | [`docs/OPEN-CODING-01.md`](docs/OPEN-CODING-01.md) |
 | Observation 01 — harness fetch fidelity | **a third axis: the read channel refuses and fills the gap with confident prose** | [`docs/OBSERVATION-01-harness-fetch-fidelity.md`](docs/OBSERVATION-01-harness-fetch-fidelity.md) |
 | Community registry | placeholder | [`registry/`](registry/) |
 
