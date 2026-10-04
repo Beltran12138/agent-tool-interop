@@ -620,3 +620,19 @@ target situation was actually reached. A cell whose first `create` comes before 
 The context is larger than in Slice 0.6. The estimate is about ¥20 at cache-hit pricing for
 repeated prefixes. The run is halted by hand if the balance falls below ¥30 (it was ¥66.73 at
 writing).
+
+### Amendment, 2026-10-04 — the task-size specification (written before any Slice 0.7 cell ran)
+
+Measuring the generated content showed that the first draft of the tasks did not meet the
+specification above. Briefs were 917–1,173 characters, and two tasks had only about 2.5k
+characters of files. The specification itself was also wrong in one respect: "5–8 files of 2–5k
+characters each" cannot hold for READMEs and short rule documents in a realistic workspace. It is
+restated as follows, and the tasks were enlarged to meet it before any cell ran:
+
+- brief: 1.5–3k characters (actual 1,557–1,735)
+- readable files per task: 7–13, totalling **10–25k characters** (actual 10,004–14,838). Right
+  Fit's p10 of preceding non-system conversation is 8,858 characters, and its median is 21,149.
+  Individual file sizes vary.
+
+Nothing else changes. The "target situation reached" check in the decision rule (first `create`
+after at least 8,858 characters of conversation) still decides whether a null is informative.
