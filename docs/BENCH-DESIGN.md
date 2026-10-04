@@ -558,3 +558,65 @@ first `create`. It is the strongest reproduction available, and it is excluded h
 send Terminal-Bench / TUA / ALE task content to a commercial API. The dataset asks that it not
 be exposed to agents under evaluation, and Terminal-Bench tasks carry a do-not-train canary. It
 runs only with the maintainer's explicit approval, under its own amendment.
+
+---
+
+## Pre-registration, 2026-10-04 — Slice 0.7, long briefs with exploration (no benchmark content)
+
+Written before any harness code for this slice. Slice 0.6 Stage 1 found that the exact OpenHands
+surface does **not** make first-party K3 omit `file_text` on its first `create` (0/30, against 84%
+in Right Fit). Of the remaining candidates (conversation content, serving path, model drift,
+LiteLLM shaping), this slice tests the one that can be tested without sending benchmark content
+to a commercial API. Prefix replay of Right Fit conversations remains excluded pending the
+maintainer's decision (`FINDINGS-SLICE0.6.md`).
+
+### The target situation, measured from Right Fit's released data
+
+Across the 184 Kimi K3 / OpenHands runs with a `create`, before the **first** `create`:
+
+- task prompt: median 1,838 characters (p10 409, p90 3,312)
+- assistant turns: median 9 (p10 4, p90 28), overwhelmingly `terminal`
+- conversation excluding the system prompt: median 21,149 characters (p10 8,858, p90 111,479)
+
+Slice 0.6's tasks were one sentence long, with the first `create` at turn 0 to 1.
+
+### Design
+
+Four tasks written for this bench, each with a 1.5–3k-character brief and **5–8 data, log,
+config or documentation files (2–5k characters each)** that the brief requires reading before
+writing a script. The deliverable is one new Python file. Content is synthetic and generated
+deterministically, so no benchmark material is used. The executors are Slice 0.6's: OpenHands
+`file_editor` semantics and the read-only simulated `terminal`.
+
+| arm | surface |
+|---|---|
+| `OH` | OpenHands 1.44.1, as in Slice 0.6 |
+| `BASE` | Slice 0.5 `MUX` |
+
+K3 first-party, settings as amended in Slice 0.5. 4 tasks × **4 repetitions** × 2 arms = 32 cells,
+`--max-turns=20`, because exploration takes turns and a cap that cuts a cell before its first
+`create` would remove it from the measure. Four repetitions, not six, because the effect sought
+is large (84% against 0%). At 16 cells per arm, Fisher separates 50% from 0% at p < 0.01.
+
+**Primary measure:** unchanged from Slice 0.6, the first `file_editor` `create` lacks
+`file_text`. Cells with no `create` are reported separately. **Secondary:** characters of
+conversation and number of turns before the first `create`, so it can be checked that the
+target situation was actually reached. A cell whose first `create` comes before 8,858 characters
+(Right Fit's p10) did not reach it and is reported in its own row.
+
+### Decision rule, fixed now
+
+- **Content matters:** `OH` first-create omission ≥ 50%. Next comes a length/exploration dose
+  arm within `OH`, under its own pre-registration.
+- **Not reproduced:** `OH` ≤ 10%, **provided** at least half of the `OH` cells reached the
+  target situation. Then this approximation of the content is not sufficient either. What
+  remains is the real benchmark content (testable only by prefix replay), the serving path, or
+  model drift. A run where most cells did not reach the target situation is **uninformative**,
+  not a null.
+- **Between:** add 4 repetitions once and re-apply the rule.
+
+### Cost guard
+
+The context is larger than in Slice 0.6. The estimate is about ¥20 at cache-hit pricing for
+repeated prefixes. The run is halted by hand if the balance falls below ¥30 (it was ¥66.73 at
+writing).
