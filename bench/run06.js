@@ -98,14 +98,22 @@ async function main() {
   const runId = new Date().toISOString().replace(/[:.]/g, '-');
   const runDir = path.join(__dirname, 'runs', runId);
   fs.mkdirSync(runDir, { recursive: true });
-  for (const b of live) {
-    for (let rep = 1; rep <= REPS; rep++) for (const t of tasks) for (const a of arms) {
+  // Cells are independent (own sandbox, own conversation), so they may run
+  // concurrently. Concurrency changes only wall-clock time and request pacing;
+  // pacing faults surface as transport retries, which are counted per turn.
+  const jobs = [];
+  for (const b of live) for (let rep = 1; rep <= REPS; rep++) for (const t of tasks) for (const a of arms) jobs.push({ b, rep, t, a });
+  const CONC = Math.max(1, Number(arg('concurrency', 1)));
+  let next = 0;
+  await Promise.all(Array.from({ length: Math.min(CONC, jobs.length) }, async () => {
+    while (next < jobs.length) {
+      const { b, rep, t, a } = jobs[next++];
       const r = await runCell({ backend: b, arm: a, task: t, runDir, cellId: `s${TASKSET === '0.7' ? '07' : '06'}_${b.id}_${a}_${t.id}_r${rep}` });
       const fc = r.calls.find((c) => c.name === 'file_editor' && c.op === 'create');
       console.log(`  [cell] ${b.id} ${a.padEnd(6)} ${t.id} r${rep} -> ${r.outcome}  first-create=${fc ? (fc.missing.includes('file_text') ? 'OMIT' : 'ok') : 'none'}${r.errorDetail ? '  (' + r.errorDetail.slice(0, 50) + ')' : ''}`);
     }
-  }
-  fs.writeFileSync(path.join(runDir, 'records.json'), JSON.stringify({ runId, slice: TASKSET, maxTurns: MAX_TURNS, reps: REPS, argv: process.argv.slice(2) }, null, 2));
+  }));
+  fs.writeFileSync(path.join(runDir, 'records.json'), JSON.stringify({ runId, slice: TASKSET, maxTurns: MAX_TURNS, reps: REPS, concurrency: Number(arg("concurrency", 1)), argv: process.argv.slice(2) }, null, 2));
   console.log(`\nraw cells persisted to: ${runDir}\nnext: node analyze06.js ${path.relative(__dirname, runDir)}`);
 }
 
