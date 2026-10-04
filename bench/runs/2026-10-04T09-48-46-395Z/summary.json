@@ -1,0 +1,35 @@
+{
+  "runId": "2026-10-04T09-48-46-395Z",
+  "slice": "0.8",
+  "seed": 8008,
+  "maxPrefixChars": 120000,
+  "poolCounts": {
+    "terminal-bench-4/omit": 29,
+    "terminal-bench-4/ok": 8,
+    "tua-bench/ok": 7,
+    "tua-bench/omit": 35
+  },
+  "excludedSize": 14,
+  "rows": [
+    {
+      "bench": "terminal-bench-4",
+      "task": "foodstuff-beta-activity",
+      "original": "omit",
+      "prefixChars": 32314,
+      "emptyReasoning": false,
+      "cls": "create-ok",
+      "summary": false,
+      "usage": {
+        "prompt_tokens": 13746,
+        "completion_tokens": 394,
+        "total_tokens": 14140,
+        "completion_tokens_details": {
+          "reasoning_tokens": 244
+        },
+        "prompt_tokens_details": {
+          "cache_write_tokens": 13568
+        }
+      }
+    }
+  ]
+}

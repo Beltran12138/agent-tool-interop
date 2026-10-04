@@ -21,6 +21,8 @@
 | `2026-10-04T08-46-50-167Z` | 1-cell Slice 0.7 smoke test (`OH`/X1). Confirms that the target situation is reachable: first `create` at turn 10 after 21,480 characters. No omission. |
 | `2026-10-04T08-52-59-998Z` | **Aborted** Slice 0.7 grid (`OH`+`BASE`), stopped by hand after 2 cells when the per-cell cost was found to be about ¥1.5–2. Both cells non-omitting. **Excluded** from analysis, per the budget amendment `8d8a0c3`, which discloses them. |
 | `2026-10-04T09-10-10-983Z` | **Slice 0.7, `OH` arm.** 4 long-brief tasks × 4 reps, concurrency 4. **0/14 first-create omission, target situation reached 14/14: not reproduced.** 2 `X3` cells `ERROR` (300 s timeout). `../FINDINGS-SLICE0.7.md`. |
+| `2026-10-04T09-48-46-395Z` | Slice 0.8 smoke test, 1 prefix replay. Only `summary.json` is public; the raw replay is in git-ignored `runs-private/` because it contains benchmark content. |
+| `2026-10-04T09-49-26-352Z` | **Slice 0.8, prefix replay.** 26 replays (20 omission prefixes, 6 controls) on first-party K3. **0/13 omission among `create` replies: content does not reproduce it.** Public: `summary.json` (ids, classes, tokens). Raw: `runs-private/` (git-ignored). `../FINDINGS-SLICE0.8.md`. |
 | `identity-probe.json` | Endpoint identity probe: 8 deterministic prompts to both DeepSeek serving paths. 6/7 byte-identical, 1 divergent. |
 
 Three runs are deliberately absent: one contaminated by a gateway outage (52 ERROR cells in
