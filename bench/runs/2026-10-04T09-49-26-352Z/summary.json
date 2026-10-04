@@ -1,0 +1,596 @@
+{
+  "runId": "2026-10-04T09-49-26-352Z",
+  "slice": "0.8",
+  "seed": 8008,
+  "maxPrefixChars": 120000,
+  "poolCounts": {
+    "terminal-bench-4/omit": 29,
+    "terminal-bench-4/ok": 8,
+    "tua-bench/ok": 7,
+    "tua-bench/omit": 35
+  },
+  "excludedSize": 14,
+  "rows": [
+    {
+      "bench": "terminal-bench-4",
+      "task": "foodstuff-beta-activity",
+      "original": "omit",
+      "prefixChars": 32314,
+      "emptyReasoning": false,
+      "cls": "other-tool",
+      "tool": "terminal",
+      "summary": true,
+      "usage": {
+        "prompt_tokens": 13746,
+        "completion_tokens": 669,
+        "total_tokens": 14415,
+        "cached_tokens": 13568,
+        "completion_tokens_details": {
+          "reasoning_tokens": 514
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 13568,
+          "cache_write_tokens": 0
+        }
+      }
+    },
+    {
+      "bench": "terminal-bench-4",
+      "task": "wdm-design",
+      "original": "omit",
+      "prefixChars": 24585,
+      "emptyReasoning": false,
+      "cls": "other-tool",
+      "tool": "terminal",
+      "summary": true,
+      "usage": {
+        "prompt_tokens": 9935,
+        "completion_tokens": 237,
+        "total_tokens": 10172,
+        "cached_tokens": 6912,
+        "completion_tokens_details": {
+          "reasoning_tokens": 94
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 6912,
+          "cache_write_tokens": 2816
+        }
+      }
+    },
+    {
+      "bench": "terminal-bench-4",
+      "task": "cumulative-layout-shift",
+      "original": "omit",
+      "prefixChars": 51759,
+      "emptyReasoning": false,
+      "cls": "other-tool",
+      "tool": "terminal",
+      "summary": true,
+      "usage": {
+        "prompt_tokens": 19828,
+        "completion_tokens": 428,
+        "total_tokens": 20256,
+        "cached_tokens": 6912,
+        "completion_tokens_details": {
+          "reasoning_tokens": 1
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 6912,
+          "cache_write_tokens": 12800
+        }
+      }
+    },
+    {
+      "bench": "terminal-bench-4",
+      "task": "ctr-optimization",
+      "original": "omit",
+      "prefixChars": 41202,
+      "emptyReasoning": false,
+      "cls": "create-ok",
+      "summary": false,
+      "usage": {
+        "prompt_tokens": 14500,
+        "completion_tokens": 316,
+        "total_tokens": 14816,
+        "cached_tokens": 6912,
+        "completion_tokens_details": {
+          "reasoning_tokens": 1
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 6912,
+          "cache_write_tokens": 7424
+        }
+      }
+    },
+    {
+      "bench": "terminal-bench-4",
+      "task": "distributed-dedup",
+      "original": "omit",
+      "prefixChars": 26742,
+      "emptyReasoning": false,
+      "cls": "create-ok",
+      "summary": false,
+      "usage": {
+        "prompt_tokens": 10462,
+        "completion_tokens": 1956,
+        "total_tokens": 12418,
+        "cached_tokens": 6912,
+        "completion_tokens_details": {
+          "reasoning_tokens": 1
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 6912,
+          "cache_write_tokens": 3328
+        }
+      }
+    },
+    {
+      "bench": "terminal-bench-4",
+      "task": "html-js-filter",
+      "original": "omit",
+      "prefixChars": 20699,
+      "emptyReasoning": false,
+      "cls": "create-ok",
+      "summary": false,
+      "usage": {
+        "prompt_tokens": 8836,
+        "completion_tokens": 2037,
+        "total_tokens": 10873,
+        "cached_tokens": 6912,
+        "completion_tokens_details": {
+          "reasoning_tokens": 453
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 6912,
+          "cache_write_tokens": 1792
+        }
+      }
+    },
+    {
+      "bench": "terminal-bench-4",
+      "task": "medical-claims-processing",
+      "original": "omit",
+      "prefixChars": 119725,
+      "emptyReasoning": false,
+      "cls": "create-ok",
+      "summary": false,
+      "usage": {
+        "prompt_tokens": 41954,
+        "completion_tokens": 263,
+        "total_tokens": 42217,
+        "cached_tokens": 6912,
+        "completion_tokens_details": {
+          "reasoning_tokens": 1
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 6912,
+          "cache_write_tokens": 34816
+        }
+      }
+    },
+    {
+      "bench": "terminal-bench-4",
+      "task": "telecom-entity-resolution",
+      "original": "omit",
+      "prefixChars": 32859,
+      "emptyReasoning": false,
+      "cls": "create-ok",
+      "summary": false,
+      "usage": {
+        "prompt_tokens": 12995,
+        "completion_tokens": 8892,
+        "total_tokens": 21887,
+        "cached_tokens": 6912,
+        "completion_tokens_details": {
+          "reasoning_tokens": 1
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 6912,
+          "cache_write_tokens": 5888
+        }
+      }
+    },
+    {
+      "bench": "terminal-bench-4",
+      "task": "react-lead-form",
+      "original": "omit",
+      "prefixChars": 48917,
+      "emptyReasoning": false,
+      "cls": "create-ok",
+      "summary": true,
+      "usage": {
+        "prompt_tokens": 17189,
+        "completion_tokens": 5847,
+        "total_tokens": 23036,
+        "cached_tokens": 17152,
+        "completion_tokens_details": {
+          "reasoning_tokens": 42
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 17152,
+          "cache_write_tokens": 0
+        }
+      }
+    },
+    {
+      "bench": "terminal-bench-4",
+      "task": "lake-temp-glm",
+      "original": "omit",
+      "prefixChars": 92369,
+      "emptyReasoning": false,
+      "cls": "create-ok",
+      "summary": false,
+      "usage": {
+        "prompt_tokens": 35358,
+        "completion_tokens": 1225,
+        "total_tokens": 36583,
+        "cached_tokens": 6912,
+        "completion_tokens_details": {
+          "reasoning_tokens": 1
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 6912,
+          "cache_write_tokens": 28416
+        }
+      }
+    },
+    {
+      "bench": "tua-bench",
+      "task": "004-place-heater-for-sensors",
+      "original": "omit",
+      "prefixChars": 30940,
+      "emptyReasoning": false,
+      "cls": "create-ok",
+      "summary": false,
+      "usage": {
+        "prompt_tokens": 12130,
+        "completion_tokens": 1914,
+        "total_tokens": 14044,
+        "cached_tokens": 6912,
+        "completion_tokens_details": {
+          "reasoning_tokens": 8
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 6912,
+          "cache_write_tokens": 5120
+        }
+      }
+    },
+    {
+      "bench": "tua-bench",
+      "task": "054-prostate-label-obj",
+      "original": "omit",
+      "prefixChars": 19717,
+      "emptyReasoning": false,
+      "cls": "create-ok",
+      "summary": false,
+      "usage": {
+        "prompt_tokens": 8521,
+        "completion_tokens": 1579,
+        "total_tokens": 10100,
+        "cached_tokens": 6656,
+        "completion_tokens_details": {
+          "reasoning_tokens": 189
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 6656,
+          "cache_write_tokens": 1792
+        }
+      }
+    },
+    {
+      "bench": "tua-bench",
+      "task": "117-comma-text-to-table",
+      "original": "omit",
+      "prefixChars": 32222,
+      "emptyReasoning": false,
+      "cls": "create-ok",
+      "summary": true,
+      "usage": {
+        "prompt_tokens": 13704,
+        "completion_tokens": 1097,
+        "total_tokens": 14801,
+        "cached_tokens": 6912,
+        "completion_tokens_details": {
+          "reasoning_tokens": 42
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 6912,
+          "cache_write_tokens": 6656
+        }
+      }
+    },
+    {
+      "bench": "tua-bench",
+      "task": "095-save-apple-searching-page",
+      "original": "omit",
+      "prefixChars": 31475,
+      "emptyReasoning": false,
+      "cls": "create-ok",
+      "summary": false,
+      "usage": {
+        "prompt_tokens": 11613,
+        "completion_tokens": 771,
+        "total_tokens": 12384,
+        "cached_tokens": 6912,
+        "completion_tokens_details": {
+          "reasoning_tokens": 1
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 6912,
+          "cache_write_tokens": 4608
+        }
+      }
+    },
+    {
+      "bench": "tua-bench",
+      "task": "016-count-invoice-pivot",
+      "original": "omit",
+      "prefixChars": 33862,
+      "emptyReasoning": false,
+      "cls": "other-tool",
+      "tool": "terminal",
+      "summary": true,
+      "usage": {
+        "prompt_tokens": 13532,
+        "completion_tokens": 346,
+        "total_tokens": 13878,
+        "cached_tokens": 6912,
+        "completion_tokens_details": {
+          "reasoning_tokens": 1
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 6912,
+          "cache_write_tokens": 6400
+        }
+      }
+    },
+    {
+      "bench": "tua-bench",
+      "task": "080-convert-novel-epub",
+      "original": "omit",
+      "prefixChars": 20732,
+      "emptyReasoning": false,
+      "cls": "other-tool",
+      "tool": "terminal",
+      "summary": true,
+      "usage": {
+        "prompt_tokens": 8804,
+        "completion_tokens": 412,
+        "total_tokens": 9216,
+        "cached_tokens": 6912,
+        "completion_tokens_details": {
+          "reasoning_tokens": 1
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 6912,
+          "cache_write_tokens": 1792
+        }
+      }
+    },
+    {
+      "bench": "tua-bench",
+      "task": "019-prostate-red-overlay",
+      "original": "omit",
+      "prefixChars": 29424,
+      "emptyReasoning": false,
+      "cls": "create-ok",
+      "summary": false,
+      "usage": {
+        "prompt_tokens": 12354,
+        "completion_tokens": 433,
+        "total_tokens": 12787,
+        "cached_tokens": 6912,
+        "completion_tokens_details": {
+          "reasoning_tokens": 1
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 6912,
+          "cache_write_tokens": 5376
+        }
+      }
+    },
+    {
+      "bench": "tua-bench",
+      "task": "035-super-bowl-score",
+      "original": "omit",
+      "prefixChars": 25096,
+      "emptyReasoning": false,
+      "cls": "other-tool",
+      "tool": "terminal",
+      "summary": true,
+      "usage": {
+        "prompt_tokens": 10612,
+        "completion_tokens": 351,
+        "total_tokens": 10963,
+        "cached_tokens": 6912,
+        "completion_tokens_details": {
+          "reasoning_tokens": 1
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 6912,
+          "cache_write_tokens": 3584
+        }
+      }
+    },
+    {
+      "bench": "tua-bench",
+      "task": "119-tabstop-sentence-split",
+      "original": "omit",
+      "prefixChars": 30872,
+      "emptyReasoning": false,
+      "cls": "create-ok",
+      "summary": false,
+      "usage": {
+        "prompt_tokens": 13394,
+        "completion_tokens": 656,
+        "total_tokens": 14050,
+        "cached_tokens": 6912,
+        "completion_tokens_details": {
+          "reasoning_tokens": 22
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 6912,
+          "cache_write_tokens": 6400
+        }
+      }
+    },
+    {
+      "bench": "tua-bench",
+      "task": "040-seattle-ny-miles-flight",
+      "original": "omit",
+      "prefixChars": 27100,
+      "emptyReasoning": false,
+      "cls": "other-tool",
+      "tool": "terminal",
+      "summary": true,
+      "usage": {
+        "prompt_tokens": 10786,
+        "completion_tokens": 159,
+        "total_tokens": 10945,
+        "cached_tokens": 6912,
+        "completion_tokens_details": {
+          "reasoning_tokens": 1
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 6912,
+          "cache_write_tokens": 3840
+        }
+      }
+    },
+    {
+      "bench": "terminal-bench-4",
+      "task": "rs-archive-clone",
+      "original": "ok",
+      "prefixChars": 71394,
+      "emptyReasoning": false,
+      "cls": "create-ok",
+      "summary": false,
+      "usage": {
+        "prompt_tokens": 30553,
+        "completion_tokens": 714,
+        "total_tokens": 31267,
+        "cached_tokens": 6912,
+        "completion_tokens_details": {
+          "reasoning_tokens": 1
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 6912,
+          "cache_write_tokens": 23552
+        }
+      }
+    },
+    {
+      "bench": "terminal-bench-4",
+      "task": "risk-scorer-replay",
+      "original": "ok",
+      "prefixChars": 42709,
+      "emptyReasoning": false,
+      "cls": "create-ok",
+      "summary": false,
+      "usage": {
+        "prompt_tokens": 15424,
+        "completion_tokens": 346,
+        "total_tokens": 15770,
+        "cached_tokens": 6912,
+        "completion_tokens_details": {
+          "reasoning_tokens": 48
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 6912,
+          "cache_write_tokens": 8448
+        }
+      }
+    },
+    {
+      "bench": "terminal-bench-4",
+      "task": "vba-userform-port",
+      "original": "ok",
+      "prefixChars": 115553,
+      "emptyReasoning": false,
+      "cls": "other-tool",
+      "tool": "terminal",
+      "summary": true,
+      "usage": {
+        "prompt_tokens": 35504,
+        "completion_tokens": 143,
+        "total_tokens": 35647,
+        "cached_tokens": 6912,
+        "completion_tokens_details": {
+          "reasoning_tokens": 1
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 6912,
+          "cache_write_tokens": 28416
+        }
+      }
+    },
+    {
+      "bench": "tua-bench",
+      "task": "009-repair-org-chart-layout",
+      "original": "ok",
+      "prefixChars": 40066,
+      "emptyReasoning": false,
+      "cls": "create-ok",
+      "summary": false,
+      "usage": {
+        "prompt_tokens": 16710,
+        "completion_tokens": 10890,
+        "total_tokens": 27600,
+        "cached_tokens": 6912,
+        "completion_tokens_details": {
+          "reasoning_tokens": 2453
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 6912,
+          "cache_write_tokens": 9728
+        }
+      }
+    },
+    {
+      "bench": "tua-bench",
+      "task": "003-rebuild-energy-model",
+      "original": "ok",
+      "prefixChars": 31755,
+      "emptyReasoning": false,
+      "cls": "create-ok",
+      "summary": false,
+      "usage": {
+        "prompt_tokens": 12395,
+        "completion_tokens": 6149,
+        "total_tokens": 18544,
+        "cached_tokens": 6912,
+        "completion_tokens_details": {
+          "reasoning_tokens": 10
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 6912,
+          "cache_write_tokens": 5376
+        }
+      }
+    },
+    {
+      "bench": "tua-bench",
+      "task": "001-locate-nuclei-centers",
+      "original": "ok",
+      "prefixChars": 30362,
+      "emptyReasoning": false,
+      "cls": "other-tool",
+      "tool": "terminal",
+      "summary": true,
+      "usage": {
+        "prompt_tokens": 11720,
+        "completion_tokens": 154,
+        "total_tokens": 11874,
+        "cached_tokens": 6912,
+        "completion_tokens_details": {
+          "reasoning_tokens": 1
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 6912,
+          "cache_write_tokens": 4608
+        }
+      }
+    }
+  ]
+}

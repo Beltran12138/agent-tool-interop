@@ -171,5 +171,5 @@ async function main() {
   console.log(`\nraw cells persisted to: ${runDir}\nnext: node analyze05.js ${path.relative(__dirname, runDir)}`);
 }
 
-module.exports = { assistantTurn };
+module.exports = { assistantTurn, SYSTEM };
 if (require.main === module) main().catch((e) => { console.error(e); process.exit(1); });

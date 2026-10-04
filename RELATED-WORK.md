@@ -207,6 +207,9 @@ finds three things that bear on this project:
   not reproduce it. K3 omitted 0 of 24 `create` arguments under a multiplexed tool. It is a
   harness interaction whose component is unidentified. Candidates and the next design are in
   [`bench/FINDINGS-SLICE0.5.md`](bench/FINDINGS-SLICE0.5.md).
+  *Second correction, 2026-10-04:* replaying the exact Right Fit conversations on first-party K3
+  does not reproduce it either (0/13, [`bench/FINDINGS-SLICE0.8.md`](bench/FINDINGS-SLICE0.8.md)).
+  It is a behaviour of one serving path at one point in time, not of the harness.
 - **Most "best harness" rankings are inside task-sampling noise.** In 13 of 15 benchmark × model
   cells the winner cannot be separated from the runner-up. The headline rank reversal (Claude
   under OpenHands against PI) is real.

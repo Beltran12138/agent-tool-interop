@@ -1,0 +1,12 @@
+{
+  "runId": "2026-10-04T08-04-48-311Z",
+  "slice": "0.6",
+  "maxTurns": 10,
+  "reps": 1,
+  "argv": [
+    "--backends=kimi-k3",
+    "--arms=OH,BASE",
+    "--tasks=L1,L7",
+    "--reps=1"
+  ]
+}

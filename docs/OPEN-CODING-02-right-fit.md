@@ -1,5 +1,15 @@
 # Open coding 02: reading another team's 6,204 trajectories
 
+> ⛔ **SECOND CORRECTION, 2026-10-04 ([`../bench/FINDINGS-SLICE0.8.md`](../bench/FINDINGS-SLICE0.8.md)).**
+> The first correction below calls the omission "a harness interaction whose component is
+> unidentified". Slices 0.6–0.8 then held the OpenHands prompt and tools (0/30), Right Fit's
+> situation (0/14) and finally **the exact replayed conversations** (0/13) fixed on first-party
+> Kimi K3. None reproduced it. It is now described as **a behaviour observed through one serving
+> path (OpenRouter `moonshotai/mxfp4`) at one point in time (2026-09-10/15), which does not
+> reproduce on the first-party API under the same prompts, tools and conversations.** It is no
+> longer evidence about harness design. The serving path, a model change and LiteLLM shaping
+> remain, and cannot be separated here.
+
 > ⛔ **CORRECTION, 2026-10-04 ([`../bench/FINDINGS-SLICE0.5.md`](../bench/FINDINGS-SLICE0.5.md),
 > K3 arm).** §3.4 calls the Kimi K3 / OpenHands omissions "a schema interaction" and
 > "conditional-required arguments inside a multiplexed tool". A controlled test that held the

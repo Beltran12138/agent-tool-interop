@@ -465,3 +465,280 @@ quantization behind the first-party API is not stated.
 **One added descriptive measure, not a test:** the DONE-plus-tool-call turn shape and the
 turn-cap rate will be reported for K3 next to the null arm's table, since FINDINGS-SLICE0.5
 showed that call counts depend on it.
+
+---
+
+## Pre-registration, 2026-10-04 — Slice 0.6, reproduce the OpenHands omission, then ablate
+
+Written before any harness code for this slice. Slice 0.5's K3 arm fired K1: holding backend,
+envelope and tasks fixed, a multiplexed tool did not make Kimi K3 omit (0/24). In Right Fit's
+released trajectories, Kimi K3 under OpenHands omits `file_text` on the **first** `create` of a
+run 84% of the time (155/184), before any feedback. The cause is therefore present from call
+one, in something OpenHands sends that Slice 0.5 did not.
+
+### What OpenHands sends, reconstructed exactly
+
+Everything below is rebuilt from the MIT-licensed OpenHands 1.44.1 packages
+(`openhands-sdk`, `openhands-tools`), not copied from the CC BY-NC dataset:
+
+- **System prompt.** `Agent.static_system_message`, rendered by the SDK. It matches the
+  dataset's logged system prompt **verbatim** except for two platform words (rendered on Windows
+  as `powershell`, logged on Linux as `bash`, normalised to `bash`) and the trailing
+  `<CURRENT_DATETIME>` block, which is set to the run time.
+- **Five tools** (`terminal`, `file_editor`, `task_tracker`, `finish`, `think`), serialized by
+  `ToolDefinition.to_openai_tool(add_security_risk_prediction=True)`. That is the call the agent
+  makes on every completion (`openhands/sdk/agent/utils.py`). Every schema leads with the
+  injected `security_risk` and `summary` properties (`_prioritize_schema_fields`). `file_text`
+  is a plain `string`, **not nullable**, which removes candidate 1 in `FINDINGS-SLICE0.5.md`
+  before any run. The working directory in tool descriptions is `/workspace`.
+
+What is **not** reproduced: the serving path (OpenRouter `moonshotai/mxfp4` there, first-party
+API here), any request shaping by LiteLLM, and the benchmark tasks themselves. Own tasks are used.
+
+### Stage 1 — reproduction
+
+| arm | system prompt | tools |
+|---|---|---|
+| `OH` | OpenHands, rendered | the five OpenHands tools, exact schemas |
+| `BASE` | Slice 0.5's | Slice 0.5's `MUX` `file_editor` (concurrent control) |
+
+**Tasks:** five that begin with creating a file. `L1`, `L2` and `L4` are unchanged from Slice
+0.5, and `L6` also begins with a view. New `L7` asks for a self-authored Python script, because
+the Right Fit omissions were on scripts the model wrote rather than copied. Paths are given as
+`/workspace/...`, as OpenHands instructs, and are mapped into the sandbox. Both arms get the
+same task text.
+
+**Executors.** `file_editor` follows OpenHands' semantics, including that `create` refuses an
+existing path. `terminal` is **simulated and read-only**: `ls`, `cat`, `pwd`, `head` and `wc`
+are emulated over the sandbox, and anything else returns a fixed "not available in this
+sandbox" message. Model-written shell is never executed on the host. `task_tracker` and `think`
+acknowledge. `finish` ends the cell. Injected `security_risk` and `summary` arguments are
+accepted and recorded.
+
+**Primary measure:** per cell, whether the **first** `file_editor` `create` call lacks
+`file_text`. Cells with no `file_editor` `create` call are reported separately and never counted
+as non-omissions. **Secondary:** omission over all `create` calls, the share of calls carrying
+`summary` / `security_risk`, identical repeats after an omission, and `terminal` usage before the
+first `create`.
+
+**Design:** K3 first-party, settings as in the Slice 0.5 amendment, 5 tasks × 6 repetitions ×
+2 arms = 60 cells.
+
+**Decision rule, fixed now:**
+- **Reproduced:** `OH` first-create omission ≥ 50% and `BASE` ≤ 10%. Go to Stage 2.
+- **Not reproduced:** `OH` ≤ 10%. The prompt and tool surface is then not sufficient on this
+  serving path. The lead moves to the serving path (OpenRouter `mxfp4`) or a model change since
+  2026-09. Stage 2 does not run.
+- **Between:** add 6 repetitions to both arms once, then apply the same rule to the pooled cells.
+
+### Stage 2 — ablation (runs only if Stage 1 reproduces)
+
+Each arm is `OH` with exactly one component removed, 5 tasks × 6 repetitions:
+
+| arm | removed |
+|---|---|
+| `A-meta` | the injected `security_risk` and `summary` properties, from every tool |
+| `A-desc` | `file_editor`'s ~2,100-character description, replaced by `BASE`'s (parameters unchanged) |
+| `A-sys` | the OpenHands system prompt, replaced by `BASE`'s |
+| `A-solo` | the four tools other than `file_editor` |
+
+A component is **necessary** if removing it lowers first-create omission by ≥ 40 percentage
+points relative to `OH` from the same run, with two-sided Fisher p < 0.05. More than one may
+qualify, and none may. "None" means the cause is distributed or interactive, and it will be
+reported as that, not forced onto one component.
+
+**My prediction, with low-to-medium confidence:** `A-meta` drops the most. The observed Kimi
+calls carried the injected `summary`, and the injected fields are listed before `command`,
+`path` and `file_text`.
+
+### What this slice deliberately does not do
+
+**Prefix replay** would send K3 the exact Right Fit conversation prefix up to each original
+first `create`. It is the strongest reproduction available, and it is excluded here. It would
+send Terminal-Bench / TUA / ALE task content to a commercial API. The dataset asks that it not
+be exposed to agents under evaluation, and Terminal-Bench tasks carry a do-not-train canary. It
+runs only with the maintainer's explicit approval, under its own amendment.
+
+---
+
+## Pre-registration, 2026-10-04 — Slice 0.7, long briefs with exploration (no benchmark content)
+
+Written before any harness code for this slice. Slice 0.6 Stage 1 found that the exact OpenHands
+surface does **not** make first-party K3 omit `file_text` on its first `create` (0/30, against 84%
+in Right Fit). Of the remaining candidates (conversation content, serving path, model drift,
+LiteLLM shaping), this slice tests the one that can be tested without sending benchmark content
+to a commercial API. Prefix replay of Right Fit conversations remains excluded pending the
+maintainer's decision (`FINDINGS-SLICE0.6.md`).
+
+### The target situation, measured from Right Fit's released data
+
+Across the 184 Kimi K3 / OpenHands runs with a `create`, before the **first** `create`:
+
+- task prompt: median 1,838 characters (p10 409, p90 3,312)
+- assistant turns: median 9 (p10 4, p90 28), overwhelmingly `terminal`
+- conversation excluding the system prompt: median 21,149 characters (p10 8,858, p90 111,479)
+
+Slice 0.6's tasks were one sentence long, with the first `create` at turn 0 to 1.
+
+### Design
+
+Four tasks written for this bench, each with a 1.5–3k-character brief and **5–8 data, log,
+config or documentation files (2–5k characters each)** that the brief requires reading before
+writing a script. The deliverable is one new Python file. Content is synthetic and generated
+deterministically, so no benchmark material is used. The executors are Slice 0.6's: OpenHands
+`file_editor` semantics and the read-only simulated `terminal`.
+
+| arm | surface |
+|---|---|
+| `OH` | OpenHands 1.44.1, as in Slice 0.6 |
+| `BASE` | Slice 0.5 `MUX` |
+
+K3 first-party, settings as amended in Slice 0.5. 4 tasks × **4 repetitions** × 2 arms = 32 cells,
+`--max-turns=20`, because exploration takes turns and a cap that cuts a cell before its first
+`create` would remove it from the measure. Four repetitions, not six, because the effect sought
+is large (84% against 0%). At 16 cells per arm, Fisher separates 50% from 0% at p < 0.01.
+
+**Primary measure:** unchanged from Slice 0.6, the first `file_editor` `create` lacks
+`file_text`. Cells with no `create` are reported separately. **Secondary:** characters of
+conversation and number of turns before the first `create`, so it can be checked that the
+target situation was actually reached. A cell whose first `create` comes before 8,858 characters
+(Right Fit's p10) did not reach it and is reported in its own row.
+
+### Decision rule, fixed now
+
+- **Content matters:** `OH` first-create omission ≥ 50%. Next comes a length/exploration dose
+  arm within `OH`, under its own pre-registration.
+- **Not reproduced:** `OH` ≤ 10%, **provided** at least half of the `OH` cells reached the
+  target situation. Then this approximation of the content is not sufficient either. What
+  remains is the real benchmark content (testable only by prefix replay), the serving path, or
+  model drift. A run where most cells did not reach the target situation is **uninformative**,
+  not a null.
+- **Between:** add 4 repetitions once and re-apply the rule.
+
+### Cost guard
+
+The context is larger than in Slice 0.6. The estimate is about ¥20 at cache-hit pricing for
+repeated prefixes. The run is halted by hand if the balance falls below ¥30 (it was ¥66.73 at
+writing).
+
+### Amendment, 2026-10-04 — the task-size specification (written before any Slice 0.7 cell ran)
+
+Measuring the generated content showed that the first draft of the tasks did not meet the
+specification above. Briefs were 917–1,173 characters, and two tasks had only about 2.5k
+characters of files. The specification itself was also wrong in one respect: "5–8 files of 2–5k
+characters each" cannot hold for READMEs and short rule documents in a realistic workspace. It is
+restated as follows, and the tasks were enlarged to meet it before any cell ran:
+
+- brief: 1.5–3k characters (actual 1,557–1,735)
+- readable files per task: 7–13, totalling **10–25k characters** (actual 10,004–14,838). Right
+  Fit's p10 of preceding non-system conversation is 8,858 characters, and its median is 21,149.
+  Individual file sizes vary.
+
+Nothing else changes. The "target situation reached" check in the decision rule (first `create`
+after at least 8,858 characters of conversation) still decides whether a null is informative.
+
+### Amendment, 2026-10-04 — budget forces staging (written after 3 cells had been seen)
+
+**Data had been observed when this was written.** That is stated first, because it is what makes
+this amendment weaker than the ones before it. Three Slice 0.7 cells existed: the smoke test
+(`OH`/X1) and the first two cells of the grid (`OH`/X1, `BASE`/X1). **None of them omitted.**
+
+The grid was stopped by hand after those two cells, because the per-cell cost had been
+underestimated. A cell runs about 19 turns at 15–25 s each, with up to about 150 s for the turn
+that writes the script, and costs about ¥1.5–2. The 32-cell design would cost ¥50–60 against a
+balance of ¥62.80 and a pre-registered halt at ¥30. The stopped run
+(`runs/2026-10-04T08-52-59-998Z`) is kept on disk, marked aborted, and **excluded** from the
+analysis. It is not pooled.
+
+**The change.** Run the `OH` arm alone first: 4 tasks × 4 repetitions = 16 cells, at concurrency 4.
+
+- The decision rule's main threshold reads `OH` alone (≥ 50% reproduces, ≤ 10% does not, with
+  the target-situation check). With n = 16, a true rate of 50% yields 0/16 with probability
+  below 0.002.
+- `BASE` was the control that attributes a reproduction to the OpenHands surface. It is needed
+  only if `OH` reproduces, and it will then be run under the same settings before anything is
+  claimed.
+- If `OH` lands between the thresholds, more repetitions need a top-up, which is the
+  maintainer's decision.
+
+Why the observed cells do not drive this: the staging follows from cost, and dropping `BASE`
+cannot make the `OH` arm look more or less like a reproduction. What the three cells could bias is
+the decision to stop early. The two thresholds and the target-situation check are unchanged.
+
+---
+
+## Pre-registration, 2026-10-04 — Slice 0.8, prefix replay
+
+Written before any replay harness code. **The maintainer approved this on 2026-10-04**, knowing
+that it sends benchmark task content from Right Fit's released trajectories (Terminal-Bench 4 and
+TUA-Bench) to Moonshot's commercial API. K3 is not being evaluated on those benchmarks here.
+
+Slices 0.5–0.7 removed every model–surface candidate on first-party K3, including Right Fit's
+situation reproduced with synthetic content (0.7: 0/14, situation reached 14/14). Four candidates
+remain: the **benchmark content** itself, the **serving path** (OpenRouter `moonshotai/mxfp4`),
+a **model change** since 2026-09-10/15, and **LiteLLM request shaping**. This slice separates
+the first from the rest.
+
+### Design
+
+For a Right Fit Kimi K3 / OpenHands run, take the conversation **up to, but not including,**
+the assistant message that holds the run's first `file_editor` `create`. Send it to first-party
+K3 once, and classify the reply.
+
+- **Pool:** Terminal-Bench 4 and TUA-Bench runs only, which used exactly the five OpenHands
+  tools. ALE-CLI runs add 14 computer-use tools and are excluded. Prefixes longer than 120,000
+  characters (system prompt included) are excluded to bound cost, and the excluded count is
+  reported. Eligible: 73 prefixes whose original first `create` omitted `file_text`, and 20
+  whose original did not (counted before the size cap).
+- **Sample, seed-fixed:** 20 omission prefixes (10 TB4, 10 TUA) and 6 non-omission prefixes as
+  a control (3 + 3).
+- **Request:** the run's own logged system prompt, verbatim, including its September datetime.
+  The prefix messages are converted to API shape: `tool_calls` become
+  `{id, type: "function", function: {name, arguments}}`, and logging-only fields are dropped.
+  Tools: the five OpenHands schemas from `assets/openhands-1.44.1`. K3 settings as amended in
+  Slice 0.5. One completion per prefix.
+- **Known gap:** Right Fit did not log Kimi's `reasoning_content` under OpenHands, so the
+  replayed assistant turns carry none, although K3's contract asks for it to be sent back. If
+  the API rejects that, the fallback is `reasoning_content: ""` on each replayed assistant turn,
+  and the fallback is reported. The tool descriptions name `/workspace` as the working directory,
+  where Right Fit's did not, and the dataset's 25k-head / 5k-tail truncation of very long
+  strings is inherited.
+
+### Measures
+
+Each reply is classified as: `create` with `file_text` · **`create` without `file_text`
+(omission)** · another tool call · text only · `ERROR`. A reply holding several calls is
+classified by its first `file_editor` `create` if it has one, and otherwise by its first call.
+
+**Primary:** omission rate among omission-prefix replays whose reply is a `create`. **Secondary:**
+the share of replays that `create` at all, the same breakdown for the control prefixes, and
+whether the replayed reply carries `summary`.
+
+### Decision rule, fixed now
+
+Provided at least 8 omission-prefix replays reply with a `create`:
+
+- **Content reproduces it:** omission ≥ 50%. Today's first-party K3 omits on the exact
+  conversations where September's Kimi did. The serving path and model version are **not
+  needed** to explain it, and the cause is in the content. The content is then the next object
+  of study, within the data-handling limits below.
+- **Content does not reproduce it:** omission ≤ 10%. The content alone is not sufficient. The
+  serving path, model version and LiteLLM shaping remain, and this project cannot separate them
+  without an OpenRouter run.
+- **Between, or fewer than 8 `create` replies:** inconclusive at this sample size.
+
+The control prefixes are expected to give omission near 0. If they come out like the omission
+prefixes, the classification or the conversion is suspect before anything is concluded.
+
+### Data handling
+
+The replay script reads the dataset from a local copy and is committed. **Raw requests and
+replies are not committed:** they contain benchmark content (CC BY-NC, with a do-not-train
+canary). The repository gets only per-replay identifiers (benchmark, task id), the
+classification, and token counts. This is a deliberate exception to "traces must be public",
+stated as one. Anyone can regenerate the requests from the public dataset with the script.
+
+### Budget
+
+About ¥0.45 per replay, ¥12 in total. Given the maintainer's explicit go-ahead, the halt
+threshold for this slice is **¥20** (it was ¥30). The balance at writing is ¥36.84.

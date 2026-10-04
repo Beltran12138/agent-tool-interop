@@ -7,3 +7,6 @@ Thumbs.db
 .vscode/
 .idea/
 __pycache__/
+
+# Slice 0.8 raw replays contain benchmark content (CC BY-NC, canary) -- never commit
+bench/runs-private/
