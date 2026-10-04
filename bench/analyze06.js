@@ -102,6 +102,17 @@ function main() {
     else if (pOH <= 0.1) console.log('  -> NOT REPRODUCED. Prompt + tool surface is not sufficient on this serving path; Stage 2 does not run.');
     else console.log('  -> BETWEEN thresholds: add 6 repetitions to both arms once, then re-apply the rule to the pooled cells.');
   }
+  // OH-only run (Slice 0.7 budget amendment): the thresholds read OH alone; a
+  // reproduction would still need BASE before anything is claimed.
+  if (S.OH && S.OH.n && !S.BASE) {
+    const pOH = S.OH.k / S.OH.n;
+    const reachedOk = S.OH.withCtx === undefined || S.OH.reached >= S.OH.withCtx / 2;
+    console.log(`  OH-only: ${S.OH.k}/${S.OH.n} (${(100 * pOH).toFixed(0)}%), target situation reached ${S.OH.reached}/${S.OH.withCtx}`);
+    if (pOH >= 0.5) console.log('  -> OH meets the reproduction threshold; BASE must now be run before anything is claimed.');
+    else if (pOH <= 0.1 && reachedOk) console.log('  -> NOT REPRODUCED (target situation reached in at least half of the cells).');
+    else if (pOH <= 0.1) console.log('  -> UNINFORMATIVE: target situation not reached in half of the cells.');
+    else console.log('  -> BETWEEN thresholds.');
+  }
   for (const a of ['A-meta', 'A-desc', 'A-sys', 'A-solo']) {
     if (!S[a] || !S.OH || !S[a].n) continue;
     const drop = S.OH.k / S.OH.n - S[a].k / S[a].n;
