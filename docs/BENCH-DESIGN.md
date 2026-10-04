@@ -636,3 +636,31 @@ restated as follows, and the tasks were enlarged to meet it before any cell ran:
 
 Nothing else changes. The "target situation reached" check in the decision rule (first `create`
 after at least 8,858 characters of conversation) still decides whether a null is informative.
+
+### Amendment, 2026-10-04 — budget forces staging (written after 3 cells had been seen)
+
+**Data had been observed when this was written.** That is stated first, because it is what makes
+this amendment weaker than the ones before it. Three Slice 0.7 cells existed: the smoke test
+(`OH`/X1) and the first two cells of the grid (`OH`/X1, `BASE`/X1). **None of them omitted.**
+
+The grid was stopped by hand after those two cells, because the per-cell cost had been
+underestimated. A cell runs about 19 turns at 15–25 s each, with up to about 150 s for the turn
+that writes the script, and costs about ¥1.5–2. The 32-cell design would cost ¥50–60 against a
+balance of ¥62.80 and a pre-registered halt at ¥30. The stopped run
+(`runs/2026-10-04T08-52-59-998Z`) is kept on disk, marked aborted, and **excluded** from the
+analysis. It is not pooled.
+
+**The change.** Run the `OH` arm alone first: 4 tasks × 4 repetitions = 16 cells, at concurrency 4.
+
+- The decision rule's main threshold reads `OH` alone (≥ 50% reproduces, ≤ 10% does not, with
+  the target-situation check). With n = 16, a true rate of 50% yields 0/16 with probability
+  below 0.002.
+- `BASE` was the control that attributes a reproduction to the OpenHands surface. It is needed
+  only if `OH` reproduces, and it will then be run under the same settings before anything is
+  claimed.
+- If `OH` lands between the thresholds, more repetitions need a top-up, which is the
+  maintainer's decision.
+
+Why the observed cells do not drive this: the staging follows from cost, and dropping `BASE`
+cannot make the `OH` arm look more or less like a reproduction. What the three cells could bias is
+the decision to stop early. The two thresholds and the target-situation check are unchanged.
