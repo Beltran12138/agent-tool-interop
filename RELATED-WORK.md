@@ -172,7 +172,48 @@ the boundary NLAH explicitly brackets out.
 > Source: NLAH, arXiv:2603.25723 — §2.3 (harness components), Fig. 2 (framework
 > overview), and §Limitations.
 
-## 5. Harness-as-program and harness synthesis (adjacent, orthogonal)
+## 5. Model–harness fit at the outcome level (Finding the Right Fit)
+
+**Finding the Right Fit** (Li et al., NTU, arXiv:2610.00917) evaluates 66 model–harness
+configurations: OpenHands, DeepSeek Harness, PI and openJiuwen, each with five models, plus Codex–GPT
+and Claude Code–Claude, on TUA-Bench, ALE-CLI and Terminal-Bench 4. It releases all 6,204 scored
+trajectories. Its conclusion is that the model, the harness and the task should be evaluated
+together.
+
+It reaches this project's headline from the other side, and it does so at a scale this repository
+cannot match:
+
+| | Finding the Right Fit | this project |
+|---|---|---|
+| unit compared | a whole harness: tools, prompts, context policy, retries, timeouts, turn limits | one exposure-form variable, everything else held fixed |
+| design | observational cross of configurations; one run per task | within-subject manipulation; pre-registered dependent variable |
+| level | task outcome | protocol: was a valid call emitted, and in which state did it fail |
+| strength | breadth: 5 models, 3 benchmarks, real harnesses | attribution: which component caused the difference |
+
+The paper is explicit about the boundary: *"the observed differences do not isolate the causal
+effect of any single component, and run-to-run variance is not measured"* (§Limitations). That
+sentence is where this project's work starts.
+
+A secondary analysis of its released trajectories ([`docs/OPEN-CODING-02-right-fit.md`](docs/OPEN-CODING-02-right-fit.md))
+finds three things that bear on this project:
+
+- **The strongest model × harness interaction in the dataset is a tool-schema interaction.**
+  Kimi K3 under OpenHands has 48 argument rejections per 1,000 calls. The other 19 model–harness
+  pairs have 0.5–4.1. Almost all of them are conditionally-required arguments omitted from a
+  single multiplexed `file_editor` tool. The arguments arrive as valid JSON, and the same
+  first-party provider serves the other harnesses. This is exposure form × backend, observed in
+  the wild, and it is the next slice to isolate.
+- **Most "best harness" rankings are inside task-sampling noise.** In 13 of 15 benchmark × model
+  cells the winner cannot be separated from the runner-up. The headline rank reversal (Claude
+  under OpenHands against PI) is real.
+- **Transport failures are scored as harness failures,** including failures from providers the
+  study configuration excludes. Against PI on Terminal-Bench 4, this accounts for two thirds of
+  Kimi's openJiuwen lead.
+
+> Source: arXiv:2610.00917v1, read first-hand (abstract, §5.1, §Limitations); dataset and code
+> read first-hand at the commits named in the open-coding document.
+
+## 6. Harness-as-program and harness synthesis (adjacent, orthogonal)
 
 A line of work treats prompts/harnesses as programmable or synthesizable objects:
 prompts-as-programs and promptware engineering (Liang et al. 2025; Chen et al. 2026),
@@ -183,7 +224,7 @@ synthesizes a harness. It **classifies an existing property** of shipped agent C
 schema by which they expose tools — and derives a drivability criterion from it. A synthesized
 or programmed harness still inherits its target CLI's Family A/B status.
 
-## 6. What this work does *not* claim
+## 7. What this work does *not* claim
 
 - **Not** that Family B agents are "broken" — they work with their own backend; they are
   simply not drivable by an arbitrary standard backend without a protocol bridge.
@@ -200,12 +241,17 @@ or programmed harness still inherits its target CLI's Family A/B status.
   measures the *current* landscape of shipped CLIs, most of which predate or ignore those
   standards for their internal tool loop.
 - **Not** a superset or subset of NLAH. It is the precondition layer NLAH assumes given.
+- **Not** a harness ranking, and not a competitor to Finding the Right Fit (§5). That work
+  compares whole configurations, and this one isolates components inside them.
+- **Not** evidence for in-band contamination. The Slice 0.3/0.4 claim that payload data leaks
+  into the control channel was retracted on 2026-09-25. Nothing in §5 or its secondary analysis
+  bears on it.
 - **Not** a completed wire protocol or conformance suite — see [`SPEC.md`](SPEC.md) §6–7.
 
 ---
 
-*Sources are cited inline. NLAH and Qwen3-Coder-Next claims are drawn from the arXiv papers
-read first-hand; ACP claims from the protocol, editor and vendor documentation read
+*Sources are cited inline. NLAH, Qwen3-Coder-Next and Finding the Right Fit claims are drawn
+from the arXiv papers read first-hand; ACP claims from the protocol, editor and vendor documentation read
 first-hand; Agentic Design Patterns framing is quoted from Ch. 10 / Ch. 15. All other
 statements are this project's own analysis (see
 [`analysis/01-function-vs-rpc-wrapping.md`](analysis/01-function-vs-rpc-wrapping.md)).*
