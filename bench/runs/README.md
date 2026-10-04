@@ -16,6 +16,8 @@
 | `2026-10-04T06-24-49-938Z` | **Slice 0.5.** `MUX` vs `SPLIT` × `L1`–`L6` × 3 reps, `--max-turns=10`. `../FINDINGS-SLICE0.5.md`. 144 scored cells, all `OK`, zero omissions. Also holds 36 cells + 2 baselines from `kimi` (K2.6), all `ERROR 400 model_retired`: the backend was retired between the probe and the run. They are kept because they exposed two analysis defects (K2.6 matched as the K3 positive; an `ERROR` baseline read as a failed one), and a run tidied after the fact is no longer a run. |
 | `2026-10-04T07-13-24-059Z` | 4-cell K3 smoke test (`kimi-k3`, `L1`/`L2`, 1 rep), run after the amendment and before the K3 grid. All `OK`. Confirms that `reasoning_content` comes back and is sent back. |
 | `2026-10-04T07-14-52-042Z` | **Slice 0.5, K3 arm.** `kimi-k3` × `MUX`/`SPLIT` × `L1`–`L6` × 6 reps. 72 cells, all `OK`, **0/24 `MUX` `create` omissions: K1 fires**. `../FINDINGS-SLICE0.5.md` § The K3 arm. |
+| `2026-10-04T08-04-48-311Z` | 4-cell Slice 0.6 smoke test (`OH`/`BASE`, `L1`/`L7`, 1 rep). All `OK`. Confirms that K3 uses the injected `summary`/`security_risk` fields under `OH`. |
+| `2026-10-04T08-06-21-880Z` | **Slice 0.6, Stage 1.** OpenHands surface (`OH`) vs `BASE`, 5 tasks × 6 reps on K3. **0/30 vs 0/30 first-create omission: not reproduced**, so Stage 2 did not run. `../FINDINGS-SLICE0.6.md`. |
 | `identity-probe.json` | Endpoint identity probe: 8 deterministic prompts to both DeepSeek serving paths. 6/7 byte-identical, 1 divergent. |
 
 Three runs are deliberately absent: one contaminated by a gateway outage (52 ERROR cells in

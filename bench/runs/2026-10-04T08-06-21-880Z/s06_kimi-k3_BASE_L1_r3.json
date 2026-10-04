@@ -1,0 +1,47 @@
+{
+  "cellId": "s06_kimi-k3_BASE_L1_r3",
+  "backend": "kimi-k3",
+  "model": "kimi-k3",
+  "arm": "BASE",
+  "family": "BASE",
+  "task": "L1",
+  "outcome": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "calls": [
+    {
+      "turn": 0,
+      "id": "file_editor_0_c1fb321c",
+      "name": "file_editor",
+      "args": {
+        "command": "create",
+        "path": "/workspace/notes.txt",
+        "file_text": "OK-7391"
+      },
+      "op": "create",
+      "missing": [],
+      "meta": [],
+      "commandAbsent": false,
+      "result": "File created successfully at: notes.txt"
+    }
+  ],
+  "turns": 2,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 7094,
+      "raw": "{\"id\":\"chatcmpl-6ac20b06a5884e5e0abe51e3\",\"object\":\"chat.completion\",\"created\":1791101703,\"model\":\"kimi-k3\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"\",\"tool_calls\":[{\"index\":0,\"id\":\"file_editor_0_c1fb321c\",\"type\":\"function\",\"function\":{\"name\":\"file_editor\",\"arguments\":\"{\\\"command\\\":\\\"create\\\",\\\"path\\\":\\\"/workspace/notes.txt\\\",\\\"file_text\\\":\\\"OK-7391\\\"}\"}}],\"reasoning_content\":\"Create the file.\"},\"finish_reason\":\"tool_calls\"}],\"usage\":{\"prompt_tokens\":499,\"completion_tokens\":93,\"total_tokens\":592,\"cached_tokens\":256,\"completion_tokens_details\":{\"reasoning_tokens\":5},\"prompt_tokens_details\":{\"cached_tokens\":256,\"cache_write_tokens\":0}}}"
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 5248,
+      "raw": "{\"id\":\"chatcmpl-6ac20b0e2b85edab5b5dffbe\",\"object\":\"chat.completion\",\"created\":1791101711,\"model\":\"kimi-k3\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"DONE\",\"reasoning_content\":\"\"},\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":626,\"completion_tokens\":17,\"total_tokens\":643,\"cached_tokens\":256,\"completion_tokens_details\":{\"reasoning_tokens\":1},\"prompt_tokens_details\":{\"cached_tokens\":256,\"cache_write_tokens\":256}}}"
+    }
+  ]
+}
