@@ -159,4 +159,31 @@ t('only a K3 model id counts as the predicted positive; K2.6 does not', () => {
   assert.strictEqual(isK3Model(undefined), false);
 });
 
+// --- 7. the K3 backend's documented differences, and only for K3 ------------
+const { resolve, buildBody } = require('./backends');
+const { assistantTurn } = require('./run05');
+const BK = Object.fromEntries(resolve().map((b) => [b.id, b]));
+t('K3 body: no temperature, reasoning_effort high, raised max_tokens', () => {
+  const b = buildBody(BK['kimi-k3'], { messages: [], tools: [{}] });
+  assert.ok(!('temperature' in b));
+  assert.strictEqual(b.reasoning_effort, 'high');
+  assert.strictEqual(b.max_tokens, 32768);
+  assert.strictEqual(b.model, 'kimi-k3');
+});
+t('every other backend body is unchanged: temperature 0, max_tokens 4096, no extras', () => {
+  for (const id of ['ds-direct', 'ds-gateway', 'glm-flash', 'minimax']) {
+    const b = buildBody(BK[id], { messages: [], tools: [{}] });
+    assert.strictEqual(b.temperature, 0, id);
+    assert.strictEqual(b.max_tokens, 4096, id);
+    assert.ok(!('reasoning_effort' in b), id);
+  }
+});
+t('reasoning_content is sent back for K3 and stripped for the null-arm backends', () => {
+  const msg = { role: 'assistant', content: '', reasoning_content: 'think', tool_calls: [{ id: 'x' }] };
+  assert.strictEqual(assistantTurn(BK['kimi-k3'], msg, '').reasoning_content, 'think');
+  const other = assistantTurn(BK['ds-direct'], msg, '');
+  assert.ok(!('reasoning_content' in other));
+  assert.deepStrictEqual(other.tool_calls, [{ id: 'x' }]);
+});
+
 console.log(`slice05: ${n} assertions passed`);

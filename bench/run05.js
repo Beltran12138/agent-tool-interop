@@ -38,6 +38,18 @@ const SYSTEM =
   'Complete the task by using the available tools. Do not ask the user questions. ' +
   'When the task is complete, reply with DONE and no tool call.';
 
+/**
+ * The assistant message sent back on the next turn. Unchanged for every
+ * earlier backend (so the 0.5 null arm stays comparable); for a backend that
+ * requires it, the provider's message is sent back whole, reasoning_content
+ * included. Dropping it would run that model outside its documented contract,
+ * and any omission it then produced would be the harness's.
+ */
+function assistantTurn(backend, message, rawText) {
+  if (backend.preserveReasoning) return { ...message, role: 'assistant' };
+  return { role: 'assistant', content: rawText || null, tool_calls: message.tool_calls };
+}
+
 async function runCell({ backend, arm, task, runDir, cellId }) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'tsb05-'));
   task.setup(dir);
@@ -73,7 +85,7 @@ async function runCell({ backend, arm, task, runDir, cellId }) {
       continue;
     }
 
-    messages.push({ role: 'assistant', content: rawText || null, tool_calls: message.tool_calls });
+    messages.push(assistantTurn(backend, message, rawText));
     for (const c of parsed.calls) {
       const it = interpret(arm, c.name, c.args);
       let result;
@@ -159,4 +171,5 @@ async function main() {
   console.log(`\nraw cells persisted to: ${runDir}\nnext: node analyze05.js ${path.relative(__dirname, runDir)}`);
 }
 
-main().catch((e) => { console.error(e); process.exit(1); });
+module.exports = { assistantTurn };
+if (require.main === module) main().catch((e) => { console.error(e); process.exit(1); });
