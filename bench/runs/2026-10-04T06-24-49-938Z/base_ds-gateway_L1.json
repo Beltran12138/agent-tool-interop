@@ -1,0 +1,12 @@
+{
+  "cellId": "base_ds-gateway_L1",
+  "backend": "ds-gateway",
+  "model": "deepseek-ai/DeepSeek-V4-Flash-0731",
+  "arm": "S0",
+  "task": "L1",
+  "isBaseline": true,
+  "outcome": "OK",
+  "errorDetail": null,
+  "answer": "OK-7391",
+  "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"content\":\"OK-7391\",\"reasoning\":\"We need to reply with exactly \\\"OK-7391\\\" and nothing else. The instruction says \\\"Reply with exactly this token and nothing else: OK-7391\\\". So output should be just that token. No explanation. Ensure no extra spaces or newlines? The token is \\\"OK-7391\\\". We'll output exactly that.\",\"role\":\"assistant\"}}],\"created\":1791095092,\"id\":\"devshard-111315-1016\",\"model\":\"deepseek-ai/DeepSeek-V4-Flash-0731\",\"object\":\"chat.completion\",\"system_fingerprint\":\"vllm-0.28.0.dev0+glm53.gonka.sampler1-f9876694\",\"usage\":{\"completion_tokens\":74,\"prompt_tokens\":106,\"total_tokens\":180}}"
+}

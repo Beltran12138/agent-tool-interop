@@ -1,0 +1,34 @@
+{
+  "cellId": "s05_kimi_MUX_L4_r3",
+  "backend": "kimi",
+  "model": "moonshotai/Kimi-K2.6",
+  "arm": "MUX",
+  "task": "L4",
+  "outcome": "ERROR",
+  "outcomeTolerant": "ERROR",
+  "errorDetail": "http_error 400",
+  "verify": null,
+  "flags": {
+    "anyCall": false,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": false,
+    "calledOtherKnown": false,
+    "calledDistractor": false,
+    "variantDialect": false,
+    "commandAbsent": false
+  },
+  "calls": [],
+  "turns": 1,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "http_error",
+      "attempts": 1,
+      "ms": 452,
+      "status": 400,
+      "raw": "{\"error\":{\"code\":\"model_retired\",\"message\":\"model \\\"moonshotai/Kimi-K2.6\\\" has been retired: no node on the Gonka network serves it any more. Available models: deepseek-ai/DeepSeek-V4-Flash-0731, MiniMaxAI/MiniMax-M2.7, zai-org/GLM-5.3-Flash\"}}"
+    }
+  ]
+}
