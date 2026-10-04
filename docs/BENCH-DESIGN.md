@@ -433,3 +433,35 @@ It is consistent with §3.4, because those models were not affected in the obser
 either. It can show only that the multiplexed decomposition imposes **no general penalty** on
 these backends. That narrower result will be reported as exactly that. A non-zero result on a
 predicted-null backend would be new, and it would be reported whatever its direction.
+
+### Amendment, 2026-10-04 — Kimi K3 became reachable (written before any K3 cell ran)
+
+The null arm (`bench/FINDINGS-SLICE0.5.md`) ran first. A first-party Moonshot credential then
+became available (China platform, `api.moonshot.cn`, model `kimi-k3`). This amendment fixes
+the K3 run before it starts. The predictions and kill conditions above are unchanged.
+
+**Repetitions: 6, not 3.** K1 needs at least 20 `MUX` `create` calls. The null arm produced 12
+per backend at 3 repetitions, so 3 would leave K1 unevaluable by construction. The K3 arm runs
+`--reps=6`. The null arm stays at 3. Rates are compared, not counts.
+
+**Four settings differ from the null arm, all set by the provider's documentation or by Right
+Fit's configuration, and all reported:**
+
+| setting | null arm | K3 | why |
+|---|---|---|---|
+| `temperature` | 0 | not sent | "not modifiable" on K3 (provider docs) |
+| `reasoning_effort` | not sent | `"high"` | Right Fit requested high. The provider default is `"max"` |
+| assistant message sent back | `content` + `tool_calls` | the full message, `reasoning_content` included | required for K3 tool loops (provider docs). Right Fit patched OpenHands to do the same (`openhands_reasoning_details_patch.py`) |
+| `max_tokens` | 4096 | 32768 | reasoning counts against the cap. Truncation is `ERROR`, and 4096 would have made it a property of this backend |
+
+The first three move K3 **towards** the conditions under which Right Fit observed the
+omission. A null result can therefore not be blamed on a K3 forced off its documented contract.
+The residual gap: Right Fit reached K3 through OpenRouter's `moonshotai/mxfp4` endpoint. The
+quantization behind the first-party API is not stated.
+
+**Budget stop.** The run halts by hand if the account balance falls below ¥30 (starting balance
+¥75). Expected cost is roughly ¥20 at ¥20 / ¥100 per million input / output tokens.
+
+**One added descriptive measure, not a test:** the DONE-plus-tool-call turn shape and the
+turn-cap rate will be reported for K3 next to the null arm's table, since FINDINGS-SLICE0.5
+showed that call counts depend on it.
