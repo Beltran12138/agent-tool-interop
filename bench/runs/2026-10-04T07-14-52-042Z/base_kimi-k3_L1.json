@@ -1,0 +1,12 @@
+{
+  "cellId": "base_kimi-k3_L1",
+  "backend": "kimi-k3",
+  "model": "kimi-k3",
+  "arm": "S0",
+  "task": "L1",
+  "isBaseline": true,
+  "outcome": "OK",
+  "errorDetail": null,
+  "answer": "OK-7391",
+  "raw": "{\"id\":\"chatcmpl-6ac1fcef88b2b8e9b0c0028d\",\"object\":\"chat.completion\",\"created\":1791098096,\"model\":\"kimi-k3\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"OK-7391\",\"reasoning_content\":\"The user wants exactly the token OK-7391 and nothing else. Final should be just that. Need no extra explanation. Ensure exact.\"},\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":120,\"completion_tokens\":48,\"total_tokens\":168,\"completion_tokens_details\":{\"reasoning_tokens\":29},\"prompt_tokens_details\":{\"cache_write_tokens\":0}}}"
+}

@@ -1,0 +1,64 @@
+{
+  "cellId": "s05_ds-direct_SPLIT_L1_r1",
+  "backend": "ds-direct",
+  "model": "deepseek-v4-flash",
+  "arm": "SPLIT",
+  "task": "L1",
+  "outcome": "OK",
+  "outcomeTolerant": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": false,
+    "calledDistractor": false,
+    "variantDialect": false,
+    "commandAbsent": false
+  },
+  "calls": [
+    {
+      "turn": 0,
+      "id": "call_00_DdBBCFkU8RktN59BINmb6662",
+      "name": "create_file",
+      "args": {
+        "path": "notes.txt",
+        "file_text": "OK-7391"
+      },
+      "op": "create",
+      "missing": [],
+      "irrelevant": [],
+      "commandAbsent": false,
+      "unknownTool": false,
+      "result": "File created successfully at: notes.txt"
+    }
+  ],
+  "turns": 2,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 2457,
+      "raw": "{\"id\":\"893f6b13-4532-45cd-b0e3-8c444860806a\",\"object\":\"chat.completion\",\"created\":1791094904,\"model\":\"deepseek-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"\",\"reasoning_content\":\"The task is simple: create a file named notes.txt with content exactly \\\"OK-7391\\\".\",\"tool_calls\":[{\"index\":0,\"id\":\"call_00_DdBBCFkU8RktN59BINmb6662\",\"type\":\"function\",\"function\":{\"name\":\"create_file\",\"arguments\":\"{\\\"path\\\": \\\"notes.txt\\\", \\\"file_text\\\": \\\"OK-7391\\\"}\"}}]},\"logprobs\":null,\"finish_reason\":\"tool_calls\"}],\"usage\":{\"prompt_tokens\":736,\"completion_tokens\":79,\"total_tokens\":815,\"prompt_tokens_details\":{\"cached_tokens\":128},\"completion_tokens_details\":{\"reasoning_tokens\":20},\"prompt_cache_hit_tokens\":128,\"prompt_cache_miss_tokens\":608},\"system_fingerprint\":\"aeb56401ca74e127821c4f9126dcb669\"}",
+      "parsed": {
+        "kind": "call"
+      }
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 975,
+      "raw": "{\"id\":\"b33b51b3-197b-44e4-b166-432904b20afb\",\"object\":\"chat.completion\",\"created\":1791094905,\"model\":\"deepseek-flash\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"DONE\",\"reasoning_content\":\"\"},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":834,\"completion_tokens\":3,\"total_tokens\":837,\"prompt_tokens_details\":{\"cached_tokens\":640},\"completion_tokens_details\":{\"reasoning_tokens\":0},\"prompt_cache_hit_tokens\":640,\"prompt_cache_miss_tokens\":194},\"system_fingerprint\":\"aeb56401ca74e127821c4f9126dcb669\"}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

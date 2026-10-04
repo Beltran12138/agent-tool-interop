@@ -1,0 +1,64 @@
+{
+  "cellId": "s05_ds-gateway_SPLIT_L1_r1",
+  "backend": "ds-gateway",
+  "model": "deepseek-ai/DeepSeek-V4-Flash-0731",
+  "arm": "SPLIT",
+  "task": "L1",
+  "outcome": "OK",
+  "outcomeTolerant": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": false,
+    "calledDistractor": false,
+    "variantDialect": false,
+    "commandAbsent": false
+  },
+  "calls": [
+    {
+      "turn": 0,
+      "id": "chatcmpl-tool-b53f6b488f0b37ba",
+      "name": "create_file",
+      "args": {
+        "path": "notes.txt",
+        "file_text": "OK-7391"
+      },
+      "op": "create",
+      "missing": [],
+      "irrelevant": [],
+      "commandAbsent": false,
+      "unknownTool": false,
+      "result": "File created successfully at: notes.txt"
+    }
+  ],
+  "turns": 2,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 967,
+      "raw": "{\"choices\":[{\"finish_reason\":\"tool_calls\",\"index\":0,\"message\":{\"content\":null,\"role\":\"assistant\",\"tool_calls\":[{\"function\":{\"arguments\":\"{\\\"path\\\": \\\"notes.txt\\\", \\\"file_text\\\": \\\"OK-7391\\\"}\",\"name\":\"create_file\"},\"id\":\"chatcmpl-tool-b53f6b488f0b37ba\",\"type\":\"function\"}]}}],\"created\":1791095106,\"id\":\"devshard-111315-1025\",\"model\":\"deepseek-ai/DeepSeek-V4-Flash-0731\",\"object\":\"chat.completion\",\"system_fingerprint\":\"vllm-0.30.0-80fd92a7\",\"usage\":{\"completion_tokens\":65,\"completion_tokens_details\":{\"reasoning_tokens\":0},\"prompt_tokens\":716,\"total_tokens\":781}}",
+      "parsed": {
+        "kind": "call"
+      }
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 1966,
+      "raw": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"content\":\"DONE. The file notes.txt has been created with the exact content \\\"OK-7391\\\".DONE. The file notes.txt has been created with the exact content \\\"OK-7391\\\".DONE. The file notes.txt has been created with the exact content \\\"OK-7391\\\".DONE. The file notes.txt has been created with the exact content \\\"OK-7391\\\".\",\"role\":\"assistant\"}}],\"created\":1791095107,\"id\":\"devshard-111186-7749\",\"model\":\"deepseek-ai/DeepSeek-V4-Flash-0731\",\"object\":\"chat.completion\",\"system_fingerprint\":\"vllm-0.28.0.dev0+glm53.gonka.sampler1-4e707b1a\",\"usage\":{\"completion_tokens\":85,\"prompt_tokens\":878,\"total_tokens\":963}}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

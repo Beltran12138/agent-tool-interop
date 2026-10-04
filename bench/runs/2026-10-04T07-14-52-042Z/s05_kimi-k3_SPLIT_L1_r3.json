@@ -1,0 +1,64 @@
+{
+  "cellId": "s05_kimi-k3_SPLIT_L1_r3",
+  "backend": "kimi-k3",
+  "model": "kimi-k3",
+  "arm": "SPLIT",
+  "task": "L1",
+  "outcome": "OK",
+  "outcomeTolerant": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": false,
+    "calledDistractor": false,
+    "variantDialect": false,
+    "commandAbsent": false
+  },
+  "calls": [
+    {
+      "turn": 0,
+      "id": "create_file_0_4a493b2f",
+      "name": "create_file",
+      "args": {
+        "path": "notes.txt",
+        "file_text": "OK-7391"
+      },
+      "op": "create",
+      "missing": [],
+      "irrelevant": [],
+      "commandAbsent": false,
+      "unknownTool": false,
+      "result": "File created successfully at: notes.txt"
+    }
+  ],
+  "turns": 2,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 4956,
+      "raw": "{\"id\":\"chatcmpl-6ac1fee07118a1932153d8b6\",\"object\":\"chat.completion\",\"created\":1791098592,\"model\":\"kimi-k3\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"\",\"tool_calls\":[{\"index\":0,\"id\":\"create_file_0_4a493b2f\",\"type\":\"function\",\"function\":{\"name\":\"create_file\",\"arguments\":\"{\\\"path\\\":\\\"notes.txt\\\",\\\"file_text\\\":\\\"OK-7391\\\"}\"}}],\"reasoning_content\":\"\"},\"finish_reason\":\"tool_calls\"}],\"usage\":{\"prompt_tokens\":561,\"completion_tokens\":72,\"total_tokens\":633,\"cached_tokens\":512,\"completion_tokens_details\":{\"reasoning_tokens\":1},\"prompt_tokens_details\":{\"cached_tokens\":512,\"cache_write_tokens\":0}}}",
+      "parsed": {
+        "kind": "call"
+      }
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 5389,
+      "raw": "{\"id\":\"chatcmpl-6ac1fee68b5a040772e9b6c4\",\"object\":\"chat.completion\",\"created\":1791098599,\"model\":\"kimi-k3\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"DONE\",\"reasoning_content\":\"\"},\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":667,\"completion_tokens\":17,\"total_tokens\":684,\"cached_tokens\":512,\"completion_tokens_details\":{\"reasoning_tokens\":1},\"prompt_tokens_details\":{\"cached_tokens\":512,\"cache_write_tokens\":0}}}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}
