@@ -664,3 +664,81 @@ analysis. It is not pooled.
 Why the observed cells do not drive this: the staging follows from cost, and dropping `BASE`
 cannot make the `OH` arm look more or less like a reproduction. What the three cells could bias is
 the decision to stop early. The two thresholds and the target-situation check are unchanged.
+
+---
+
+## Pre-registration, 2026-10-04 — Slice 0.8, prefix replay
+
+Written before any replay harness code. **The maintainer approved this on 2026-10-04**, knowing
+that it sends benchmark task content from Right Fit's released trajectories (Terminal-Bench 4 and
+TUA-Bench) to Moonshot's commercial API. K3 is not being evaluated on those benchmarks here.
+
+Slices 0.5–0.7 removed every model–surface candidate on first-party K3, including Right Fit's
+situation reproduced with synthetic content (0.7: 0/14, situation reached 14/14). Four candidates
+remain: the **benchmark content** itself, the **serving path** (OpenRouter `moonshotai/mxfp4`),
+a **model change** since 2026-09-10/15, and **LiteLLM request shaping**. This slice separates
+the first from the rest.
+
+### Design
+
+For a Right Fit Kimi K3 / OpenHands run, take the conversation **up to, but not including,**
+the assistant message that holds the run's first `file_editor` `create`. Send it to first-party
+K3 once, and classify the reply.
+
+- **Pool:** Terminal-Bench 4 and TUA-Bench runs only, which used exactly the five OpenHands
+  tools. ALE-CLI runs add 14 computer-use tools and are excluded. Prefixes longer than 120,000
+  characters (system prompt included) are excluded to bound cost, and the excluded count is
+  reported. Eligible: 73 prefixes whose original first `create` omitted `file_text`, and 20
+  whose original did not (counted before the size cap).
+- **Sample, seed-fixed:** 20 omission prefixes (10 TB4, 10 TUA) and 6 non-omission prefixes as
+  a control (3 + 3).
+- **Request:** the run's own logged system prompt, verbatim, including its September datetime.
+  The prefix messages are converted to API shape: `tool_calls` become
+  `{id, type: "function", function: {name, arguments}}`, and logging-only fields are dropped.
+  Tools: the five OpenHands schemas from `assets/openhands-1.44.1`. K3 settings as amended in
+  Slice 0.5. One completion per prefix.
+- **Known gap:** Right Fit did not log Kimi's `reasoning_content` under OpenHands, so the
+  replayed assistant turns carry none, although K3's contract asks for it to be sent back. If
+  the API rejects that, the fallback is `reasoning_content: ""` on each replayed assistant turn,
+  and the fallback is reported. The tool descriptions name `/workspace` as the working directory,
+  where Right Fit's did not, and the dataset's 25k-head / 5k-tail truncation of very long
+  strings is inherited.
+
+### Measures
+
+Each reply is classified as: `create` with `file_text` · **`create` without `file_text`
+(omission)** · another tool call · text only · `ERROR`. A reply holding several calls is
+classified by its first `file_editor` `create` if it has one, and otherwise by its first call.
+
+**Primary:** omission rate among omission-prefix replays whose reply is a `create`. **Secondary:**
+the share of replays that `create` at all, the same breakdown for the control prefixes, and
+whether the replayed reply carries `summary`.
+
+### Decision rule, fixed now
+
+Provided at least 8 omission-prefix replays reply with a `create`:
+
+- **Content reproduces it:** omission ≥ 50%. Today's first-party K3 omits on the exact
+  conversations where September's Kimi did. The serving path and model version are **not
+  needed** to explain it, and the cause is in the content. The content is then the next object
+  of study, within the data-handling limits below.
+- **Content does not reproduce it:** omission ≤ 10%. The content alone is not sufficient. The
+  serving path, model version and LiteLLM shaping remain, and this project cannot separate them
+  without an OpenRouter run.
+- **Between, or fewer than 8 `create` replies:** inconclusive at this sample size.
+
+The control prefixes are expected to give omission near 0. If they come out like the omission
+prefixes, the classification or the conversion is suspect before anything is concluded.
+
+### Data handling
+
+The replay script reads the dataset from a local copy and is committed. **Raw requests and
+replies are not committed:** they contain benchmark content (CC BY-NC, with a do-not-train
+canary). The repository gets only per-replay identifiers (benchmark, task id), the
+classification, and token counts. This is a deliberate exception to "traces must be public",
+stated as one. Anyone can regenerate the requests from the public dataset with the script.
+
+### Budget
+
+About ¥0.45 per replay, ¥12 in total. Given the maintainer's explicit go-ahead, the halt
+threshold for this slice is **¥20** (it was ¥30). The balance at writing is ¥36.84.
