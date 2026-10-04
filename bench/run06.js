@@ -15,11 +15,16 @@ const { S1, stripReasoning } = require('./schemas');
 const { assistantTurn, SYSTEM: BASE_SYSTEM } = require('./run05'); // also loads .env
 const S05 = require('./slice05');
 const S06 = require('./slice06');
+const S07 = require('./slice07');
 
 const arg = (n, d) => { const a = process.argv.find((x) => x.startsWith(`--${n}=`)); return a ? a.split('=')[1] : d; };
 const set = (n) => { const v = arg(n, null); return v ? new Set(v.split(',').filter(Boolean)) : null; };
 const MAX_TURNS = Number(arg('max-turns', 10));
 const REPS = Number(arg('reps', 6));
+const TASKSET = arg('taskset', '0.6'); // '0.7' = long briefs (slice07.js)
+
+/** Characters of non-system conversation, measured as in the Right Fit profile. */
+const convChars = (messages) => messages.filter((m) => m.role !== 'system').reduce((n, m) => n + (typeof m.content === 'string' ? m.content.length : 0) + (m.tool_calls ? JSON.stringify(m.tool_calls).length : 0), 0);
 
 function interpretCall(family, name, args) {
   if (family === 'OH') return S06.interpretOH(name, args);
@@ -40,7 +45,7 @@ async function runCell({ backend, arm, task, runDir, cellId }) {
   const sf = S06.surface(arm, BASE_SYSTEM);
   const messages = [{ role: 'system', content: sf.system }, { role: 'user', content: task.prompt }];
   const trace = [], calls = [];
-  let outcome = null, errorDetail = null, finished = false;
+  let outcome = null, errorDetail = null, finished = false, ctxBeforeFirstCreate = null, turnOfFirstCreate = null;
 
   for (let turn = 0; turn < MAX_TURNS && !finished; turn++) {
     const res = await chat(backend, { messages, tools: sf.tools, timeoutMs: 300000 });
@@ -58,6 +63,7 @@ async function runCell({ backend, arm, task, runDir, cellId }) {
       messages.push({ role: 'user', content: `Your tool call could not be read (${parsed.detail}).` });
       continue;
     }
+    if (ctxBeforeFirstCreate === null && parsed.calls.some((c) => c.name === 'file_editor' && c.args && c.args.command === 'create')) { ctxBeforeFirstCreate = convChars(messages); turnOfFirstCreate = turn; }
     messages.push(assistantTurn(backend, ch.message, rawText));
     for (const c of parsed.calls) {
       const it = interpretCall(sf.family, c.name, c.args);
@@ -66,13 +72,13 @@ async function runCell({ backend, arm, task, runDir, cellId }) {
       else if (it.unknownTool) result = `No such tool: ${c.name}`;
       else result = executeCall(sf.family, dir, c.name, c.args, it);
       if (c.name === 'finish') finished = true;
-      calls.push({ turn, id: c.id, name: c.name, args: c.args, op: it.op, missing: it.missing || [], meta: it.meta || [], commandAbsent: !!it.commandAbsent, result: String(result).slice(0, 300) });
+      calls.push({ turn, id: c.id, name: c.name, args: c.args, op: it.op, missing: it.missing || [], meta: it.meta || [], commandAbsent: !!it.commandAbsent, result: String(result).slice(0, 300), resultLen: String(result).length });
       messages.push({ role: 'tool', tool_call_id: c.id, content: String(result) });
     }
   }
   const verify = outcome === 'ERROR' ? null : task.verify(dir);
   if (outcome === null) outcome = verify.ok ? 'OK' : 'FAIL';
-  const rec = { cellId, backend: backend.id, model: backend.model, arm, family: sf.family, task: task.id, outcome, errorDetail, verify, calls, turns: trace.length, trace };
+  const rec = { cellId, backend: backend.id, model: backend.model, arm, family: sf.family, taskset: TASKSET, task: task.id, outcome, errorDetail, verify, ctxBeforeFirstCreate, turnOfFirstCreate, calls, turns: trace.length, trace };
   fs.writeFileSync(path.join(runDir, `${cellId}.json`), JSON.stringify(rec, null, 2));
   fs.rmSync(dir, { recursive: true, force: true });
   return rec;
@@ -83,7 +89,9 @@ async function main() {
   if (!onlyA) { console.error('--arms is required (Stage 1: OH,BASE)'); process.exit(2); }
   const live = resolve().filter((b) => b.available && (!onlyB || onlyB.has(b.id)));
   const arms = [...onlyA];
-  const tasks = S06.TASKS.filter((t) => !onlyT || onlyT.has(t.id));
+  const pool = TASKSET === '0.7' ? S07.TASKS : TASKSET === '0.6' ? S06.TASKS : null;
+  if (!pool) { console.error(`unknown --taskset=${TASKSET}`); process.exit(2); }
+  const tasks = pool.filter((t) => !onlyT || onlyT.has(t.id));
   const bad = arms.filter((a) => !S06.ARMS.includes(a));
   if (bad.length || !live.length || !tasks.length || (onlyT && tasks.length !== onlyT.size)) { console.error(`bad arguments: arms=${bad} backends=${live.length} tasks=${tasks.length}`); process.exit(2); }
 
@@ -92,14 +100,14 @@ async function main() {
   fs.mkdirSync(runDir, { recursive: true });
   for (const b of live) {
     for (let rep = 1; rep <= REPS; rep++) for (const t of tasks) for (const a of arms) {
-      const r = await runCell({ backend: b, arm: a, task: t, runDir, cellId: `s06_${b.id}_${a}_${t.id}_r${rep}` });
+      const r = await runCell({ backend: b, arm: a, task: t, runDir, cellId: `s${TASKSET === '0.7' ? '07' : '06'}_${b.id}_${a}_${t.id}_r${rep}` });
       const fc = r.calls.find((c) => c.name === 'file_editor' && c.op === 'create');
       console.log(`  [cell] ${b.id} ${a.padEnd(6)} ${t.id} r${rep} -> ${r.outcome}  first-create=${fc ? (fc.missing.includes('file_text') ? 'OMIT' : 'ok') : 'none'}${r.errorDetail ? '  (' + r.errorDetail.slice(0, 50) + ')' : ''}`);
     }
   }
-  fs.writeFileSync(path.join(runDir, 'records.json'), JSON.stringify({ runId, slice: '0.6', maxTurns: MAX_TURNS, reps: REPS, argv: process.argv.slice(2) }, null, 2));
+  fs.writeFileSync(path.join(runDir, 'records.json'), JSON.stringify({ runId, slice: TASKSET, maxTurns: MAX_TURNS, reps: REPS, argv: process.argv.slice(2) }, null, 2));
   console.log(`\nraw cells persisted to: ${runDir}\nnext: node analyze06.js ${path.relative(__dirname, runDir)}`);
 }
 
-module.exports = { interpretCall, executeCall };
+module.exports = { interpretCall, executeCall, convChars };
 if (require.main === module) main().catch((e) => { console.error(e); process.exit(1); });

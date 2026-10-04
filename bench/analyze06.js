@@ -40,7 +40,7 @@ function cellMeasures(rec) {
 function load(dirs) {
   const out = [];
   for (const d of dirs) for (const f of fs.readdirSync(d)) {
-    if (f.startsWith('s06_') && f.endsWith('.json')) out.push(JSON.parse(fs.readFileSync(path.join(d, f), 'utf8')));
+    if (/^s0[67]_/.test(f) && f.endsWith('.json')) out.push(JSON.parse(fs.readFileSync(path.join(d, f), 'utf8')));
   }
   return out;
 }
@@ -76,12 +76,29 @@ function main() {
     return `${m.filter((x) => x.firstCreateOmits).length}/${m.length}`.padEnd(8);
   }).join(''));
 
+  // Slice 0.7: did the cells reach Right Fit's situation before their first create?
+  const P10 = 8858;
+  if (scored.some((r) => r.ctxBeforeFirstCreate != null)) {
+    console.log(`\n--- context before the first create (Right Fit p10 = ${P10}, median = 21149 chars) ---`);
+    for (const a of order) {
+      const cs = scored.filter((r) => r.arm === a && r.ctxBeforeFirstCreate != null);
+      if (!cs.length) continue;
+      const v = cs.map((r) => r.ctxBeforeFirstCreate).sort((x, y) => x - y);
+      const reached = cs.filter((r) => r.ctxBeforeFirstCreate >= P10);
+      const kR = reached.map(cellMeasures).filter((x) => x.firstCreateOmits).length;
+      const turns = cs.map((r) => r.turnOfFirstCreate).sort((x, y) => x - y);
+      console.log(`  ${a.padEnd(7)} median ${v[Math.floor(v.length / 2)]}  min ${v[0]}  reached ${reached.length}/${cs.length}  first-create omit among reached ${kR}/${reached.length}  median turn ${turns[Math.floor(turns.length / 2)]}`);
+      S[a].reached = reached.length; S[a].withCtx = cs.length;
+    }
+  }
+
   console.log('\n--- pre-registered decision ---');
   if (S.OH && S.BASE && S.OH.n && S.BASE.n) {
     const pOH = S.OH.k / S.OH.n, pB = S.BASE.k / S.BASE.n;
     const p = fisherTwoSided(S.OH.k, S.OH.n - S.OH.k, S.BASE.k, S.BASE.n - S.BASE.k);
     console.log(`  Stage 1: OH ${(100 * pOH).toFixed(0)}% vs BASE ${(100 * pB).toFixed(0)}%  (Fisher p = ${p.toFixed(4)})`);
     if (pOH >= 0.5 && pB <= 0.1) console.log('  -> REPRODUCED. Stage 2 (ablations) is licensed.');
+    else if (pOH <= 0.1 && S.OH.withCtx !== undefined && S.OH.reached < S.OH.withCtx / 2) console.log('  -> UNINFORMATIVE: fewer than half of OH cells reached the target situation (Slice 0.7 rule), so this is not a null.');
     else if (pOH <= 0.1) console.log('  -> NOT REPRODUCED. Prompt + tool surface is not sufficient on this serving path; Stage 2 does not run.');
     else console.log('  -> BETWEEN thresholds: add 6 repetitions to both arms once, then re-apply the rule to the pooled cells.');
   }

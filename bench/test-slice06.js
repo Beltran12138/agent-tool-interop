@@ -137,4 +137,53 @@ t('every task fails at setup', () => {
   for (const task of S06.TASKS) { const d = tmp(); task.setup(d); assert.strictEqual(task.verify(d).ok, false, task.id); }
 });
 
+// --- 5. Slice 0.7 tasks and measures -----------------------------------------
+const S07 = require('./slice07');
+const { convChars } = require('./run06');
+t('0.7 content is deterministic and meets the amended size spec', () => {
+  for (const task of S07.TASKS) {
+    assert.strictEqual(JSON.stringify(task.files()), JSON.stringify(task.files()), task.id);
+    const f = task.files();
+    const total = Object.values(f).reduce((s, v) => s + v.length, 0);
+    assert.ok(task.prompt.length >= 1500 && task.prompt.length <= 3000, `${task.id} brief ${task.prompt.length}`);
+    assert.ok(Object.keys(f).length >= 7 && Object.keys(f).length <= 13, `${task.id} files`);
+    assert.ok(total >= 10000 && total <= 25000, `${task.id} total ${total}`);
+  }
+});
+t('0.7 setup writes the files and the output directory; verify fails until a real script exists', () => {
+  for (const task of S07.TASKS) {
+    const d = tmp();
+    task.setup(d);
+    assert.ok(fs.existsSync(path.join(d, path.dirname(task.out))), task.id);
+    assert.strictEqual(task.verify(d).ok, false, task.id);
+    fs.writeFileSync(path.join(d, task.out), 'x');
+    assert.strictEqual(task.verify(d).ok, false, `${task.id}: a stub must not pass`);
+    fs.writeFileSync(path.join(d, task.out), 'def main():\n' + '    pass  # padding\n'.repeat(30));
+    assert.strictEqual(task.verify(d).ok, true, task.id);
+  }
+});
+t('0.7 briefs mention no benchmark and no file that does not exist', () => {
+  for (const task of S07.TASKS) {
+    // Word-bounded: a case-insensitive /ALE/ matches "sales" (the first version did).
+    const BENCH = /terminal-bench|tua-bench|\bALE-CLI\b|canary/i;
+    assert.ok(BENCH.test('see ALE-CLI') && !BENCH.test('sales'), 'the check itself');
+    assert.ok(!BENCH.test(task.prompt + JSON.stringify(task.files())), task.id);
+    for (const m of task.prompt.matchAll(/\/workspace\/([\w./-]+\.\w+)/g)) {
+      if (m[1] === task.out) continue;
+      assert.ok(m[1] in task.files(), `${task.id} brief names missing file ${m[1]}`);
+    }
+  }
+});
+t('convChars counts non-system content and tool_calls JSON', () => {
+  const msgs = [{ role: 'system', content: 'x'.repeat(999) }, { role: 'user', content: 'abc' }, { role: 'assistant', content: '', tool_calls: [{ id: 'a' }] }, { role: 'tool', content: '12345' }];
+  assert.strictEqual(convChars(msgs), 3 + JSON.stringify([{ id: 'a' }]).length + 5);
+});
+t('view of a subdirectory lists entries under that subdirectory', () => {
+  const d = tmp();
+  S07.TASKS[0].setup(d);
+  const out = S06.execOH(d, 'file_editor', { command: 'view', path: '/workspace/data' });
+  assert.ok(out.split('\n').every((l) => l.startsWith('/workspace/data/')), out);
+  assert.ok(S06.execOH(d, 'file_editor', { command: 'view', path: '/workspace' }).includes('/workspace/data/'));
+});
+
 console.log(`slice06: ${n} assertions passed`);

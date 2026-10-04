@@ -92,11 +92,18 @@ function execFileEditor(dir, a) {
   if (a.command === 'undo_edit') return 'Error: No edit history found.';
   if (a.command === 'view') {
     const f = path.resolve(dir, rel);
-    if (fs.existsSync(f) && fs.statSync(f).isDirectory()) return fs.readdirSync(f).map((n) => `${WORKSPACE}/${n}`).join('\n') || '(empty)';
+    // Listed under the path that was asked for. The first version prefixed every
+    // entry with /workspace, which is wrong for subdirectories (Slice 0.7 has them;
+    // Slice 0.6 only ever listed the root, so its cells are unaffected).
+    if (fs.existsSync(f) && fs.statSync(f).isDirectory()) {
+      const base = rel === '.' ? WORKSPACE : `${WORKSPACE}/${rel.replace(/\/+$/, '')}`;
+      return fs.readdirSync(f).map((n) => `${base}/${n}${fs.statSync(path.join(f, n)).isDirectory() ? '/' : ''}`).join('\n') || '(empty)';
+    }
   }
   const op = a.command;
   const b = { ...a, path: rel, new_str: op === 'str_replace' && a.new_str == null ? '' : a.new_str };
-  return S05.execute(dir, op, b);
+  // Report the path the model used, as OpenHands does, not the sandbox-relative one.
+  return S05.execute(dir, op, b).split(rel).join(a.path);
 }
 
 /** Read-only emulation. Nothing a model writes is ever executed on the host. */
