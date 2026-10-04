@@ -300,3 +300,136 @@ using it *is* conforming. They are controls for conformance, not evidence about 
   and something about the task (its length, its markup density) is doing the work.
 - `T8b` failing its `S0` baseline where `T8` passed — the two payloads would not be equally
   reproducible, and the tasks would not be comparable.
+
+---
+
+## Pre-registration, 2026-10-04 — Slice 0.5, multiplexed vs split tools
+
+Written before any harness code for this slice exists. The source is
+[`OPEN-CODING-02-right-fit.md`](OPEN-CODING-02-right-fit.md) §3.4: in 6,204 released trajectories,
+the strongest model × harness interaction was Kimi K3 under OpenHands. Kimi omitted arguments
+that are **conditionally required by a `command` field** inside one multiplexed `file_editor`
+tool. 524 of its 1,294 `create` calls carried no `file_text`. Under harnesses that expose
+separate write and edit tools, it almost never omitted anything. That attribution is
+observational, because the harnesses also differ in prompts, tool descriptions and history
+handling. This slice moves one thing.
+
+### The question
+
+> Holding the backend, the native envelope (`S1`), the tasks and the feedback wording fixed,
+> does exposing file operations as **one multiplexed tool with conditionally-required
+> arguments** rather than **one tool per operation with unconditionally-required arguments**
+> change how often the backend omits a required content argument?
+
+The exposure **form** stays `S1`. The variable is the tool **decomposition**, a different axis
+from the envelope axis of Slices 0–0.4.
+
+### The two arms
+
+| | `MUX` | `SPLIT` |
+|---|---|---|
+| tools | `file_editor` | `view_file`, `create_file`, `replace_in_file`, `insert_in_file` |
+| operation selected by | `command` ∈ {`view`, `create`, `str_replace`, `insert`} | tool name |
+| schema `required` | `command`, `path` only | every argument the operation needs |
+| content requirement stated in | each parameter's description ("Required for `create`") | the JSON Schema `required` list |
+| parameter names | `path`, `file_text`, `old_str`, `new_str`, `insert_line`, `view_range` | the same names, distributed across the four tools |
+| feedback on omission | ``Parameter `X` is required for command: C.`` | ``Parameter `X` is required.`` |
+
+The parameter names are identical, so the only differences are multiplexing and where the
+requirement is declared. Those two cannot be separated with plain JSON Schema: a conditional
+requirement needs `oneOf` or `if/then`, which providers do not reliably honour. **They are one
+construct here and are reported as one.** The `MUX` wording is this project's own. It mirrors
+the shape of OpenHands' editor, not its text, so a null result says nothing about OpenHands'
+exact prompt.
+
+`view_range` is kept in `MUX` because the observed Kimi calls included it on `create`. An
+argument that is legal in the schema but irrelevant to the chosen command may be part of the
+mechanism. Irrelevant and undeclared arguments are **ignored and recorded** in both arms, never
+rejected, so that neither arm can fail on a rule the other does not have.
+
+There are no distractors and no general-purpose shell. The cost is that recovery by abandoning
+the tool (`OPEN-CODING-01` D4) is unobservable. That is stated now rather than discovered later.
+
+### Tasks
+
+Six tasks, each verified by filesystem inspection only:
+
+| id | operation(s) | why |
+|---|---|---|
+| `L1` | create, short content (one token) | content-bearing call with a trivial payload |
+| `L2` | create, **long verbatim content** (~25 lines of code) | the Right Fit failures were long `create` payloads |
+| `L3` | replace one value in an existing file | `old_str` + `new_str` |
+| `L4` | create, then replace in the same file | two commands through the same tool |
+| `L5` | insert a line after line N | `insert_line` + `new_str` |
+| `L6` | view a file, then create a derived file | a non-content call followed by a content call |
+
+`S0` baselines (no tools) are run for `L1` and `L2`. If a backend cannot reproduce `L2`'s text
+with no tool protocol at all, `L2` is excluded for that backend: the task would measure copying,
+not tool use.
+
+### Dependent variables
+
+**Primary: content-omission rate.** A content-bearing call is any call that selects `create`,
+`str_replace` or `insert`, whether by `command` or by tool name. An omission is such a call in
+which an argument that operation requires is absent or `null`. The rate is computed per
+backend × arm: omissions over content-bearing calls. It is reported alongside the cell-level
+share (cells with at least one omission), because one cell that loops on the same omission can
+dominate a call-level rate. That is exactly the Right Fit pattern.
+
+**Secondary:**
+- **identical repeat after an omission error.** The next call is byte-identical apart from the
+  call id. Right Fit: 57% for Kimi under OpenHands.
+- **irrelevant-argument rate** (`MUX` only, plus undeclared arguments in `SPLIT`)
+- outcome code under the existing classifier (`classify.js`), turns to completion
+- **`command`-absent calls** in `MUX`, recorded as their own code. A `file_editor` call with
+  no readable `command` is not an omission of content. Merging the two would repeat the
+  F0/F2 conflation in a new place.
+
+**Design:** each backend × arm × task cell is run **3 times** at `temperature=0` with
+`--max-turns=10`. Inference is within-backend, `MUX` against `SPLIT`. The between-backend
+sample is too small to say anything about models in general, and no claim of that kind will be
+made.
+
+### Backends, and the gap stated before the run
+
+Reachable today: `ds-direct` and `ds-gateway` (DeepSeek V4 Flash), `minimax` (MiniMax M2.7), and
+`glm-flash` (GLM-5.3-Flash, newly available on the gateway). **Kimi K3 is not reachable.**
+The gateway retired Kimi K2.6 (`400 model_retired`, 2026-10-04), and no Moonshot or OpenRouter
+credential is available.
+
+That matters more than any other limit. The predicted positive is Kimi K3, and every reachable
+backend is a predicted null. Right Fit's own data shows DeepSeek and GLM rejecting arguments
+under OpenHands at the same rate as under the other harnesses (2.1 vs 1.4–2.1 per 1,000 calls for
+DeepSeek V4 Pro; 1.5 vs 1.8–2.2 for GLM-5.3). The checkpoints here also differ from that paper's
+(V4 Flash, not V4 Pro; GLM-5.3-Flash, not GLM-5.3).
+
+### Predictions, stated now
+
+1. **DeepSeek and GLM:** `MUX` omission ≈ `SPLIT` omission ≈ 0. Specifically, at most one
+   omitted call per backend per arm across all 18 cells.
+2. **Kimi K3, if it becomes reachable:** `MUX` omission on `create` ≥ 20% of `create` calls
+   (Right Fit: 40%), against `SPLIT` ≤ 2%, concentrated in `L2`.
+3. **MiniMax:** no directional prediction. It has dialect and serving quirks
+   (`OPEN-CODING-01` A1, C1), but nothing on this construct.
+4. **Mechanism split:** if omission appears, its distribution across `L1` and `L2` and across
+   arms separates two mechanisms. If it appears in `MUX` only, the mechanism is conditional
+   requirement. If it appears in both arms and concentrates in `L2`, it is long payload.
+
+### What would kill it
+
+- **K1 (main).** With Kimi K3 reachable, `MUX` `create` omission < 5% across ≥ 20 `create` calls.
+  The Right Fit interaction would then not reproduce when only the decomposition moves.
+  `OPEN-CODING-02` §3.4 must be restated from "a tool-schema interaction" to "a harness
+  interaction whose component is unidentified".
+- **K2.** For any backend that omits, `SPLIT` omission ≥ `MUX` omission. The effect is then
+  not about conditional requirement.
+- **K3 (construct).** A backend fails both `S0` baselines. Its tool cells are about task
+  competence, not decomposition.
+
+### What this slice cannot show without Kimi K3
+
+If only the predicted-null backends run, an all-zero result is **not evidence against §3.4**.
+It is consistent with §3.4, because those models were not affected in the observational data
+either. It can show only that the multiplexed decomposition imposes **no general penalty** on
+these backends. That narrower result will be reported as exactly that. A non-zero result on a
+predicted-null backend would be new, and it would be reported whatever its direction.
