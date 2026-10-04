@@ -465,3 +465,96 @@ quantization behind the first-party API is not stated.
 **One added descriptive measure, not a test:** the DONE-plus-tool-call turn shape and the
 turn-cap rate will be reported for K3 next to the null arm's table, since FINDINGS-SLICE0.5
 showed that call counts depend on it.
+
+---
+
+## Pre-registration, 2026-10-04 — Slice 0.6, reproduce the OpenHands omission, then ablate
+
+Written before any harness code for this slice. Slice 0.5's K3 arm fired K1: holding backend,
+envelope and tasks fixed, a multiplexed tool did not make Kimi K3 omit (0/24). In Right Fit's
+released trajectories, Kimi K3 under OpenHands omits `file_text` on the **first** `create` of a
+run 84% of the time (155/184), before any feedback. The cause is therefore present from call
+one, in something OpenHands sends that Slice 0.5 did not.
+
+### What OpenHands sends, reconstructed exactly
+
+Everything below is rebuilt from the MIT-licensed OpenHands 1.44.1 packages
+(`openhands-sdk`, `openhands-tools`), not copied from the CC BY-NC dataset:
+
+- **System prompt.** `Agent.static_system_message`, rendered by the SDK. It matches the
+  dataset's logged system prompt **verbatim** except for two platform words (rendered on Windows
+  as `powershell`, logged on Linux as `bash`, normalised to `bash`) and the trailing
+  `<CURRENT_DATETIME>` block, which is set to the run time.
+- **Five tools** (`terminal`, `file_editor`, `task_tracker`, `finish`, `think`), serialized by
+  `ToolDefinition.to_openai_tool(add_security_risk_prediction=True)`. That is the call the agent
+  makes on every completion (`openhands/sdk/agent/utils.py`). Every schema leads with the
+  injected `security_risk` and `summary` properties (`_prioritize_schema_fields`). `file_text`
+  is a plain `string`, **not nullable**, which removes candidate 1 in `FINDINGS-SLICE0.5.md`
+  before any run. The working directory in tool descriptions is `/workspace`.
+
+What is **not** reproduced: the serving path (OpenRouter `moonshotai/mxfp4` there, first-party
+API here), any request shaping by LiteLLM, and the benchmark tasks themselves. Own tasks are used.
+
+### Stage 1 — reproduction
+
+| arm | system prompt | tools |
+|---|---|---|
+| `OH` | OpenHands, rendered | the five OpenHands tools, exact schemas |
+| `BASE` | Slice 0.5's | Slice 0.5's `MUX` `file_editor` (concurrent control) |
+
+**Tasks:** five that begin with creating a file. `L1`, `L2` and `L4` are unchanged from Slice
+0.5, and `L6` also begins with a view. New `L7` asks for a self-authored Python script, because
+the Right Fit omissions were on scripts the model wrote rather than copied. Paths are given as
+`/workspace/...`, as OpenHands instructs, and are mapped into the sandbox. Both arms get the
+same task text.
+
+**Executors.** `file_editor` follows OpenHands' semantics, including that `create` refuses an
+existing path. `terminal` is **simulated and read-only**: `ls`, `cat`, `pwd`, `head` and `wc`
+are emulated over the sandbox, and anything else returns a fixed "not available in this
+sandbox" message. Model-written shell is never executed on the host. `task_tracker` and `think`
+acknowledge. `finish` ends the cell. Injected `security_risk` and `summary` arguments are
+accepted and recorded.
+
+**Primary measure:** per cell, whether the **first** `file_editor` `create` call lacks
+`file_text`. Cells with no `file_editor` `create` call are reported separately and never counted
+as non-omissions. **Secondary:** omission over all `create` calls, the share of calls carrying
+`summary` / `security_risk`, identical repeats after an omission, and `terminal` usage before the
+first `create`.
+
+**Design:** K3 first-party, settings as in the Slice 0.5 amendment, 5 tasks × 6 repetitions ×
+2 arms = 60 cells.
+
+**Decision rule, fixed now:**
+- **Reproduced:** `OH` first-create omission ≥ 50% and `BASE` ≤ 10%. Go to Stage 2.
+- **Not reproduced:** `OH` ≤ 10%. The prompt and tool surface is then not sufficient on this
+  serving path. The lead moves to the serving path (OpenRouter `mxfp4`) or a model change since
+  2026-09. Stage 2 does not run.
+- **Between:** add 6 repetitions to both arms once, then apply the same rule to the pooled cells.
+
+### Stage 2 — ablation (runs only if Stage 1 reproduces)
+
+Each arm is `OH` with exactly one component removed, 5 tasks × 6 repetitions:
+
+| arm | removed |
+|---|---|
+| `A-meta` | the injected `security_risk` and `summary` properties, from every tool |
+| `A-desc` | `file_editor`'s ~2,100-character description, replaced by `BASE`'s (parameters unchanged) |
+| `A-sys` | the OpenHands system prompt, replaced by `BASE`'s |
+| `A-solo` | the four tools other than `file_editor` |
+
+A component is **necessary** if removing it lowers first-create omission by ≥ 40 percentage
+points relative to `OH` from the same run, with two-sided Fisher p < 0.05. More than one may
+qualify, and none may. "None" means the cause is distributed or interactive, and it will be
+reported as that, not forced onto one component.
+
+**My prediction, with low-to-medium confidence:** `A-meta` drops the most. The observed Kimi
+calls carried the injected `summary`, and the injected fields are listed before `command`,
+`path` and `file_text`.
+
+### What this slice deliberately does not do
+
+**Prefix replay** would send K3 the exact Right Fit conversation prefix up to each original
+first `create`. It is the strongest reproduction available, and it is excluded here. It would
+send Terminal-Bench / TUA / ALE task content to a commercial API. The dataset asks that it not
+be exposed to agents under evaluation, and Terminal-Bench tasks carry a do-not-train canary. It
+runs only with the maintainer's explicit approval, under its own amendment.
