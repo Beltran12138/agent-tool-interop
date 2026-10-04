@@ -1,0 +1,65 @@
+{
+  "cellId": "s05_kimi-k3_MUX_L1_r1",
+  "backend": "kimi-k3",
+  "model": "kimi-k3",
+  "arm": "MUX",
+  "task": "L1",
+  "outcome": "OK",
+  "outcomeTolerant": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": false,
+    "calledDistractor": false,
+    "variantDialect": false,
+    "commandAbsent": false
+  },
+  "calls": [
+    {
+      "turn": 0,
+      "id": "file_editor_0_e2a61cc0",
+      "name": "file_editor",
+      "args": {
+        "command": "create",
+        "path": "notes.txt",
+        "file_text": "OK-7391"
+      },
+      "op": "create",
+      "missing": [],
+      "irrelevant": [],
+      "commandAbsent": false,
+      "unknownTool": false,
+      "result": "File created successfully at: notes.txt"
+    }
+  ],
+  "turns": 2,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 7777,
+      "raw": "{\"id\":\"chatcmpl-6ac1fd00870ae1fa9229dc58\",\"object\":\"chat.completion\",\"created\":1791098115,\"model\":\"kimi-k3\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"\",\"tool_calls\":[{\"index\":0,\"id\":\"file_editor_0_e2a61cc0\",\"type\":\"function\",\"function\":{\"name\":\"file_editor\",\"arguments\":\"{\\\"command\\\":\\\"create\\\",\\\"path\\\":\\\"notes.txt\\\",\\\"file_text\\\":\\\"OK-7391\\\"}\"}}],\"reasoning_content\":\"Create notes.txt with exact content.\"},\"finish_reason\":\"tool_calls\"}],\"usage\":{\"prompt_tokens\":496,\"completion_tokens\":94,\"total_tokens\":590,\"cached_tokens\":256,\"completion_tokens_details\":{\"reasoning_tokens\":8},\"prompt_tokens_details\":{\"cached_tokens\":256,\"cache_write_tokens\":0}}}",
+      "parsed": {
+        "kind": "call"
+      }
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 5659,
+      "raw": "{\"id\":\"chatcmpl-6ac1fd0a322fef81826635d3\",\"object\":\"chat.completion\",\"created\":1791098122,\"model\":\"kimi-k3\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"DONE\",\"reasoning_content\":\"\"},\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":624,\"completion_tokens\":17,\"total_tokens\":641,\"cached_tokens\":256,\"completion_tokens_details\":{\"reasoning_tokens\":1},\"prompt_tokens_details\":{\"cached_tokens\":256,\"cache_write_tokens\":256}}}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

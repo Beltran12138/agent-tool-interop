@@ -1,5 +1,15 @@
 # Open coding 02: reading another team's 6,204 trajectories
 
+> ⛔ **CORRECTION, 2026-10-04 ([`../bench/FINDINGS-SLICE0.5.md`](../bench/FINDINGS-SLICE0.5.md),
+> K3 arm).** §3.4 calls the Kimi K3 / OpenHands omissions "a schema interaction" and
+> "conditional-required arguments inside a multiplexed tool". A controlled test that held the
+> backend fixed and moved only the decomposition found **0 of 24** `create` omissions under a
+> multiplexed tool (pre-registered kill condition K1). The finding is restated: it is **a harness
+> interaction whose component is unidentified.** The facts in §3.4 stand: 48 rejections per 1,000
+> calls, valid JSON, the same provider, 57% identical repeats. Only their attribution to the
+> decomposition is withdrawn. The rest of this document is not edited.
+
+
 **Status:** secondary analysis of released data, not a bench slice. No model calls were made.
 Subject: *Finding the Right Fit: Model–Harness Interactions across Agent Tasks* (Li et al., NTU,
 arXiv:2610.00917v1, 2026-10-01), and its released trajectories
@@ -209,7 +219,7 @@ but it lists that as one of three co-equal causes.
 1. **Positioning.** The paper owns breadth: 66 configurations and three benchmarks. It states that
    it does not *"isolate the causal effect of any single component"*. That isolation is this
    repository's slot. [`../RELATED-WORK.md`](../RELATED-WORK.md) §5 records the split.
-2. **The one strong interaction in 6,204 runs is a tool-schema interaction.** That puts this
+2. *(Restated 2026-10-04: see the correction at the top. The decomposition alone does not reproduce it.)* **The one strong interaction in 6,204 runs is a tool-schema interaction.** That puts this
    repository's construct (exposure form × backend) at the centre of the largest public
    model–harness dataset. The evidence there is observational, though. It is the natural next
    slice: same backend, native form, a multiplexed `file_editor(command, file_text?, old_str?,

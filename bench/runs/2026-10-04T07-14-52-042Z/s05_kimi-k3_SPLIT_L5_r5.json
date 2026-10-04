@@ -1,0 +1,89 @@
+{
+  "cellId": "s05_kimi-k3_SPLIT_L5_r5",
+  "backend": "kimi-k3",
+  "model": "kimi-k3",
+  "arm": "SPLIT",
+  "task": "L5",
+  "outcome": "OK",
+  "outcomeTolerant": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": false,
+    "calledDistractor": false,
+    "variantDialect": false,
+    "commandAbsent": false
+  },
+  "calls": [
+    {
+      "turn": 0,
+      "id": "view_file_0_5318cb8b",
+      "name": "view_file",
+      "args": {
+        "path": "steps.txt"
+      },
+      "op": "view",
+      "missing": [],
+      "irrelevant": [],
+      "commandAbsent": false,
+      "unknownTool": false,
+      "result": "     1\talpha\n     2\tbravo\n     3\tdelta\n     4\techo"
+    },
+    {
+      "turn": 1,
+      "id": "insert_in_file_1_b1ab742c",
+      "name": "insert_in_file",
+      "args": {
+        "path": "steps.txt",
+        "insert_line": 2,
+        "new_str": "charlie"
+      },
+      "op": "insert",
+      "missing": [],
+      "irrelevant": [],
+      "commandAbsent": false,
+      "unknownTool": false,
+      "result": "The file steps.txt has been edited."
+    }
+  ],
+  "turns": 3,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 6245,
+      "raw": "{\"id\":\"chatcmpl-6ac2012ada435759dffe1fee\",\"object\":\"chat.completion\",\"created\":1791099180,\"model\":\"kimi-k3\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"\",\"tool_calls\":[{\"index\":0,\"id\":\"view_file_0_5318cb8b\",\"type\":\"function\",\"function\":{\"name\":\"view_file\",\"arguments\":\"{\\\"path\\\":\\\"steps.txt\\\"}\"}}],\"reasoning_content\":\"We need need view file.\"},\"finish_reason\":\"tool_calls\"}],\"usage\":{\"prompt_tokens\":576,\"completion_tokens\":59,\"total_tokens\":635,\"cached_tokens\":512,\"completion_tokens_details\":{\"reasoning_tokens\":7},\"prompt_tokens_details\":{\"cached_tokens\":512,\"cache_write_tokens\":0}}}",
+      "parsed": {
+        "kind": "call"
+      }
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 6959,
+      "raw": "{\"id\":\"chatcmpl-6ac2013186b28178e12d5a6b\",\"object\":\"chat.completion\",\"created\":1791099186,\"model\":\"kimi-k3\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"\",\"tool_calls\":[{\"index\":0,\"id\":\"insert_in_file_1_b1ab742c\",\"type\":\"function\",\"function\":{\"name\":\"insert_in_file\",\"arguments\":\"{\\\"path\\\":\\\"steps.txt\\\",\\\"insert_line\\\":2,\\\"new_str\\\":\\\"charlie\\\"}\"}}],\"reasoning_content\":\"Need insert after line2 exact.\"},\"finish_reason\":\"tool_calls\"}],\"usage\":{\"prompt_tokens\":683,\"completion_tokens\":94,\"total_tokens\":777,\"cached_tokens\":512,\"completion_tokens_details\":{\"reasoning_tokens\":8},\"prompt_tokens_details\":{\"cached_tokens\":512,\"cache_write_tokens\":0}}}",
+      "parsed": {
+        "kind": "call"
+      }
+    },
+    {
+      "turn": 2,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 3899,
+      "raw": "{\"id\":\"chatcmpl-6ac2013712bf80cd49e7c7d2\",\"object\":\"chat.completion\",\"created\":1791099191,\"model\":\"kimi-k3\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"DONE\",\"reasoning_content\":\"Need final DONE no tool.\"},\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":813,\"completion_tokens\":23,\"total_tokens\":836,\"cached_tokens\":512,\"completion_tokens_details\":{\"reasoning_tokens\":7},\"prompt_tokens_details\":{\"cached_tokens\":512,\"cache_write_tokens\":256}}}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}

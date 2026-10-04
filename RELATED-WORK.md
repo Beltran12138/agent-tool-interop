@@ -203,6 +203,10 @@ finds three things that bear on this project:
   single multiplexed `file_editor` tool. The arguments arrive as valid JSON, and the same
   first-party provider serves the other harnesses. This is exposure form × backend, observed in
   the wild, and it is the next slice to isolate.
+  *Correction, 2026-10-04:* the isolation was run (Slice 0.5), and the decomposition alone does
+  not reproduce it. K3 omitted 0 of 24 `create` arguments under a multiplexed tool. It is a
+  harness interaction whose component is unidentified. Candidates and the next design are in
+  [`bench/FINDINGS-SLICE0.5.md`](bench/FINDINGS-SLICE0.5.md).
 - **Most "best harness" rankings are inside task-sampling noise.** In 13 of 15 benchmark × model
   cells the winner cannot be separated from the runner-up. The headline rank reversal (Claude
   under OpenHands against PI) is real.

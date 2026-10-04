@@ -1,5 +1,12 @@
 # Slice 0.5 — multiplexed vs split tools
 
+> **UPDATE, 2026-10-04 (same day): the K3 arm ran, and K1 fired.** A first-party Moonshot
+> credential became available after this document was written. The K3 arm was fixed by a
+> pre-registration amendment (`ab4efc8`) before any K3 cell ran, and its results are in
+> [§ The K3 arm](#the-k3-arm-k1-fires) at the end. The text below the line is left as written,
+> including "parked, not finished", which is no longer the status.
+
+
 Run `2026-10-04T06-24-49-938Z`. Native `S1` envelope throughout. Two tool decompositions
 (`MUX`: one `file_editor` with conditionally-required arguments; `SPLIT`: one tool per
 operation), 6 tasks (`L1`–`L6`), 3 repetitions per cell, `MAX_TURNS=10`, plus `S0` no-tools
@@ -112,3 +119,58 @@ model, so it is a confound unless it is reported.
   §3.4 stays observational.
 - If the stop-rule dependency is pursued, it needs its own pre-registration: same cells, three
   stop rules, the post-completion fan-out as the dependent variable. It is not a slice yet.
+
+---
+
+## The K3 arm: K1 fires
+
+Run `2026-10-04T07-14-52-042Z`. `kimi-k3` (Moonshot first-party, `api.moonshot.cn`), `MUX`/`SPLIT`
+× `L1`–`L6` × **6 repetitions**, settings as amended: no `temperature`, `reasoning_effort: high`,
+full assistant message (`reasoning_content`) sent back, `max_tokens` 32768. 72 cells, 0 `ERROR`.
+Both `S0` baselines `OK`. Cost ¥2.14 by account balance.
+
+| arm | omitted / content-bearing calls | cells with an omission | `create` omissions | outcomes |
+|---|---|---|---|---|
+| MUX | **0/42** | 0/36 | **0/24** | 36 OK |
+| SPLIT | 0/42 | 0/36 | 0/24 | 36 OK |
+
+**K1 fires:** `MUX` `create` omission is 0% over 24 calls, against a threshold of < 5% over ≥ 20.
+Prediction 2 (≥ 20%) fails. Under OpenHands in Right Fit the same model omitted `file_text` on
+40% of `create` calls.
+
+Descriptive measures, as amended: no DONE-plus-tool-call turns and no turn-cap cells in either
+arm (74 and 70 calls in total).
+
+### What follows, as pre-registered
+
+[`OPEN-CODING-02-right-fit.md`](../docs/OPEN-CODING-02-right-fit.md) §3.4 is restated from "a
+tool-schema interaction" to **"a harness interaction whose component is unidentified."** Holding
+the backend, envelope and tasks fixed, a multiplexed tool with conditionally-required arguments
+does not by itself make K3 omit. The correction is placed at the top of that document, and its
+body is not edited.
+
+### What the released data says about where to look next (free, post hoc)
+
+The obvious candidate was context length: these cells are 2–4 turns and about 1k tokens, and
+OpenHands runs are long. **The released trajectories say the opposite.** Across all 1,294 Kimi
+`create` calls under OpenHands, omission is **highest early and falls with context**: 76% when
+the preceding conversation is 20–50k characters, and 10–18% beyond 200k. **The first `create`
+of a run omits `file_text` 84% of the time (155 of 184)**, before any error feedback exists.
+Whatever causes it is present from the first call, and the cheapest place to find it is what
+OpenHands sends that this harness does not:
+
+1. **Nullable argument types.** OpenHands 1.44.1 declares `file_text`, `old_str`, `new_str`,
+   `insert_line` and `view_range` as `X | None = None` (`openhands/tools/file_editor/definition.py`).
+   They serialize as nullable with a `null` default. This harness declares plain strings.
+2. **SDK-injected meta-arguments.** The SDK adds a `summary` field to every action schema
+   (`openhands/sdk/tool/tool.py`), plus `security_risk` when enabled. The observed Kimi call
+   carried `summary`.
+3. **The tool description:** about 2,400 characters of "CRITICAL REQUIREMENTS", against about 300
+   here, including an instruction to batch several calls in one message.
+4. **The ~15k-character system prompt and the other tools** (terminal, task tracker).
+5. **The serving path:** OpenRouter's `moonshotai/mxfp4` endpoint, against the first-party API.
+
+The design that follows is reproduce-then-ablate. First, send K3 OpenHands' exact tool schema
+and system prompt. If the 84% first-call omission reproduces, remove one component at a time.
+If it does not reproduce, the serving path (5) or a model update since 2026-09 becomes the lead.
+That is a new slice with its own pre-registration, not part of this one.

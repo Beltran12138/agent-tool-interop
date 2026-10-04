@@ -1,0 +1,64 @@
+{
+  "cellId": "s05_kimi-k3_SPLIT_L1_r1",
+  "backend": "kimi-k3",
+  "model": "kimi-k3",
+  "arm": "SPLIT",
+  "task": "L1",
+  "outcome": "OK",
+  "outcomeTolerant": "OK",
+  "errorDetail": null,
+  "verify": {
+    "ok": true
+  },
+  "flags": {
+    "anyCall": true,
+    "anyMalformed": false,
+    "anyUnknownTool": false,
+    "anyArgViolation": false,
+    "calledExpected": true,
+    "calledOtherKnown": false,
+    "calledDistractor": false,
+    "variantDialect": false,
+    "commandAbsent": false
+  },
+  "calls": [
+    {
+      "turn": 0,
+      "id": "create_file_0_f16e7d47",
+      "name": "create_file",
+      "args": {
+        "path": "notes.txt",
+        "file_text": "OK-7391"
+      },
+      "op": "create",
+      "missing": [],
+      "irrelevant": [],
+      "commandAbsent": false,
+      "unknownTool": false,
+      "result": "File created successfully at: notes.txt"
+    }
+  ],
+  "turns": 2,
+  "trace": [
+    {
+      "turn": 0,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 4693,
+      "raw": "{\"id\":\"chatcmpl-6ac1fcabb8a9f9c4294c0b18\",\"object\":\"chat.completion\",\"created\":1791098028,\"model\":\"kimi-k3\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"\",\"tool_calls\":[{\"index\":0,\"id\":\"create_file_0_f16e7d47\",\"type\":\"function\",\"function\":{\"name\":\"create_file\",\"arguments\":\"{\\\"path\\\":\\\"notes.txt\\\",\\\"file_text\\\":\\\"OK-7391\\\"}\"}}],\"reasoning_content\":\"Create the file.\"},\"finish_reason\":\"tool_calls\"}],\"usage\":{\"prompt_tokens\":561,\"completion_tokens\":76,\"total_tokens\":637,\"completion_tokens_details\":{\"reasoning_tokens\":5},\"prompt_tokens_details\":{\"cache_write_tokens\":512}}}",
+      "parsed": {
+        "kind": "call"
+      }
+    },
+    {
+      "turn": 1,
+      "transport": "ok",
+      "attempts": 1,
+      "ms": 5341,
+      "raw": "{\"id\":\"chatcmpl-6ac1fcb17118a1932153d5bd\",\"object\":\"chat.completion\",\"created\":1791098034,\"model\":\"kimi-k3\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"DONE\",\"reasoning_content\":\"\"},\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":671,\"completion_tokens\":17,\"total_tokens\":688,\"cached_tokens\":512,\"completion_tokens_details\":{\"reasoning_tokens\":1},\"prompt_tokens_details\":{\"cached_tokens\":512,\"cache_write_tokens\":0}}}",
+      "parsed": {
+        "kind": "none"
+      }
+    }
+  ]
+}
